@@ -14,8 +14,12 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.sannong.domain.entities.*;
-import com.sannong.domain.valuetypes.ResponseStatus;
+import com.sannong.domain.applications.Answer;
+import com.sannong.domain.sms.SMS;
+import com.sannong.domain.user.User;
+import com.sannong.domain.region.City;
+import com.sannong.domain.region.District;
+import com.sannong.domain.message.ResponseStatus;
 import com.sannong.infrastructure.util.PasswordGenerator;
 import com.sannong.presentation.model.Response;
 import com.sannong.service.*;

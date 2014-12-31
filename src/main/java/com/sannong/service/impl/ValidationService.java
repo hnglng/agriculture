@@ -1,9 +1,9 @@
 package com.sannong.service.impl;
 
-import com.sannong.domain.entities.SMS;
-import com.sannong.domain.entities.User;
-import com.sannong.domain.repositories.SmsRepository;
-import com.sannong.domain.repositories.UserRepository;
+import com.sannong.domain.sms.SMS;
+import com.sannong.domain.user.User;
+import com.sannong.domain.sms.SmsRepository;
+import com.sannong.domain.user.UserRepository;
 import com.sannong.service.IValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

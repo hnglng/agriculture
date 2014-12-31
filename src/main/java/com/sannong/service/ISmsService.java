@@ -1,6 +1,6 @@
 package com.sannong.service;
 
-import com.sannong.domain.entities.SMS;
+import com.sannong.domain.sms.SMS;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;

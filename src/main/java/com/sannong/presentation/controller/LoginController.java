@@ -9,8 +9,8 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
-import com.sannong.domain.entities.User;
-import com.sannong.domain.valuetypes.ResponseStatus;
+import com.sannong.domain.user.User;
+import com.sannong.domain.message.ResponseStatus;
 import com.sannong.infrastructure.util.PasswordGenerator;
 import com.sannong.presentation.model.Response;
 import com.sannong.service.ISmsService;

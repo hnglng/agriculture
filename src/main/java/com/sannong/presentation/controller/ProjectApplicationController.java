@@ -8,7 +8,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
-import com.sannong.domain.valuetypes.ResponseStatus;
+import com.sannong.domain.message.ResponseStatus;
 import com.sannong.infrastructure.util.PasswordGenerator;
 import com.sannong.presentation.model.Response;
 import com.sannong.service.ISmsService;
@@ -24,9 +24,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.sannong.domain.entities.Answer;
-import com.sannong.domain.entities.Application;
-import com.sannong.domain.entities.User;
+import com.sannong.domain.applications.Answer;
+import com.sannong.domain.applications.Application;
+import com.sannong.domain.user.User;
 import com.sannong.service.IProjectService;
 import com.sannong.service.IUserService;
 import com.sannong.service.IValidationService;

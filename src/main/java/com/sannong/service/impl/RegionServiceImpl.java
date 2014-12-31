@@ -1,9 +1,9 @@
 package com.sannong.service.impl;
 
-import com.sannong.domain.entities.City;
-import com.sannong.domain.entities.District;
-import com.sannong.domain.entities.Province;
-import com.sannong.domain.repositories.RegionRepository;
+import com.sannong.domain.region.City;
+import com.sannong.domain.region.District;
+import com.sannong.domain.region.Province;
+import com.sannong.domain.region.RegionRepository;
 import com.sannong.service.IRegionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

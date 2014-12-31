@@ -1,8 +1,8 @@
 package com.sannong.service;
 
-import com.sannong.domain.entities.City;
-import com.sannong.domain.entities.District;
-import com.sannong.domain.entities.Province;
+import com.sannong.domain.region.City;
+import com.sannong.domain.region.District;
+import com.sannong.domain.region.Province;
 
 import java.util.List;
 

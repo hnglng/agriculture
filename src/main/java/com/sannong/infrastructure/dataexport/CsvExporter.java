@@ -9,7 +9,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
-import com.sannong.domain.entities.User;
+import com.sannong.domain.user.User;
 
 /**
  * Created by Vidor Chan on 10/30/14.

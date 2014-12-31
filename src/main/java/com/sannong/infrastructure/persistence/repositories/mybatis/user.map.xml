@@ -3,7 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
 
-<mapper namespace="com.sannong.domain.repositories.UserRepository">
+<mapper namespace="com.sannong.domain.user.UserRepository">
      <cache eviction="FIFO" flushInterval="60000" size="512" readOnly="true" />
      
      <resultMap type="User" id="userResultMap">
@@ -22,7 +22,7 @@
         <result property="cellphone" column="cellphone" />
         <result property="updateTime" column="update_time" />
         <result property="createTime" column="create_time" />
-        <association property="answer" resultMap="com.sannong.domain.repositories.AnswerRepository.answerResultMap" />
+        <association property="answer" resultMap="com.sannong.domain.applications.AnswerRepository.answerResultMap" />
      </resultMap>
      
      <select id="getUserByCondition"  parameterType="Map"  resultMap="userResultMap">

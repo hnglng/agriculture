@@ -2,8 +2,8 @@ package com.sannong.service;
 
 import java.util.Map;
 
-import com.sannong.domain.entities.Answer;
-import com.sannong.domain.entities.Application;
+import com.sannong.domain.applications.Answer;
+import com.sannong.domain.applications.Application;
 
 public interface IProjectService {
 
