@@ -1,0 +1,128 @@
+<b:beans xmlns:b="http://www.springframework.org/schema/beans"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:context="http://www.springframework.org/schema/context"
+         xmlns="http://www.springframework.org/schema/security" xmlns:sec="http://www.springframework.org/schema/security"
+         xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+    http://www.springframework.org/schema/security
+    http://www.springframework.org/schema/security/spring-security-3.2.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:annotation-config/>
+
+    <!-- 不要过滤图片等静态资源，其中**代表可以跨越目录，*不可以跨越目录。 -->
+    <sec:http pattern="/**/*.jsp" security="none"/>
+    <sec:http pattern="/**/*.png" security="none"/>
+    <sec:http pattern="/**/*.gif" security="none"/>
+    <sec:http pattern="/**/*.css" security="none"/>
+    <sec:http pattern="/**/*.js" security="none"/>
+    <sec:http pattern="/**/*.map" security="none"/>
+
+    <sec:http pattern="/**/*.eot" security="none"/>
+    <sec:http pattern="/**/*.woff" security="none"/>
+    <sec:http pattern="/**/*.svg" security="none"/>
+    <sec:http pattern="/**/*.ttf" security="none"/>
+
+    <sec:http auto-config="true" access-denied-page="/access-denied">
+        <!-- anonymous enabled="false"></anonymous -->
+        <sec:intercept-url pattern="/unitsManager" access="ROLE_PLATFORMADMIN"/>
+        <sec:intercept-url pattern="/usersManager" access="ROLE_PLATFORMADMIN"/>
+        <sec:intercept-url pattern="/horizontalQuery" access="ROLE_PLATFORMADMIN"/>
+
+
+        <sec:intercept-url pattern="/user-personal-center" access="ROLE_USER, ROLE_ADMIN"/>
+
+
+        <!--intercept-url pattern="/login" access="ROLE_USER, ROLE_ANONYMOUS"/-->
+        <sec:intercept-url pattern="/user-profile" access="ROLE_USER, ROLE_ADMIN"/>
+        <sec:intercept-url pattern="/user-password" access="ROLE_USER, ROLE_ADMIN"/>
+
+        <!-- user enabled="true"></user -->
+        <sec:intercept-url pattern="/user-application-form" access="ROLE_USER"/>
+
+        <!-- admin enabled="true"></admin -->
+        <sec:intercept-url pattern="/user-management" access="ROLE_ADMIN"/>
+
+        <!--
+        <sec:custom-filter before="FORM_LOGIN_FILTER" ref="loginFilter" />
+        -->
+        <sec:custom-filter before="FORM_LOGIN_FILTER" ref="loginFilter" />
+
+        <sec:form-login login-page="/project-landing"
+                    authentication-failure-url="/login-failure"
+                    default-target-url="/login-success"/>
+
+        <sec:logout invalidate-session="true"
+                    logout-url="/j_spring_security_logout" logout-success-url="/project-landing"/>
+
+        <sec:remember-me data-source-ref="dataSource" user-service-ref="userDetailsManager"/>
+
+        <sec:session-management invalid-session-url="/project-landing"/>
+
+    </sec:http>
+
+    <sec:authentication-manager alias="authenticationManager">
+        <sec:authentication-provider user-service-ref="userDetailsManager">
+            <sec:password-encoder ref="passwordEncoder">
+                <sec:salt-source user-property="username"/>
+            </sec:password-encoder>
+        </sec:authentication-provider>
+    </sec:authentication-manager>
+
+    <b:bean id="userDetailsManager"
+            class="org.springframework.security.provisioning.JdbcUserDetailsManager">
+        <b:property name="dataSource" ref="dataSource"/>
+    </b:bean>
+
+    <b:bean id="loginFilter" class="com.sannong.presentation.filter.LoginFilter">
+        <b:property name="authenticationManager" ref="authenticationManager"/>
+        <b:property name="authenticationSuccessHandler">
+             <!-- 自定义登录成功后的处理handler -->
+             <b:bean class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">
+                 <!-- 登录成功后的默认url -->
+                 <b:property name="defaultTargetUrl" value="/login-success" />
+             </b:bean>
+        </b:property>
+        <b:property name="authenticationFailureHandler">
+             <b:bean class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
+                 <!-- 登录失败后的默认Url -->
+                 <b:property name="defaultFailureUrl" value="/login-failure" />
+                 <b:property name="useForward" value="true" />
+             </b:bean>
+        </b:property>
+
+        <b:property name="rememberMeServices" ref="rememberMeServices"/>
+    </b:bean>
+
+    <b:bean id="tokenRepository" class="org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl">
+        <b:property name="dataSource" ref="dataSource"/>
+        <b:property name="createTableOnStartup" value="false"/>
+    </b:bean>
+
+    <b:bean id="userDetailsService" class="org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl">
+        <b:property name="dataSource" ref="dataSource"/>
+    </b:bean>
+
+    <b:bean id="rememberMeServices" class="org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices">
+        <b:property name="userDetailsService" ref="userDetailsService"/>
+        <b:property name="tokenRepository" ref="tokenRepository"/>
+        <b:property name="key" value="spring-security-private-key"/>
+    </b:bean>
+
+    <!--   事件监听:实现了 ApplicationListener监听接口，包括AuthenticationCredentialsNotFoundEvent 事件，
+   AuthorizationFailureEvent事件，AuthorizedEvent事件， PublicInvocationEvent事件 -->
+    <b:bean class="org.springframework.security.authentication.event.LoggerListener"/>
+
+    <!-- 用户的密码加密或解密 -->
+    <b:bean id="passwordEncoder"
+            class="org.springframework.security.authentication.encoding.Md5PasswordEncoder"/>
+
+    <b:bean id="webexpressionHandler"
+            class="org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler" />
+
+
+</b:beans>
+
+
+
