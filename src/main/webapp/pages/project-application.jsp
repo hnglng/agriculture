@@ -42,7 +42,7 @@
             <div class="row">
                 <span class="col-sm-9 rightBorder equalCol">
                     <h3 class="borderBottom">申报项目</h3>
-                    <form class="projectAppForm" id="projectAppForm" role="form" action="makeApplication" method="post">
+                    <form class="projectAppForm" id="projectAppForm" role="form" action="add" method="POST">
                         <ul>
                             <div id="questionnaire">
                                 <script id="question-template-radio" type="text/x-handlebars-template">
