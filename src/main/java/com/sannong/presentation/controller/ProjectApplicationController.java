@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import com.sannong.domain.applications.Question;
 import com.sannong.domain.applications.Questionnaire;
 import com.sannong.domain.message.ResponseStatus;
 import com.sannong.infrastructure.util.PasswordGenerator;
@@ -70,46 +71,9 @@ public class ProjectApplicationController {
 
 
     @RequestMapping(value = "/questionnaire/{number}", method = RequestMethod.GET)
-    public @ResponseBody Answer getQuestionnaire(@PathVariable("number") String number,
-                                                 HttpServletRequest request) throws Exception{
-
-        String questionnaireNumber = number;
-        String cellphone = request.getParameter("cellphone");
-        String isOnlyShowQuestions = request.getParameter("flag");
-        String userName = null;
-        String realName = null;
-
-        if (cellphone != null) {
-            Map<String, Object> map = new HashMap<String, Object>();
-            map.put("cellphone", cellphone);
-            List<User> userList = userService.getUserByCondition(map);
-
-            if (userList != null && userList.get(0) != null) {
-                userName = userList.get(0).getUserName();
-                realName = userList.get(0).getRealName();
-            }
-        } else if (StringUtils.isBlank(userName)) {
-            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-            if (principal instanceof UserDetails) {
-                userName = ((UserDetails) principal).getUsername();
-            } else {
-                userName = principal.toString();
-            }
-        }
-
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("questionnaireNo", questionnaireNumber);
-        map.put("userName", userName);
-        map.put("isOnlyShowQuestions", isOnlyShowQuestions);
-
-        Answer answer = projectService.getQuestionnaireAndAnswerByCondition(map);
-        User user = new User();
-        user.setUserName(userName);
-        user.setRealName(realName);
-        answer.setApplicant(user);
-
-        return answer;
+    public @ResponseBody List<Question> getQuestionsByQuestionnaire(@PathVariable("number") Integer number) throws Exception{
+        List<Question> questions = projectService.getQuestionsByQuestionnaireNumber(number);
+        return questions;
     }
 
     @RequestMapping(value = "project-application/validate-application-form", method = RequestMethod.POST)

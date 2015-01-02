@@ -189,36 +189,9 @@ public class ProjectServiceImpl implements IProjectService {
         */
     }
 
-    public Answer getQuestionnaireAndAnswerByCondition(Map<String, Object> map) {
-
-        int questionnaireNo = 1;
-        String userName = "";
-        Answer answer = null;
-
-        if (map.get("questionnaireNo") != null) {
-            questionnaireNo = Integer.parseInt(map.get("questionnaireNo").toString());
-        }
-        List<Question> questions = questionnaireRepository.getQuestionnaireByNo(questionnaireNo);
-
-        if (map.get("userName") != null) {
-            userName = map.get("userName").toString();
-        }
-
-        if (map.get("isOnlyShowQuestions") == null || map.get("isOnlyShowQuestions") == "") {
-        	answer = answerRepository.getAnswerByUserName(userName);
-        	if (answer == null) {
-        		answer = new Answer();
-        	}
-        	
-        	String comment = commentRepository.getCommentByCondition(map);
-        	answer.setComment(new Comment(comment));
-        } else {
-        	answer = new Answer();
-        }
-        
-        answer.setQuestions(questions);
-
-        return answer;
+    public List<Question> getQuestionsByQuestionnaireNumber(Integer number) {
+        List<Question> questions = questionnaireRepository.findQuestionsByQuestionnaireNumber(number);
+        return questions;
     }
 
     public int getTotalQuestions() {

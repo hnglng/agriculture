@@ -75,7 +75,7 @@ define(['jquery', 'sannong', 'handlebars'], function($, sannong, handlebars) {
 
             $("#questionnaire").empty();
 
-            for (var i = 0; i < data.questions.length; i++){
+            for (var i = 0; i < data.length; i++){
                 handlebars.registerHelper("fromOne",function(){
                     return i+1;
                 });
@@ -83,8 +83,8 @@ define(['jquery', 'sannong', 'handlebars'], function($, sannong, handlebars) {
                     return i;
                 });
 
-                questionObject = data.questions[i];
-                if (questionObject.isSingle == 1){
+                questionObject = data[i];
+                if (questionObject.singleSelectionOnly == 1){
                     html = handleRadio(questionObject);
                 }else{
                     html = handleCheckbox(questionObject);
@@ -248,10 +248,9 @@ define(['jquery', 'sannong', 'handlebars'], function($, sannong, handlebars) {
     questionnaire.Controller = {
         showProjectQuestionnaire: function(){
             $.ajax({
-                type: "get",
+                type: "GET",
                 dataType: "json",
-                url: 'questionAndAnswer',
-                data: "questionnaireNo=1&flag=1",
+                url: 'project-application/questionnaire/1',
                 success: function(data) {
                     questionnaire.View.renderQuestionnaireView(data);
                 }
