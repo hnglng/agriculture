@@ -17,7 +17,7 @@ public class Application implements Serializable{
 	
 	private Long applicationId;
 	private User user;
-	private List<Questionnaire> questionnaire;
+	private List<Questionnaire> questionnaires;
 	private String comments;
 	private Timestamp creationDate;
 
@@ -37,12 +37,12 @@ public class Application implements Serializable{
 		this.user = user;
 	}
 
-	public List<Questionnaire> getQuestionnaire() {
-		return questionnaire;
+	public List<Questionnaire> getQuestionnaires() {
+		return questionnaires;
 	}
 
-	public void setQuestionnaire(List<Questionnaire> questionnaire) {
-		this.questionnaire = questionnaire;
+	public void setQuestionnaires(List<Questionnaire> questionnaires) {
+		this.questionnaires = questionnaires;
 	}
 
 	public String getComments() {

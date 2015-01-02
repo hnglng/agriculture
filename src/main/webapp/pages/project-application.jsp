@@ -42,18 +42,18 @@
             <div class="row">
                 <span class="col-sm-9 rightBorder equalCol">
                     <h3 class="borderBottom">申报项目</h3>
-                    <form class="projectAppForm" id="projectAppForm" role="form" action="add" method="POST">
+                    <form class="projectAppForm" id="projectAppForm" role="form" action="project-application" method="POST">
                         <ul>
                             <div id="questionnaire">
                                 <script id="question-template-radio" type="text/x-handlebars-template">
                                     <li class="J_group_choice">
                                         {{fromOne}}. {{questionContent}}
                                         <div class="radioRow">
-                                            <span class="radioCustom"><input type="radio" name="answers[{{fromZero}}]" value="{{questionId}}:a"><label>{{option1}}</label></span>
-                                            <span class="radioCustom"><input type="radio" name="answers[{{fromZero}}]" value="{{questionId}}:b"><label>{{option2}}</label></span>
-                                            <span class="radioCustom"><input type="radio" name="answers[{{fromZero}}]" value="{{questionId}}:c"><label>{{option3}}</label></span>
-                                            <span class="radioCustom"><input type="radio" name="answers[{{fromZero}}]" value="{{questionId}}:d"><label>{{option4}}</label></span>
-                                            <span class="radioCustom"><input type="radio" name="answers[{{fromZero}}]" value="{{questionId}}:e"><label>{{option5}}</label></span>
+                                            <span class="radioCustom"><input type="radio" name="questionnaires[0].answers[{{fromZero}}]" value="{{questionId}}:a"><label>{{option1}}</label></span>
+                                            <span class="radioCustom"><input type="radio" name="questionnaires[0].answers[{{fromZero}}]" value="{{questionId}}:b"><label>{{option2}}</label></span>
+                                            <span class="radioCustom"><input type="radio" name="questionnaires[0].answers[{{fromZero}}]" value="{{questionId}}:c"><label>{{option3}}</label></span>
+                                            <span class="radioCustom"><input type="radio" name="questionnaires[0].answers[{{fromZero}}]" value="{{questionId}}:d"><label>{{option4}}</label></span>
+                                            <span class="radioCustom"><input type="radio" name="questionnaires[0].answers[{{fromZero}}]" value="{{questionId}}:e"><label>{{option5}}</label></span>
                                         </div>
                                     </li>
                                 </script>
@@ -61,11 +61,11 @@
                                     <li class="J_group_choice">
                                         {{fromOne}}. {{questionContent}}
                                         <div class="checkboxRow">
-                                            <span class="checkboxCustom"><input type="checkbox" name="answers[{{fromZero}}]" value="{{questionId}}:a"><label>{{option1}}</label></span>
-                                            <span class="checkboxCustom"><input type="checkbox" name="answers[{{fromZero}}]" value="{{questionId}}:b"><label>{{option2}}</label></span>
-                                            <span class="checkboxCustom"><input type="checkbox" name="answers[{{fromZero}}]" value="{{questionId}}:c"><label>{{option3}}</label></span>
-                                            <span class="checkboxCustom"><input type="checkbox" name="answers[{{fromZero}}]" value="{{questionId}}:d"><label>{{option4}}</label></span>
-                                            <span class="checkboxCustom"><input type="checkbox" name="answers[{{fromZero}}]" value="{{questionId}}:e"><label>{{option5}}</label></span>
+                                            <span class="checkboxCustom"><input type="checkbox" name="questionnaires[0].answers[{{fromZero}}]" value="{{questionId}}:a"><label>{{option1}}</label></span>
+                                            <span class="checkboxCustom"><input type="checkbox" name="questionnaires[0].answers[{{fromZero}}]" value="{{questionId}}:b"><label>{{option2}}</label></span>
+                                            <span class="checkboxCustom"><input type="checkbox" name="questionnaires[0].answers[{{fromZero}}]" value="{{questionId}}:c"><label>{{option3}}</label></span>
+                                            <span class="checkboxCustom"><input type="checkbox" name="questionnaires[0].answers[{{fromZero}}]" value="{{questionId}}:d"><label>{{option4}}</label></span>
+                                            <span class="checkboxCustom"><input type="checkbox" name="questionnaires[0].answers[{{fromZero}}]" value="{{questionId}}:e"><label>{{option5}}</label></span>
                                         </div>
                                     </li>
                                 </script>
@@ -74,21 +74,21 @@
 
                         <div class="row">
                             <aside class="userFormCol-1">姓名</aside>
-                            <aside class="userFormCol-right"><input type="text" class="width-172" id="projectAppForm_userRealName" name="applicant.realName"></aside>
+                            <aside class="userFormCol-right"><input type="text" class="width-172" id="projectAppForm_userRealName" name="user.realName"></aside>
                         </div>
                         <div class="row">
                             <aside class="userFormCol-1">职位</aside>
-                            <aside class="userFormCol-right"><input type="text" class="width-172" id="projectAppForm_jobTitle" name="applicant.jobTitle" ></aside>
+                            <aside class="userFormCol-right"><input type="text" class="width-172" id="projectAppForm_jobTitle" name="user.jobTitle" ></aside>
                         </div>
                         <div class="row">
                             <aside class="userFormCol-1">工作单位</aside>
-                            <aside class="userFormCol-right"><input type="text" class="width-281" id="projectAppForm_company" name="applicant.company"></aside>
+                            <aside class="userFormCol-right"><input type="text" class="width-281" id="projectAppForm_company" name="user.companyName"></aside>
                         </div>
                         <div class="row">
                             <aside class="userFormCol-1">单位地址</aside>
                             <aside class="userFormCol-right">
                                 <div class="width-162" id="provinceSelectDiv">
-                                    <select id="companyProvinceSelect" name="applicant.companyProvince">
+                                    <select id="companyProvinceSelect" name="user.companyProvince">
                                         <option value="1">北京市</option>
                                         <option value="2">天津市</option>
                                         <option value="3">河北省</option>
@@ -126,13 +126,13 @@
                                     </select>
                                 </div>
                                 <div class="width-162" id="citySelectDiv">
-                                    <select id="companyCitySelect" name="applicant.companyCity">
+                                    <select id="companyCitySelect" name="user.companyCity">
                                         <option value="1">市辖区</option>
                                         <option value="2">县</option>
                                     </select>
                                 </div>
                                     <div class="width-162" id="districtSelectDiv">
-                                    <select id="companyDistrictSelect" name="applicant.companyDistrict">
+                                    <select id="companyDistrictSelect" name="user.companyDistrict">
                                         <option value='1'>东城区</option>
                                         <option value='2'>西城区</option>
                                         <option value='3'>崇文区</option>
@@ -151,21 +151,21 @@
                                         <option value='16'>平谷区</option>
                                     </select>
                                 </div>
-                                <input type="text" class="width-281" id="projectAppForm_jobAddress" name="applicant.companyAddress">
+                                <input type="text" class="width-281" id="projectAppForm_jobAddress" name="user.companyAddress">
                             </aside>
                         </div>
                         <div class="row">
                             <aside class="userFormCol-1">工作电话</aside>
-                            <aside class="userFormCol-right"><input type="text" class="width-281" id="projectAppForm_deskPhone" name="applicant.deskPhone"></aside>
+                            <aside class="userFormCol-right"><input type="text" class="width-281" id="projectAppForm_deskPhone" name="user.deskPhone"></aside>
                         </div>
                         <div class="row">
                             <aside class="userFormCol-1">电子邮件</aside>
-                            <aside class="userFormCol-right"><input type="text" class="width-281" id="projectAppForm_mailbox" name="applicant.mailbox"></aside>
+                            <aside class="userFormCol-right"><input type="text" class="width-281" id="projectAppForm_mailbox" name="user.mailbox"></aside>
                         </div>
                         <div class="row">
                             <aside class="userFormCol-1">手机号码</aside>
                             <aside class="userFormCol-right">
-                                <input type="text" class="width-281" id="projectAppForm_cellphone" name="applicant.cellphone">
+                                <input type="text" class="width-281" id="projectAppForm_cellphone" name="user.mobilePhone">
                                 <a href="javascript:void(0)" class="white-bt" role="button" id="projectAppForm_validationBtn" name="validationBtn">获取验证码</a>
                             </aside>
                         </div>

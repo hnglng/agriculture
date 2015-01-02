@@ -16,7 +16,7 @@ public class Questionnaire implements Serializable {
 
 	private Long applicationId;
 	private Integer questionnaireNumber;
-	private String answers;
+	private List<String> answers;
 	private Boolean committed;
 	private Timestamp creationTime;
 	private Timestamp last_updated;
@@ -37,11 +37,11 @@ public class Questionnaire implements Serializable {
 		this.questionnaireNumber = questionnaireNumber;
 	}
 
-	public String getAnswers() {
+	public List<String> getAnswers() {
 		return answers;
 	}
 
-	public void setAnswers(String answers) {
+	public void setAnswers(List<String> answers) {
 		this.answers = answers;
 	}
 

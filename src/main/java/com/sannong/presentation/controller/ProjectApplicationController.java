@@ -9,7 +9,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import com.sannong.domain.applications.Question;
-import com.sannong.domain.applications.Questionnaire;
 import com.sannong.domain.message.ResponseStatus;
 import com.sannong.infrastructure.util.PasswordGenerator;
 import com.sannong.presentation.model.Response;
@@ -17,15 +16,11 @@ import com.sannong.service.ISmsService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.sannong.domain.applications.Answer;
 import com.sannong.domain.applications.Application;
-import com.sannong.domain.user.User;
 import com.sannong.service.IProjectService;
 import com.sannong.service.IUserService;
 import com.sannong.service.IValidationService;
@@ -57,7 +52,7 @@ public class ProjectApplicationController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ModelAndView add(@ModelAttribute("projectAppForm") Application application) throws Exception {
-        projectService.projectApplication(application);
+        projectService.makeApplication(application);
         return new ModelAndView(PROJECT_APPLICATION_COMPLETION_PAGE);
     }
 

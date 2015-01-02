@@ -9,7 +9,7 @@ import com.sannong.domain.applications.Question;
 
 public interface IProjectService {
 
-    void projectApplication(Application application) throws Exception;
+    void makeApplication(Application application) throws Exception;
 
     List<Question> getQuestionsByQuestionnaireNumber(Integer number);
 

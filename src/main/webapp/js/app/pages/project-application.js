@@ -55,11 +55,13 @@ require(['../main'], function () {
 
             projectApplication.Controller = {
                 handleValidationCodeClick: function(){
+                    projectApplication.View.enableSubmitButton();
+
                     if ($("#projectAppForm_validationBtn").hasClass("disabled")){
                         return;
                     }
-                    //projectApplication.View.showValidationCodeError("test");
 
+                    /*
                     if (formValidator.getValidator("#projectAppForm").form() == true) {
                         ajaxHandler.sendRequest({
                             url: 'project-application/sendValidationCode',
@@ -92,8 +94,11 @@ require(['../main'], function () {
 
                         });
                     }
+                    */
                 },
                 handleFormSubmit: function(){
+                    $("#projectAppModelTrigger").click();
+                    /*
                     if ($("#projectAppForm_submit").hasClass("disabled") == true) { return;}
 
                     if (formValidator.getValidator("#projectAppForm").form() == true){
@@ -118,6 +123,7 @@ require(['../main'], function () {
                             }
                         });
                     }
+                    */
                 },
                 handleConfirmedSubmit: function(){
                     $("#projectAppForm").submit();

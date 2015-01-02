@@ -18,7 +18,6 @@ import com.sannong.domain.user.RoleType;
 import com.sannong.infrastructure.mail.MailAsyncSender;
 import com.sannong.domain.applications.Answer;
 import com.sannong.domain.applications.Application;
-import com.sannong.domain.applications.Comment;
 import com.sannong.domain.applications.Question;
 import com.sannong.domain.applications.AnswerRepository;
 import com.sannong.domain.applications.ApplicationRepository;
@@ -129,8 +128,7 @@ public class ProjectServiceImpl implements IProjectService {
         mailAsyncSender.sendMail(mailContent);
     }
 
-    public void projectApplication(Application application) {
-
+    public void makeApplication(Application application) {
         /*
         //set user information
         Timestamp createTime = new Timestamp(System.currentTimeMillis());
@@ -187,6 +185,7 @@ public class ProjectServiceImpl implements IProjectService {
         // send sms message
         smsService.sendLoginMessage(cellphone, password);
         */
+
     }
 
     public List<Question> getQuestionsByQuestionnaireNumber(Integer number) {
