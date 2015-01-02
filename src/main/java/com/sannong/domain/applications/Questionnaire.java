@@ -1,6 +1,9 @@
 package com.sannong.domain.applications;
 
+import jodd.util.sort.TimSort;
+
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -10,35 +13,59 @@ import java.util.List;
 public class Questionnaire implements Serializable {
 
 	private static final long serialVersionUID = 4596287948226478700L;
-	
-	private Long questionnaireId;
-	private int questionnaireCategory;
-	private List<Question> questions;
-	private List<Project> projects;
-	
-	public Long getQuestionnaireId() {
-		return questionnaireId;
+
+	private Long applicationId;
+	private Integer questionnaireNumber;
+	private String answers;
+	private Boolean committed;
+	private Timestamp creationTime;
+	private Timestamp last_updated;
+
+	public Long getApplicationId() {
+		return applicationId;
 	}
-	public void setQuestionnaireId(Long questionnaireId) {
-		this.questionnaireId = questionnaireId;
+
+	public void setApplicationId(Long applicationId) {
+		this.applicationId = applicationId;
 	}
-	public int getQuestionnaireCategory() {
-		return questionnaireCategory;
+
+	public Integer getQuestionnaireNumber() {
+		return questionnaireNumber;
 	}
-	public void setQuestionnaireCategory(int questionnaireCategory) {
-		this.questionnaireCategory = questionnaireCategory;
+
+	public void setQuestionnaireNumber(Integer questionnaireNumber) {
+		this.questionnaireNumber = questionnaireNumber;
 	}
-	public List<Question> getQuestions() {
-		return questions;
+
+	public String getAnswers() {
+		return answers;
 	}
-	public void setQuestions(List<Question> questions) {
-		this.questions = questions;
+
+	public void setAnswers(String answers) {
+		this.answers = answers;
 	}
-	public List<Project> getProjects() {
-		return projects;
+
+	public Boolean getCommitted() {
+		return committed;
 	}
-	public void setProjects(List<Project> projects) {
-		this.projects = projects;
+
+	public void setCommitted(Boolean committed) {
+		this.committed = committed;
 	}
-	
+
+	public Timestamp getCreationTime() {
+		return creationTime;
+	}
+
+	public void setCreationTime(Timestamp creationTime) {
+		this.creationTime = creationTime;
+	}
+
+	public Timestamp getLast_updated() {
+		return last_updated;
+	}
+
+	public void setLast_updated(Timestamp last_updated) {
+		this.last_updated = last_updated;
+	}
 }

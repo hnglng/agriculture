@@ -114,12 +114,12 @@ public class PersonalCenterController {
                 models.put("userProfile", user);
                 return models;
             }else{
-                user.setCellphone(newCellphone);
+                user.setMobilePhone(newCellphone);
             }
         }
 
         Timestamp ts = new Timestamp(System.currentTimeMillis());
-        user.setUpdateTime(ts);
+        user.setLastUpdated(ts);
         try {
             userService.updateUser(user);
         } catch (Exception e) {

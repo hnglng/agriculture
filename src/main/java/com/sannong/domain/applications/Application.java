@@ -16,67 +16,48 @@ public class Application implements Serializable{
 	private static final long serialVersionUID = 4282850771969955235L;
 	
 	private Long applicationId;
-	private User applicant;
-	private User auditor;
-	private Project project;
-	private List<String> answers;
-	private Questionnaire questionnaire;
-	private Timestamp applicationDate;
-	private SMS sms;
-	private Answer answer;  //one application ->the first questionnaire -> mutiple answers -> one anser object
-	
-	public Answer getAnswer() {
-		return answer;
-	}
-	public void setAnswer(Answer answer) {
-		this.answer = answer;
-	}
-	public Questionnaire getQuestionnaire() {
-		return questionnaire;
-	}
-	public void setQuestionnaire(Questionnaire questionnaire) {
-		this.questionnaire = questionnaire;
-	}
-	public SMS getSms() {
-		return sms;
-	}
-	public List<String> getAnswers() {
-		return answers;
-	}
-	public void setAnswers(List<String> answers) {
-		this.answers = answers;
-	}
-	public void setSms(SMS sms) {
-		this.sms = sms;
-	}
+	private User user;
+	private List<Questionnaire> questionnaire;
+	private String comments;
+	private Timestamp creationDate;
+
 	public Long getApplicationId() {
 		return applicationId;
 	}
+
 	public void setApplicationId(Long applicationId) {
 		this.applicationId = applicationId;
 	}
-	public User getApplicant() {
-		return applicant;
+
+	public User getUser() {
+		return user;
 	}
-	public void setApplicant(User applicant) {
-		this.applicant = applicant;
+
+	public void setUser(User user) {
+		this.user = user;
 	}
-	public User getAuditor() {
-		return auditor;
+
+	public List<Questionnaire> getQuestionnaire() {
+		return questionnaire;
 	}
-	public void setAuditor(User auditor) {
-		this.auditor = auditor;
+
+	public void setQuestionnaire(List<Questionnaire> questionnaire) {
+		this.questionnaire = questionnaire;
 	}
-	public Project getProject() {
-		return project;
+
+	public String getComments() {
+		return comments;
 	}
-	public void setProject(Project project) {
-		this.project = project;
+
+	public void setComments(String comments) {
+		this.comments = comments;
 	}
-	public Timestamp getApplicationDate() {
-		return applicationDate;
+
+	public Timestamp getCreationDate() {
+		return creationDate;
 	}
-	public void setApplicationDate(Timestamp applicationDate) {
-		this.applicationDate = applicationDate;
+
+	public void setCreationDate(Timestamp creationDate) {
+		this.creationDate = creationDate;
 	}
 }

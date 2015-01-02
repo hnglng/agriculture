@@ -131,6 +131,7 @@ public class ProjectServiceImpl implements IProjectService {
 
     public void projectApplication(Application application) {
 
+        /*
         //set user information
         Timestamp createTime = new Timestamp(System.currentTimeMillis());
         application.getApplicant().setUpdateTime(createTime);
@@ -185,6 +186,7 @@ public class ProjectServiceImpl implements IProjectService {
 
         // send sms message
         smsService.sendLoginMessage(cellphone, password);
+        */
     }
 
     public Answer getQuestionnaireAndAnswerByCondition(Map<String, Object> map) {
