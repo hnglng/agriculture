@@ -15,5 +15,5 @@ import com.sannong.domain.applications.Question;
 public interface QuestionnaireRepository {
 	
 	List<Question> findQuestionsByQuestionnaireNumber(int questionnaireNumber);
-	
+	void addQuestionnaire(Questionnaire questionnaire);
 }

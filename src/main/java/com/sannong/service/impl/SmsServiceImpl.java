@@ -52,7 +52,7 @@ public class SmsServiceImpl implements ISmsService {
         }
         */
         sms.setSmsId(smsId);
-        sms.setSendTime(time);
+        sms.setSentTime(time);
         sms.setSmsStatus(1);
         smsRepository.updateSMS(sms);
         return true;
@@ -103,7 +103,7 @@ public class SmsServiceImpl implements ISmsService {
     @Override
     public List<SMS> getSmsByCellphoneAndValidationCode(String cellphone, String validationCode) {
         SMS sms = new SMS();
-        sms.setCellphone(cellphone);
+        sms.setMobilePhone(cellphone);
         sms.setSmsValidationCode(validationCode);
         return smsRepository.getSmsByCellphoneAndValidationCode(sms);
     }
@@ -122,7 +122,7 @@ public class SmsServiceImpl implements ISmsService {
         else {
             SMS sms = new SMS();
 
-            sms.setCellphone(mobile);
+            sms.setMobilePhone(mobile);
             sms.setSmsValidationCode(regcode);
 
             Date ts = new Date(System.currentTimeMillis());
@@ -147,7 +147,7 @@ public class SmsServiceImpl implements ISmsService {
             }
 
             sms.setSmsContent(content);
-            sms.setSendTime(new Timestamp(System.currentTimeMillis()));
+            sms.setSentTime(new Timestamp(System.currentTimeMillis()));
             smsRepository.addNewSMS(sms);
 
             return true;
@@ -201,10 +201,10 @@ public class SmsServiceImpl implements ISmsService {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         if (StringUtils.isNotBlank(result)) {
             SMS sms = new SMS();
-            sms.setCellphone(cellphone);
+            sms.setMobilePhone(cellphone);
             sms.setSmsValidationCode(password);
             sms.setSmsContent(result);
-            sms.setSendTime(timestamp);
+            sms.setSentTime(timestamp);
             sms.setSmsStatus(0);
             smsRepository.addNewSMS(sms);
         }

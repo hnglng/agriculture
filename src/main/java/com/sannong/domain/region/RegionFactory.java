@@ -11,10 +11,10 @@ public class RegionFactory {
     @Autowired
     private RegionRepository regionRepository;
 
-    public Region build(Long provinceIndex, Long cityIndex, Long districtIndex){
-        Province province = regionRepository.getProvince(provinceIndex);
-        City city = regionRepository.getCity(cityIndex);
-        District district = regionRepository.getDistrict(districtIndex);
+    public Region build(Long provinceId, Long cityId, Long districtId){
+        Province province = regionRepository.getProvinceById(provinceId);
+        City city = regionRepository.getCityById(cityId);
+        District district = regionRepository.getDistrictById(districtId);
 
         return new Region(province, city, district);
     }

@@ -221,8 +221,8 @@ DROP TABLE IF EXISTS `agriculture`.`questionnaires` ;
 CREATE TABLE IF NOT EXISTS `agriculture`.`questionnaires` (
   `application_id` BIGINT NOT NULL,
   `questionnaire_number` INT NOT NULL,
-  `answers` VARCHAR(225) NOT NULL,
-  `committed` TINYINT(1) NOT NULL,
+  `answers` VARCHAR(450) NOT NULL,
+  `questionnaire_committed` TINYINT(1) NOT NULL,
   `creation_time` TIMESTAMP NOT NULL,
   `last_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   INDEX `fk_questionniares_application_id_idx` (`application_id` ASC),

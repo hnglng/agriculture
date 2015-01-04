@@ -39,7 +39,7 @@ public class ValidationService implements IValidationService {
     @Override
     public boolean validateValidationCode(String cellphone, String validationCode) {
         SMS sms = new SMS();
-        sms.setCellphone(cellphone);
+        sms.setMobilePhone(cellphone);
         sms.setSmsValidationCode(validationCode);
         List<SMS> smsList = smsRepository.getSmsByCellphoneAndValidationCode(sms);
         if (smsList.isEmpty()) {

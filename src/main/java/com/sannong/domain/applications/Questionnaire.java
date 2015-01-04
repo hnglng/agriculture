@@ -17,9 +17,18 @@ public class Questionnaire implements Serializable {
 	private Long applicationId;
 	private Integer questionnaireNumber;
 	private List<String> answers;
-	private Boolean committed;
+	private Boolean questionnaireCommitted;
 	private Timestamp creationTime;
-	private Timestamp last_updated;
+	private Timestamp lastUpdated;
+	private String concatenatedAnswers = "";
+
+	public Questionnaire() {
+	}
+
+	public Questionnaire(Long applicationId, Integer questionnaireNumber) {
+		this.applicationId = applicationId;
+		this.questionnaireNumber = questionnaireNumber;
+	}
 
 	public Long getApplicationId() {
 		return applicationId;
@@ -45,12 +54,12 @@ public class Questionnaire implements Serializable {
 		this.answers = answers;
 	}
 
-	public Boolean getCommitted() {
-		return committed;
+	public Boolean getQuestionnaireCommitted() {
+		return questionnaireCommitted;
 	}
 
-	public void setCommitted(Boolean committed) {
-		this.committed = committed;
+	public void setQuestionnaireCommitted(Boolean questionnaireCommitted) {
+		this.questionnaireCommitted = questionnaireCommitted;
 	}
 
 	public Timestamp getCreationTime() {
@@ -61,11 +70,23 @@ public class Questionnaire implements Serializable {
 		this.creationTime = creationTime;
 	}
 
-	public Timestamp getLast_updated() {
-		return last_updated;
+	public Timestamp getLastUpdated() {
+		return lastUpdated;
 	}
 
-	public void setLast_updated(Timestamp last_updated) {
-		this.last_updated = last_updated;
+	public void setLastUpdated(Timestamp lastUpdated) {
+		this.lastUpdated = lastUpdated;
+	}
+
+	public String getConcatenatedAnswers() {
+
+		for (String answer : answers){
+			concatenatedAnswers = concatenatedAnswers + answer + ",";
+		}
+		return concatenatedAnswers.substring(0, concatenatedAnswers.lastIndexOf(","));
+	}
+
+	public void setConcatenatedAnswers(String concatenatedAnswers) {
+		this.concatenatedAnswers = concatenatedAnswers;
 	}
 }

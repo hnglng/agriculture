@@ -16,18 +16,16 @@ import java.util.List;
 public interface RegionRepository {
 	
     List<Province> getProvinces();
-    
-    List<Province> getProvinceByCountryCode(String countryCode);
-    
-    List<City> getCityByProvinceIndex(Long provinceIndex);
-    
-    List<District> getDistrictByCityIndex(Long cityIndex);
 
-    Province getProvince(Long provinceIndex);
+    List<City> getCitiesByProvinceId(Long provinceId);
+    
+    List<District> getDistrictsByCityId(Long cityId);
 
-    City getCity(Long cityIndex);
+    Province getProvinceById(Long provinceId);
 
-    District getDistrict(Long districtIndex);
+    City getCityById(Long cityId);
+
+    District getDistrictById(Long districtId);
 
 
 }
