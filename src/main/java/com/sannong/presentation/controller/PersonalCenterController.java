@@ -29,21 +29,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.sannong.infrastructure.export.CsvExporter;
 import com.sannong.presentation.model.DTO;
 
 @Controller
+@RequestMapping(value = "user-personal-center")
 public class PersonalCenterController {
     private static final Logger logger = Logger.getLogger(PersonalCenterController.class);
-    private static final long pageSum = 10;
-
     private static final String USER_PERSONAL_CENTER_PAGE = "user-personal-center";
+    private static final long PAGE_ROW_NUMBER = 10;
 
     @Resource
     private IUserService userService;
@@ -57,16 +54,14 @@ public class PersonalCenterController {
     private IRegionService regionService;
 
 
-
-    @RequestMapping(value = "user-personal-center", method = RequestMethod.GET)
-    public ModelAndView showUserPersonalCenter() {
-
+    @RequestMapping(method = RequestMethod.GET)
+    public ModelAndView show() {
         Map<String, Object> models = new HashMap<String, Object>();
         models.put("user-personal-center", new Object());
         return new ModelAndView(USER_PERSONAL_CENTER_PAGE, models);
     }
 
-    @RequestMapping(value = {"user-personal-center/user-profile"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/user-profile"}, method = RequestMethod.GET)
     public @ResponseBody Response showUserProfile(HttpServletRequest request) {
         String userName = request.getParameter("userName");
         if (StringUtils.isBlank(userName)){
@@ -100,7 +95,7 @@ public class PersonalCenterController {
         }
     }
 
-    @RequestMapping(value = {"user-personal-center/user-profile"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/user-profile"}, method = RequestMethod.POST)
     public @ResponseBody Map<String, Object> updateUserProfile(HttpServletRequest request,
                                                                @ModelAttribute("userProfile") User user) {
         String newCellphone = request.getParameter("newCellphone");
@@ -131,91 +126,46 @@ public class PersonalCenterController {
         return models;
     }
 
+    @RequestMapping(value = "/users/page/{number}", method = RequestMethod.GET)
+    public @ResponseBody List<User> getUsers(@PathVariable("number") Integer number,
+                                              HttpServletRequest request) throws Exception {
 
-    /********************************
-     * Show applicants page
-     * @param request
-     * @return
-     * @throws Exception
-     ********************************/
-    @RequestMapping(value = "showApplicants", method = RequestMethod.GET)
-    public @ResponseBody List<User> showList(HttpServletRequest request) throws Exception {
+        Map<String, Object> map = buildUserQueryCondition(request);
 
-        Map<String, Object> map = new HashMap<String,Object>();
-        String pageIndex = request.getParameter("pageIndex");
-        String cellphone = request.getParameter("cellphone");
-    	String realName = request.getParameter("realName");
-    	String company = request.getParameter("company");
-    	String jobTitle = request.getParameter("jobTitle");
-    	String companyAddress = request.getParameter("companyAddress");
-    	String mailbox = request.getParameter("mailbox");
-    	String provinceIndex = request.getParameter("provinceIndex");
-    	String cityIndex = request.getParameter("cityIndex");
-    	String districtIndex = request.getParameter("districtIndex");
-
-        int pageStart = 0;
-
-        if (null != pageIndex){
-            pageStart =  (Integer.parseInt(pageIndex)- 1)  * 10;
+        if (number > 0){
+            map.put("pageNumberForm", (number - 1)  * 10);
         }
-        map.put("pageStart", pageStart);
-        map.put("pageSum", pageSum);
-        map.put("cellphone", cellphone);
-        map.put("realName", realName);
-        map.put("company", company);
-    	map.put("jobTitle", jobTitle);
-    	map.put("companyAddress", companyAddress);
-    	map.put("mailbox", mailbox);
-    	map.put("companyProvince", provinceIndex);
-    	map.put("companyCity", cityIndex);
-    	map.put("companyDistrict", districtIndex);
+        map.put("pageSum", PAGE_ROW_NUMBER);
 
-        List<User> applicants = userService.getUserByFuzzyMatch(map);
+        List<User> users = userService.getUserByFuzzyMatch(map);
 
-        return applicants;
+        return users;
     }
 
-
-    /**************************************
-     * Get user total count.
-     * @param request
-     * @return
-     * @throws Exception
-     **************************************/
-    @RequestMapping(value = "userTotalCount", method = RequestMethod.GET)
+    @RequestMapping(value = "/userTotalCount", method = RequestMethod.GET)
     public @ResponseBody int getUserTotalCount(HttpServletRequest request) throws Exception {
-
-    	Map<String, Object> map = new HashMap<String,Object>();
-    	String cellphone = request.getParameter("cellphone");
-    	String realName = request.getParameter("realName");
-    	String company = request.getParameter("company");
-    	String jobTitle = request.getParameter("jobTitle");
-    	String companyAddress = request.getParameter("companyAddress");
-    	String mailbox = request.getParameter("mailbox");
-    	String provinceIndex = request.getParameter("provinceIndex");
-    	String cityIndex = request.getParameter("cityIndex");
-    	String districtIndex = request.getParameter("districtIndex");
-
-    	map.put("cellphone", cellphone);
-    	map.put("realName", realName);
-    	map.put("company", company);
-    	map.put("jobTitle", jobTitle);
-    	map.put("companyAddress", companyAddress);
-    	map.put("mailbox", mailbox);
-    	map.put("companyProvince", provinceIndex);
-    	map.put("companyCity", cityIndex);
-    	map.put("companyDistrict", districtIndex);
-
-    	return userService.getUserTotalCount(map);
+    	return userService.getUserTotalCount(buildUserQueryCondition(request));
     }
 
-    /*************************************
-     * Update user's password.
-     * @param request
-     * @return
-     * @throws Exception
-     **************************************/
-    @RequestMapping(value = "user-personal-center/updatePassword", method = RequestMethod.POST)
+    private Map buildUserQueryCondition(HttpServletRequest request){
+        Map<String, Object> map = new HashMap<String,Object>();
+
+        map.put("userName", request.getParameter("userName"));
+        map.put("cellphone", request.getParameter("cellphone"));
+        map.put("realName", request.getParameter("realName"));
+        map.put("company", request.getParameter("company"));
+        map.put("jobTitle", request.getParameter("jobTitle"));
+        map.put("companyAddress", request.getParameter("companyAddress"));
+        map.put("mailbox", request.getParameter("mailbox"));
+        map.put("companyProvince", request.getParameter("provinceIndex"));
+        map.put("companyCity", request.getParameter("cityIndex"));
+        map.put("companyDistrict", request.getParameter("districtIndex"));
+
+        return map;
+    }
+
+
+    @RequestMapping(value = "/updatePassword", method = RequestMethod.POST)
     public @ResponseBody
     Response updatePassword(HttpServletRequest request) throws Exception {
         String oldPassword = request.getParameter("oldPassword");
@@ -261,13 +211,7 @@ public class PersonalCenterController {
         }
     }
 
-    /************************************************
-     * Update answers from questionnaire page.
-     * @param answer
-     * @return
-     * @throws Exception
-     ************************************************/
-    @RequestMapping(value = "updateAnswersAndComment", method = RequestMethod.POST)
+    @RequestMapping(value = "/updateAnswersAndComment", method = RequestMethod.POST)
     public @ResponseBody DTO updateAnswersAndComment(@ModelAttribute("answerForm") Answer answer) throws Exception{
 
     	String userName = null;
@@ -300,13 +244,7 @@ public class PersonalCenterController {
         return new DTO(result,null);
     }
 
-    /**************************************
-     * Export answers to CSV file.
-     * @param request
-     * @return
-     * @throws Exception
-     ***************************************/
-    @RequestMapping(value = "exportCSV", method = RequestMethod.POST)
+    @RequestMapping(value = "/exportCSV", method = RequestMethod.POST)
     public @ResponseBody DTO exportAll(HttpServletRequest request) throws Exception {
 
         Map<String, Object> map = new HashMap<String,Object>();
@@ -345,7 +283,7 @@ public class PersonalCenterController {
     }
 
 
-    @RequestMapping(value = "downloadCsv", method = RequestMethod.GET)
+    @RequestMapping(value = "/downloadCsv", method = RequestMethod.GET)
     public void downloadCsv(HttpServletRequest request, HttpServletResponse response) throws IOException{
 
         String fileName = request.getParameter("csvFileName");
@@ -385,13 +323,13 @@ public class PersonalCenterController {
     }
 
 
-    @RequestMapping(value = "user-profile/validateUniqueCellphone",method = RequestMethod.GET)
+    @RequestMapping(value = "/user-profile/validateUniqueCellphone",method = RequestMethod.GET)
     public @ResponseBody boolean validateUniqueCellphone(HttpServletRequest request){
         String cellphone = request.getParameter("cellphone");
         return validationService.validateUniqueCellphone(cellphone);
     }
 
-    @RequestMapping(value = "user-profile/sendValidationCode", method = RequestMethod.POST)
+    @RequestMapping(value = "/user-profile/sendValidationCode", method = RequestMethod.POST)
     public @ResponseBody String sendValidationCode(HttpServletRequest request) throws Exception {
         String cellphone = request.getParameter("cellphone");
         String newCellphone = request.getParameter("newCellphone");

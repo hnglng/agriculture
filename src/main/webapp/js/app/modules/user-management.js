@@ -150,7 +150,7 @@ define(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler
                         data : parameter,
                         success : function(totalCount) {
                             // pagination and data list presentation
-                            paginationHandle(totalCount, parameter);
+                            handlePagination(totalCount, parameter);
                         }
                     });
                 },
@@ -358,22 +358,21 @@ define(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler
             /************************************************************
              * Private functions
              ************************************************************/
-            function show(currentPageIndex) {
-                var parameter = "pageIndex=" + currentPageIndex;
+            function showUsersByPagination(pagination) {
                 $("#userTextShow").hide();
 
                 $.ajax({
                     type : "get",
                     dataType : "text",
                     url : "userTotalCount",
-                    success : function(totalCount, parameter) {
-                        // pagination presentation
-                        paginationHandle(totalCount);
+                    data: {pagination: pagination},
+                    success : function(totalCount) {
+                        handlePagination(totalCount);
                     }
                 });
             }
 
-            function paginationHandle(totalCount, parameter) {
+            function handlePagination(totalCount, parameter) {
                 var pageIndex = 0;
                 var pageSize = 10;
 
@@ -386,9 +385,9 @@ define(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler
 
             function InitTable(pageIndex, parameter) {
                 $.ajax({
-                    type : "get",
+                    type : "GET",
                     dataType : "json",
-                    url : 'showApplicants',
+                    url : 'user-personal-center/users',
                     data : "pageIndex=" + pageIndex + "&" + parameter,
                     success : function(data) {
                         var handleHelper = handlebars.registerHelper("addOne",
@@ -424,7 +423,7 @@ define(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler
              ************************/
             $(function() {
                 init();
-                show(1);
+                showUsersByPagination(1);
             })
 
             sannong.UserManagement = userManagement;

@@ -135,7 +135,7 @@ public class ProjectServiceImpl implements IProjectService {
         Timestamp creationTime = new Timestamp(System.currentTimeMillis());
         user.setCreationTime(creationTime);
         user.setLastUpdated(creationTime);
-        userRepository.addUserInfo(user);
+        userRepository.addUser(user);
 
         // Add authorities
         Map<String, Object> authorityMap = new HashMap<String, Object>();

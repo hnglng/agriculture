@@ -11,11 +11,11 @@ public interface IUserService {
     
     public List<User> getUserByFuzzyMatch(Map<String, Object> map);
 
-    public boolean updateUser(User user) throws Exception;
+    public Integer getUserTotalCount(Map<String,Object> map) throws Exception;
 
-    public boolean updatePassword(User user) throws Exception;
-    
-    public int getUserTotalCount(Map<String,Object> map) throws Exception;
+    public String getUserNameByMobilePhone(String mobilePhone) throws Exception;
 
-    public String getUserNameByCellphone(String cellphone) throws Exception;
+    public void updateUser(User user) throws Exception;
+
+    public void updatePassword(User user) throws Exception;
 }
