@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.sannong.domain.applications.*;
+import com.sannong.domain.user.User;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,16 +18,7 @@ import com.sannong.domain.region.RegionFactory;
 import com.sannong.domain.region.Region;
 import com.sannong.domain.user.RoleType;
 import com.sannong.infrastructure.mail.MailAsyncSender;
-import com.sannong.domain.applications.Answer;
-import com.sannong.domain.applications.Application;
-import com.sannong.domain.applications.Comment;
-import com.sannong.domain.applications.Question;
-import com.sannong.domain.applications.AnswerRepository;
-import com.sannong.domain.applications.ApplicationRepository;
 import com.sannong.domain.user.AuthorityRepository;
-import com.sannong.domain.applications.CommentRepository;
-import com.sannong.domain.applications.QuestionRepository;
-import com.sannong.domain.applications.QuestionnaireRepository;
 import com.sannong.domain.user.UserRepository;
 import com.sannong.infrastructure.util.PasswordGenerator;
 import com.sannong.service.IProjectService;
@@ -129,94 +122,57 @@ public class ProjectServiceImpl implements IProjectService {
         mailAsyncSender.sendMail(mailContent);
     }
 
-    public void projectApplication(Application application) {
+    public void makeApplication(Application application) {
 
-        //set user information
-        Timestamp createTime = new Timestamp(System.currentTimeMillis());
-        application.getApplicant().setUpdateTime(createTime);
-        application.getApplicant().setCreateTime(createTime);
+        User user = application.getUser();
 
+        // Add user info
         String password = PasswordGenerator.generatePassword(6);
-        String cellphone = application.getApplicant().getCellphone();
-        String encryptedPassword = PasswordGenerator.encryptPassword(password, cellphone);
+        String mobilePhone = user.getMobilePhone();
+        String encryptedPassword = PasswordGenerator.encryptPassword(password, mobilePhone);
+        user.setPassword(encryptedPassword);
+        user.setUserName(mobilePhone);
+        Timestamp creationTime = new Timestamp(System.currentTimeMillis());
+        user.setCreationTime(creationTime);
+        user.setLastUpdated(creationTime);
+        userRepository.addUserInfo(user);
 
-        application.getApplicant().setPassword(encryptedPassword);
-        application.getApplicant().setUserName(cellphone);
-
-        userRepository.addUserInfo(application.getApplicant());
-
-        // set authorities
+        // Add authorities
         Map<String, Object> authorityMap = new HashMap<String, Object>();
-        authorityMap.put("userName", cellphone);
+        authorityMap.put("userName", mobilePhone);
         authorityMap.put("authority", RoleType.ROLE_USER.toString());
         authorityRepository.addUserAuthority(authorityMap);
 
-        //retrieve applicant id and add to application
-        Long applicantId = userRepository.getIdByCellphone(application
-                .getApplicant().getCellphone());
-        application.getApplicant().setUserId(applicantId);
-
-        // set application info
-        application.setApplicationDate(createTime);
+        // Add application info
+        application.setUser(user);
+        application.setCreationDate(creationTime);
         applicationRepository.addProjectApplicationInfo(application);
 
-        //set answers to answer object
-        Answer answer = new Answer();
-        answer.setAnswers(application.getAnswers());
-        answer.setQuestionnaireNo(1);  //project application just have questionnaire number one
-        answer.setApplicant(application.getApplicant());
-        answer.setAnswerStatus(11);  //the first applicantion submit
-        answer.setApplication(application);  //set application_id in answers
-        setAnswers(answer);
-
-        // set answers info
-        answerRepository.addAnswers(answer);
+        // Add questionnaires info
+        Questionnaire questionnaire = new Questionnaire();
+        questionnaire.setApplicationId(application.getApplicationId());
+        questionnaire.setQuestionnaireNumber(1);
+        questionnaire.setQuestionnaireCommitted(true);
+        questionnaire.setCreationTime(creationTime);
+        questionnaire.setLastUpdated(creationTime);
+        questionnaire.setAnswers(application.getQuestionnaires().get(0).getAnswers());
+        questionnaire.setConcatenatedAnswers(questionnaire.getConcatenatedAnswers());
+        questionnaireRepository.addQuestionnaire(questionnaire);
 
         // Send email to admin
-        Long provinceIndex = application.getApplicant().getCompanyProvince();
-        Long cityIndex = application.getApplicant().getCompanyCity();
-        Long districtIndex = application.getApplicant().getCompanyDistrict();
-        Region region = regionFactory.build(provinceIndex, cityIndex, districtIndex);
+        Region region = regionFactory.build(user.getCompanyProvince(), user.getCompanyCity(), user.getCompanyDistrict());
+        String realName = user.getRealName();
+        String timeOfSubmission = new SimpleDateFormat("yyyy年MM月dd日 HH时mm分ss秒").format(creationTime);
+        sendMailToAdmin(region, realName, timeOfSubmission, mobilePhone);
 
-        String realName = application.getApplicant().getRealName();
-        String timeOfSubmission = new SimpleDateFormat("yyyy年MM月dd日 HH时mm分ss秒").format(createTime);
+        // Send sms message to user
+        smsService.sendLoginMessage(mobilePhone, password);
 
-        sendMailToAdmin(region, realName, timeOfSubmission, cellphone);
-
-        // send sms message
-        smsService.sendLoginMessage(cellphone, password);
     }
 
-    public Answer getQuestionnaireAndAnswerByCondition(Map<String, Object> map) {
-
-        int questionnaireNo = 1;
-        String userName = "";
-        Answer answer = null;
-
-        if (map.get("questionnaireNo") != null) {
-            questionnaireNo = Integer.parseInt(map.get("questionnaireNo").toString());
-        }
-        List<Question> questions = questionnaireRepository.getQuestionnaireByNo(questionnaireNo);
-
-        if (map.get("userName") != null) {
-            userName = map.get("userName").toString();
-        }
-
-        if (map.get("isOnlyShowQuestions") == null || map.get("isOnlyShowQuestions") == "") {
-        	answer = answerRepository.getAnswerByUserName(userName);
-        	if (answer == null) {
-        		answer = new Answer();
-        	}
-        	
-        	String comment = commentRepository.getCommentByCondition(map);
-        	answer.setComment(new Comment(comment));
-        } else {
-        	answer = new Answer();
-        }
-        
-        answer.setQuestions(questions);
-
-        return answer;
+    public List<Question> getQuestionsByQuestionnaireNumber(Integer number) {
+        List<Question> questions = questionnaireRepository.findQuestionsByQuestionnaireNumber(number);
+        return questions;
     }
 
     public int getTotalQuestions() {

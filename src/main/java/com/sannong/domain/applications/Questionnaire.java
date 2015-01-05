@@ -1,6 +1,9 @@
 package com.sannong.domain.applications;
 
+import jodd.util.sort.TimSort;
+
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -10,35 +13,80 @@ import java.util.List;
 public class Questionnaire implements Serializable {
 
 	private static final long serialVersionUID = 4596287948226478700L;
-	
-	private Long questionnaireId;
-	private int questionnaireCategory;
-	private List<Question> questions;
-	private List<Project> projects;
-	
-	public Long getQuestionnaireId() {
-		return questionnaireId;
+
+	private Long applicationId;
+	private Integer questionnaireNumber;
+	private List<String> answers;
+	private Boolean questionnaireCommitted;
+	private Timestamp creationTime;
+	private Timestamp lastUpdated;
+	private String concatenatedAnswers = "";
+
+	public Questionnaire() {
 	}
-	public void setQuestionnaireId(Long questionnaireId) {
-		this.questionnaireId = questionnaireId;
+
+	public Questionnaire(Long applicationId, Integer questionnaireNumber) {
+		this.applicationId = applicationId;
+		this.questionnaireNumber = questionnaireNumber;
 	}
-	public int getQuestionnaireCategory() {
-		return questionnaireCategory;
+
+	public Long getApplicationId() {
+		return applicationId;
 	}
-	public void setQuestionnaireCategory(int questionnaireCategory) {
-		this.questionnaireCategory = questionnaireCategory;
+
+	public void setApplicationId(Long applicationId) {
+		this.applicationId = applicationId;
 	}
-	public List<Question> getQuestions() {
-		return questions;
+
+	public Integer getQuestionnaireNumber() {
+		return questionnaireNumber;
 	}
-	public void setQuestions(List<Question> questions) {
-		this.questions = questions;
+
+	public void setQuestionnaireNumber(Integer questionnaireNumber) {
+		this.questionnaireNumber = questionnaireNumber;
 	}
-	public List<Project> getProjects() {
-		return projects;
+
+	public List<String> getAnswers() {
+		return answers;
 	}
-	public void setProjects(List<Project> projects) {
-		this.projects = projects;
+
+	public void setAnswers(List<String> answers) {
+		this.answers = answers;
 	}
-	
+
+	public Boolean getQuestionnaireCommitted() {
+		return questionnaireCommitted;
+	}
+
+	public void setQuestionnaireCommitted(Boolean questionnaireCommitted) {
+		this.questionnaireCommitted = questionnaireCommitted;
+	}
+
+	public Timestamp getCreationTime() {
+		return creationTime;
+	}
+
+	public void setCreationTime(Timestamp creationTime) {
+		this.creationTime = creationTime;
+	}
+
+	public Timestamp getLastUpdated() {
+		return lastUpdated;
+	}
+
+	public void setLastUpdated(Timestamp lastUpdated) {
+		this.lastUpdated = lastUpdated;
+	}
+
+	public String getConcatenatedAnswers() {
+
+		for (String answer : answers){
+			concatenatedAnswers = concatenatedAnswers + answer + ",";
+		}
+		return concatenatedAnswers.substring(0, concatenatedAnswers.lastIndexOf(","));
+	}
+
+	public void setConcatenatedAnswers(String concatenatedAnswers) {
+		this.concatenatedAnswers = concatenatedAnswers;
+	}
 }

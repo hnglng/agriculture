@@ -1,4 +1,4 @@
-package com.sannong.infrastructure.dataexport;
+package com.sannong.infrastructure.export;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -59,10 +59,11 @@ public class CsvExporter {
 
 		for (User userRow : users) {
 			String Baseinfo = i + "," + userRow.getRealName() + ","
-					+ "=\"" + userRow.getCellphone() + "\"" + "," + userRow.getCompany() + ",";
+					+ "=\"" + userRow.getMobilePhone() + "\"" + "," + userRow.getCompanyName() + ",";
 			StringBuffer answerRow = new StringBuffer();
 			String dataRow = "";
 
+			/*
 			if (userRow.getAnswer() != null) {
 				if (userRow.getAnswer().getQuestionnaire1Answers() != null) {
 					String questionnaire1Answers = userRow.getAnswer()
@@ -106,7 +107,7 @@ public class CsvExporter {
 						answerRow.toString().length() - 1);
 				dataRow = Baseinfo + answerInfo;
 			}
-
+*/
 			csvFileOutputStream.write(dataRow);
 			csvFileOutputStream.newLine();
 			i++;

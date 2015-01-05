@@ -11,10 +11,9 @@ public class District implements Serializable {
 
 
     private Long districtId;
-    private Long districtIndex;
     private String districtName;
     private String districtCode;
-    private Long cityIndex;
+    private Long cityId;
 
 
     public Long getDistrictId() {
@@ -23,14 +22,6 @@ public class District implements Serializable {
 
     public void setDistrictId(Long districtId) {
         this.districtId = districtId;
-    }
-
-    public Long getDistrictIndex() {
-        return districtIndex;
-    }
-
-    public void setDistrictIndex(Long districtIndex) {
-        this.districtIndex = districtIndex;
     }
 
     public String getDistrictName() {
@@ -49,11 +40,11 @@ public class District implements Serializable {
         this.districtCode = districtCode;
     }
 
-    public Long getCityIndex() {
-        return cityIndex;
+    public Long getCityId() {
+        return cityId;
     }
 
-    public void setCityIndex(Long cityIndex) {
-        this.cityIndex = cityIndex;
+    public void setCityId(Long cityId) {
+        this.cityId = cityId;
     }
 }

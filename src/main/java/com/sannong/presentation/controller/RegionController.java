@@ -44,7 +44,7 @@ public class RegionController {
         if (!cities.isEmpty()){
             models.put("cities", cities);
             City city = cities.get(0);
-            List<District> districts = getDistricts(city.getCityIndex());
+            List<District> districts = getDistricts(city.getCityId());
             if (!districts.isEmpty()){
                 models.put("districts", districts);
             }

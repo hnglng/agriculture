@@ -139,8 +139,8 @@
      
      <insert id="addUserInfo" parameterType="User">
          <![CDATA[
-        	 insert into users(username,user_name,cellphone,password,mailbox,company,company_province,company_city,company_district,company_address,desk_phone,job_title,update_time,create_time)
-	         values(#{userName},#{realName},#{cellphone},#{password},#{mailbox},#{company},#{companyProvince},#{companyCity},#{companyDistrict},#{companyAddress},#{deskPhone},#{jobTitle},#{updateTime},#{createTime})
+        	 insert into users(username,real_name,mobile_phone,password,mailbox,company_name,company_province,company_city,company_district,company_address,desk_phone,job_title,creation_time,last_updated)
+	         values(#{userName},#{realName},#{mobilePhone},#{password},#{mailbox},#{companyName},#{companyProvince},#{companyCity},#{companyDistrict},#{companyAddress},#{deskPhone},#{jobTitle},#{creationTime},#{lastUpdated})
          ]]>
      </insert>
      

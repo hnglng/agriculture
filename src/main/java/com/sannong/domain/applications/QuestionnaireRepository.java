@@ -8,13 +8,12 @@ import org.springframework.transaction.annotation.Transactional;
 import com.sannong.domain.applications.Question;
 
 /**
- * answer reporitory
- * @author william zhang
+ * @author Bright Huang
  */
 @Repository
 @Transactional
 public interface QuestionnaireRepository {
 	
-	List<Question> getQuestionnaireByNo(int questionnaireNo);
-	
+	List<Question> findQuestionsByQuestionnaireNumber(int questionnaireNumber);
+	void addQuestionnaire(Questionnaire questionnaire);
 }

@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.sannong.infrastructure.dataexport.CsvExporter;
+import com.sannong.infrastructure.export.CsvExporter;
 import com.sannong.presentation.model.DTO;
 
 @Controller
@@ -114,12 +114,12 @@ public class PersonalCenterController {
                 models.put("userProfile", user);
                 return models;
             }else{
-                user.setCellphone(newCellphone);
+                user.setMobilePhone(newCellphone);
             }
         }
 
         Timestamp ts = new Timestamp(System.currentTimeMillis());
-        user.setUpdateTime(ts);
+        user.setLastUpdated(ts);
         try {
             userService.updateUser(user);
         } catch (Exception e) {

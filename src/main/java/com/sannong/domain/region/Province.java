@@ -10,10 +10,8 @@ public class Province implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Long provinceId;
-    private Long provinceIndex;
     private String provinceName;
     private String provinceCode;
-    private String countryCode;
 
     public Long getProvinceId() {
         return provinceId;
@@ -21,14 +19,6 @@ public class Province implements Serializable {
 
     public void setProvinceId(Long provinceId) {
         this.provinceId = provinceId;
-    }
-
-    public Long getProvinceIndex() {
-        return provinceIndex;
-    }
-
-    public void setProvinceIndex(Long provinceIndex) {
-        this.provinceIndex = provinceIndex;
     }
 
     public String getProvinceName() {
@@ -47,11 +37,4 @@ public class Province implements Serializable {
         this.provinceCode = provinceCode;
     }
 
-    public String getCountryCode() {
-        return countryCode;
-    }
-
-    public void setCountryCode(String countryCode) {
-        this.countryCode = countryCode;
-    }
 }

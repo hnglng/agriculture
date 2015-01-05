@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import com.sannong.domain.applications.Question;
 import com.sannong.domain.message.ResponseStatus;
 import com.sannong.infrastructure.util.PasswordGenerator;
 import com.sannong.presentation.model.Response;
@@ -15,18 +16,11 @@ import com.sannong.service.ISmsService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.sannong.domain.applications.Answer;
 import com.sannong.domain.applications.Application;
-import com.sannong.domain.user.User;
 import com.sannong.service.IProjectService;
 import com.sannong.service.IUserService;
 import com.sannong.service.IValidationService;
@@ -36,9 +30,9 @@ import com.sannong.service.IValidationService;
  * Created by Bright Huang on 10/14/14.
  */
 @Controller
+@RequestMapping(value = "project-application")
 public class ProjectApplicationController {
 	private static final Logger logger = Logger.getLogger(ProjectApplicationController.class);
-	
     private static final String PROJECT_APPLICATION_COMPLETION_PAGE = "project-application-completion";
     private static final String PROJECT_APPLICATION_PAGE = "project-application";
 
@@ -51,9 +45,15 @@ public class ProjectApplicationController {
     @Autowired
     private ISmsService smsService;
 
-    @RequestMapping(value = "project-application", method = RequestMethod.GET)
-    public ModelAndView showProjectApplicationPage() {
+    @RequestMapping(method = RequestMethod.GET)
+    public ModelAndView show() {
         return new ModelAndView(PROJECT_APPLICATION_PAGE);
+    }
+
+    @RequestMapping(method = RequestMethod.POST)
+    public ModelAndView add(@ModelAttribute("projectAppForm") Application application) throws Exception {
+        projectService.makeApplication(application);
+        return new ModelAndView(PROJECT_APPLICATION_COMPLETION_PAGE);
     }
 
     @RequestMapping(value = "project-application-completion", method = RequestMethod.GET)
@@ -64,58 +64,11 @@ public class ProjectApplicationController {
         return new ModelAndView(PROJECT_APPLICATION_COMPLETION_PAGE, models);
     }
 
-    @RequestMapping(value = "makeApplication", method = RequestMethod.POST)
-    public ModelAndView makeApplication(@ModelAttribute("projectAppForm") Application application) throws Exception {
 
-        projectService.projectApplication(application);
-        return new ModelAndView(PROJECT_APPLICATION_COMPLETION_PAGE);
-    }
-
-    @RequestMapping(value = "questionAndAnswer", method = RequestMethod.GET)
-    public @ResponseBody Answer getQuestionnaireAndAnswerByCondition(HttpServletRequest request) throws Exception{
-
-    	Long startTime = System.currentTimeMillis();
-    	logger.info("--------------start time:" + startTime);
-    	
-        String questionnaireNo = request.getParameter("questionnaireNo");
-        String cellphone = request.getParameter("cellphone");
-        String isOnlyShowQuestions = request.getParameter("flag");
-        String userName = null;
-        String realName = null;
-
-        if (cellphone != null) {
-            Map<String, Object> map = new HashMap<String, Object>();
-            map.put("cellphone", cellphone);
-            List<User> userList = userService.getUserByCondition(map);
-
-            if (userList != null && userList.get(0) != null) {
-                userName = userList.get(0).getUserName();
-                realName = userList.get(0).getRealName();
-            }
-        } else if (StringUtils.isBlank(userName)) {
-            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-            if (principal instanceof UserDetails) {
-                userName = ((UserDetails) principal).getUsername();
-            } else {
-                userName = principal.toString();
-            }
-        }
-
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("questionnaireNo", questionnaireNo);
-        map.put("userName", userName);
-        map.put("isOnlyShowQuestions", isOnlyShowQuestions);
-
-        Answer answer = projectService.getQuestionnaireAndAnswerByCondition(map);
-        User user = new User();
-        user.setUserName(userName);
-        user.setRealName(realName);
-        answer.setApplicant(user);
-
-        logger.info("----------------------need time:" + (System.currentTimeMillis() - startTime));
-        
-        return answer;
+    @RequestMapping(value = "/questionnaire/{number}", method = RequestMethod.GET)
+    public @ResponseBody List<Question> getQuestionsByQuestionnaire(@PathVariable("number") Integer number) throws Exception{
+        List<Question> questions = projectService.getQuestionsByQuestionnaireNumber(number);
+        return questions;
     }
 
     @RequestMapping(value = "project-application/validate-application-form", method = RequestMethod.POST)

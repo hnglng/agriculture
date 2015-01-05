@@ -130,7 +130,7 @@ public class LoginController {
                     ResponseStatus.NAME_OR_CELLPHONE_NOT_FOUND.getStatusDescription());
         } else {
             User user = users.get(0);
-            if (!(user.getCellphone().equals(cellphone) && user.getRealName().equals(realName))) {
+            if (!(user.getMobilePhone().equals(cellphone) && user.getRealName().equals(realName))) {
                 return new Response(
                         ResponseStatus.NAME_OR_CELLPHONE_MISMATCH.getStatusCode(),
                         ResponseStatus.NAME_OR_CELLPHONE_MISMATCH.getStatusDescription());
@@ -139,7 +139,7 @@ public class LoginController {
             String smsResponse = smsService.sendNewPasswordMessage(cellphone, password);
             if (StringUtils.isNotBlank(smsResponse)){
                 user.setPassword(PasswordGenerator.encryptPassword(password, user.getUserName()));
-                user.setUpdateTime(new Timestamp(System.currentTimeMillis()));
+                user.setLastUpdated(new Timestamp(System.currentTimeMillis()));
                 userService.updatePassword(user);
                 return new Response(
                         ResponseStatus.NEW_PASSWORD_WAS_SENT.getStatusCode(),

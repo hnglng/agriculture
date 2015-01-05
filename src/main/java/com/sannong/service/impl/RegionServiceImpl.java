@@ -20,35 +20,17 @@ public class RegionServiceImpl implements IRegionService {
     @Autowired
     private RegionRepository regionRepository;
 
-
+    @Override
     public List<Province> getProvinces() {
-        return regionRepository.getProvinceByCountryCode("zh");
+        return regionRepository.getProvinces();
     }
 
-
-    public List<City> getCities(Long provinceIndex) {
-        return regionRepository.getCityByProvinceIndex(provinceIndex);
+    public List<City> getCities(Long provinceId) {
+        return regionRepository.getCitiesByProvinceId(provinceId);
     }
 
-
-    public List<District> getDistricts(Long cityIndex) {
-        return regionRepository.getDistrictByCityIndex(cityIndex);
+    public List<District> getDistricts(Long cityId) {
+        return regionRepository.getDistrictsByCityId(cityId);
     }
-
-    @Override
-    public Province getProvince(long provinceIndex) {
-        return null;
-    }
-
-    @Override
-    public City getCity(long cityIndex) {
-        return null;
-    }
-
-    @Override
-    public District getDistrict(long districtIndex) {
-        return null;
-    }
-
 
 }

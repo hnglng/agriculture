@@ -10,10 +10,9 @@ public class City implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Long cityId;
-    private Long cityIndex;
     private String cityName;
     private String cityCode;
-    private Long provinceIndex;
+    private Long provinceId;
 
 
     public Long getCityId() {
@@ -22,14 +21,6 @@ public class City implements Serializable {
 
     public void setCityId(Long cityId) {
         this.cityId = cityId;
-    }
-
-    public Long getCityIndex() {
-        return cityIndex;
-    }
-
-    public void setCityIndex(Long cityIndex) {
-        this.cityIndex = cityIndex;
     }
 
     public String getCityName() {
@@ -48,12 +39,11 @@ public class City implements Serializable {
         this.cityCode = cityCode;
     }
 
-    public Long getProvinceIndex() {
-        return provinceIndex;
+    public Long getProvinceId() {
+        return provinceId;
     }
 
-    public void setProvinceIndex(Long provinceIndex) {
-        this.provinceIndex = provinceIndex;
+    public void setProvinceId(Long provinceId) {
+        this.provinceId = provinceId;
     }
-
 }
