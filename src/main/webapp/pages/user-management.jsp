@@ -214,15 +214,15 @@
         {{#each this}}
             <li>
                 <div class="col-small">{{realName}}</div>
-                <div class="col-small">{{createTime}}</div>
-                <div class="col-small" id="cell{{addOne @index}}">{{cellphone}}</div>
-                <div class="col-large">{{company}}</div>
+                <div class="col-small">{{creationTime}}</div>
+                <div class="col-small" id="cell{{addOne @index}}">{{mobilePhone}}</div>
+                <div class="col-large">{{companyName}}</div>
                 <div class="col-small">{{jobTitle}}</div>
                 <div class="col-medium">{{mailbox}}</div>
                 <div class="col-small">
                   <span class="bts">
                     <a href="javascript:void(0);" class="edit" onclick="Sannong.UserManagement.Controller.editUserProfile('{{userName}}')">Edit</a>
-                    <a href="javascript:void(0);" class="help" onclick="Sannong.UserManagement.Controller.showQuestionnaireAnswers(1,'{{cellphone}}')">Help</a>
+                    <a href="javascript:void(0);" class="help" onclick="Sannong.UserManagement.Controller.showQuestionnaireAnswers(1,'{{mobilePhone}}')">Help</a>
                   </span>
                 </div>
            </li>

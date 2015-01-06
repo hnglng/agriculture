@@ -150,7 +150,7 @@ define(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler
                         data : parameter,
                         success : function(totalCount) {
                             // pagination and data list presentation
-                            handlePagination(totalCount, parameter);
+                            showTotalPageNumber(totalCount, parameter);
                         }
                     });
                 },
@@ -358,51 +358,37 @@ define(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler
             /************************************************************
              * Private functions
              ************************************************************/
-            function showUsersByPagination(pagination) {
+            function showUserPagination(pageNumber) {
                 $("#userTextShow").hide();
 
                 $.ajax({
-                    type : "get",
-                    dataType : "text",
-                    url : "userTotalCount",
-                    data: {pagination: pagination},
-                    success : function(totalCount) {
-                        handlePagination(totalCount);
-                    }
-                });
-            }
-
-            function handlePagination(totalCount, parameter) {
-                var pageIndex = 0;
-                var pageSize = 10;
-
-                //初始化分页
-                $("#totalPage").text(Math.ceil(totalCount/pageSize));
-
-                //加载表格数据
-                InitTable(1, parameter);
-            }
-
-            function InitTable(pageIndex, parameter) {
-                $.ajax({
                     type : "GET",
                     dataType : "json",
-                    url : 'user-personal-center/users',
-                    data : "pageIndex=" + pageIndex + "&" + parameter,
+                    url : 'user-personal-center/users/page/' + pageNumber,
                     success : function(data) {
-                        var handleHelper = handlebars.registerHelper("addOne",
-                            function(index) {
-                                return index + 1;
-                            });
-                        var handle = handlebars.compile($("#table-template").html());
-                        var html = handle(data);
+                        handlebars.registerHelper("addOne", function(index){return index + 1;});
+                        var compiler = handlebars.compile($("#table-template").html()),
+                            html = compiler(data);
                         $("#userList").empty();
                         $("#userList").append(html);
                     }
                 });
             }
 
-            function init(){
+            function showPageTotal() {
+                $.ajax({
+                    type : "GET",
+                    dataType : "text",
+                    url : "user-personal-center/userTotalCount",
+                    success : function(totalCount) {
+                        var pageSize = 10;
+                        $("#totalPage").text(Math.ceil(totalCount/pageSize));
+                    }
+                });
+            }
+
+
+            function subscribeEvent(){
                 eventHandler.subscribe("userManagement:cancel", userManagement.Controller.cancel);
                 eventHandler.subscribe("userManagement:update", userManagement.Controller.update);
                 eventHandler.subscribe("userManagement:submit", userManagement.Controller.submit);
@@ -422,8 +408,9 @@ define(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler
              * DOM ready function
              ************************/
             $(function() {
-                init();
-                showUsersByPagination(1);
+                subscribeEvent();
+                showPageTotal();
+                showUserPagination(1);
             })
 
             sannong.UserManagement = userManagement;

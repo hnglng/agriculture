@@ -127,14 +127,13 @@ public class PersonalCenterController {
     }
 
     @RequestMapping(value = "/users/page/{number}", method = RequestMethod.GET)
-    public @ResponseBody List<User> getUsers(@PathVariable("number") Integer number,
+    public @ResponseBody List<User> getUsersOnPagination(@PathVariable("number") Integer number,
                                               HttpServletRequest request) throws Exception {
 
         Map<String, Object> map = buildUserQueryCondition(request);
 
-        if (number > 0){
-            map.put("pageNumberForm", (number - 1)  * 10);
-        }
+        int pageStart = (number == null ? 0 : (number - 1)  * 10);
+        map.put("pageStart", pageStart);
         map.put("pageSum", PAGE_ROW_NUMBER);
 
         List<User> users = userService.getUserByFuzzyMatch(map);
@@ -151,15 +150,15 @@ public class PersonalCenterController {
         Map<String, Object> map = new HashMap<String,Object>();
 
         map.put("userName", request.getParameter("userName"));
-        map.put("cellphone", request.getParameter("cellphone"));
+        map.put("mobilePhone", request.getParameter("mobilePhone"));
         map.put("realName", request.getParameter("realName"));
-        map.put("company", request.getParameter("company"));
+        map.put("companyName", request.getParameter("companyName"));
         map.put("jobTitle", request.getParameter("jobTitle"));
         map.put("companyAddress", request.getParameter("companyAddress"));
         map.put("mailbox", request.getParameter("mailbox"));
-        map.put("companyProvince", request.getParameter("provinceIndex"));
-        map.put("companyCity", request.getParameter("cityIndex"));
-        map.put("companyDistrict", request.getParameter("districtIndex"));
+        map.put("companyProvince", request.getParameter("provinceId"));
+        map.put("companyCity", request.getParameter("cityId"));
+        map.put("companyDistrict", request.getParameter("districtId"));
 
         return map;
     }

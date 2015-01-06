@@ -54,31 +54,32 @@
      
      <select id="getUserByFuzzyMatch"  parameterType="Map"  resultMap="userResultMap">
        select
-		 u.username,
-		 u.real_name,
-		 u.creation_time,
-		 u.mobile_phone,
-		 u.company_name,
-		 u.job_title,
-		 u.mailbox,
-		 u.company_address,
-		 u.desk_phone,
-		 u.company_province,
-		 u.company_city,
-		 u.company_district,
-		 from users u
+		 username,
+		 real_name,
+		 creation_time,
+		 mobile_phone,
+		 company_name,
+		 job_title,
+		 mailbox,
+		 company_address,
+		 desk_phone,
+		 company_province,
+		 company_city,
+		 company_district,
+		 creation_time
+		 from users
        	<where>
+			<if test="userName != null and userName != '' and userName != 'null' ">
+				username like CONCAT('%',#{userName},'%')
+			</if>
 	       	<if test="realName != null and realName != '' and realName != 'null' ">
-	            and user_name like CONCAT('%',#{realName},'%')  
+				and real_name like CONCAT('%',#{realName},'%')
 	        </if>
-	        <if test="userName != null and userName != '' and userName != 'null' ">  
-	            and username like CONCAT('%',#{userName},'%')
-	        </if>
-	        <if test="cellphone != null and cellphone != '' and cellphone != 'null' ">  
-            	and cellphone like CONCAT('%',#{cellphone},'%') 
+	        <if test="mobilePhone != null and mobilePhone != '' and mobilePhone != 'null' ">
+            	and mobile_phone like CONCAT('%',#{mobilePhone},'%')
             </if>
-            <if test="company != null and company != '' and company != 'null' ">  
-            	and company like CONCAT('%',#{company},'%') 
+            <if test="companyName != null and companyName != '' and companyName != 'null' ">
+            	and company_name like CONCAT('%',#{companyName},'%')
             </if>
             <if test="jobTitle != null and jobTitle != '' and jobTitle != 'null' ">  
             	and job_title like CONCAT('%',#{jobTitle},'%') 
