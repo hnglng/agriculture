@@ -12,7 +12,11 @@ import com.sannong.domain.applications.Application;
 @Repository
 @Transactional
 public interface ApplicationRepository {
-	
+
+	Application getApplicationBy(String userName);
+
+	Questionnaire getQuestionnaireBy(Long applicationId, Integer questionnaireNumber);
+
 	void addProjectApplicationInfo(Application application);
 	
 }

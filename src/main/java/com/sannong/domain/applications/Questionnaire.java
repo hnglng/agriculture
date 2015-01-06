@@ -21,6 +21,7 @@ public class Questionnaire implements Serializable {
 	private Timestamp creationTime;
 	private Timestamp lastUpdated;
 	private String concatenatedAnswers = "";
+	private List<Question> questions;
 
 	public Questionnaire() {
 	}
@@ -88,5 +89,13 @@ public class Questionnaire implements Serializable {
 
 	public void setConcatenatedAnswers(String concatenatedAnswers) {
 		this.concatenatedAnswers = concatenatedAnswers;
+	}
+
+	public List<Question> getQuestions() {
+		return questions;
+	}
+
+	public void setQuestions(List<Question> questions) {
+		this.questions = questions;
 	}
 }

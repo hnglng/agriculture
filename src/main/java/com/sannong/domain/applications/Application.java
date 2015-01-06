@@ -19,7 +19,7 @@ public class Application implements Serializable{
 	private User user;
 	private List<Questionnaire> questionnaires;
 	private String comments;
-	private Timestamp creationDate;
+	private Timestamp creationTime;
 
 	public Long getApplicationId() {
 		return applicationId;
@@ -53,11 +53,11 @@ public class Application implements Serializable{
 		this.comments = comments;
 	}
 
-	public Timestamp getCreationDate() {
-		return creationDate;
+	public Timestamp getCreationTime() {
+		return creationTime;
 	}
 
-	public void setCreationDate(Timestamp creationDate) {
-		this.creationDate = creationDate;
+	public void setCreationTime(Timestamp creationTime) {
+		this.creationTime = creationTime;
 	}
 }

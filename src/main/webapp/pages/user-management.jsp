@@ -222,7 +222,7 @@
                 <div class="col-small">
                   <span class="bts">
                     <a href="javascript:void(0);" class="edit" onclick="Sannong.UserManagement.Controller.editUserProfile('{{userName}}')">Edit</a>
-                    <a href="javascript:void(0);" class="help" onclick="Sannong.UserManagement.Controller.showQuestionnaireAnswers(1,'{{mobilePhone}}')">Help</a>
+                    <a href="javascript:void(0);" class="help" onclick="Sannong.UserManagement.Controller.showQuestionnaire(1,'{{userName}}')">Help</a>
                   </span>
                 </div>
            </li>

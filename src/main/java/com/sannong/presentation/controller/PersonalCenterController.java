@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.sannong.domain.applications.Answer;
+import com.sannong.domain.applications.Application;
 import com.sannong.domain.sms.SMS;
 import com.sannong.domain.user.User;
 import com.sannong.domain.region.City;
@@ -145,6 +146,13 @@ public class PersonalCenterController {
     public @ResponseBody int getUserTotalCount(HttpServletRequest request) throws Exception {
     	return userService.getUserTotalCount(buildUserQueryCondition(request));
     }
+
+    @RequestMapping(value = "/users/{userName}/application", method = RequestMethod.GET)
+    public @ResponseBody
+    Application getUserApplication(@PathVariable("userName") String userName) throws Exception {
+        return projectService.getApplicationBy(userName);
+    }
+
 
     private Map buildUserQueryCondition(HttpServletRequest request){
         Map<String, Object> map = new HashMap<String,Object>();

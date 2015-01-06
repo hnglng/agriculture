@@ -145,7 +145,7 @@ public class ProjectServiceImpl implements IProjectService {
 
         // Add application info
         application.setUser(user);
-        application.setCreationDate(creationTime);
+        application.setCreationTime(creationTime);
         applicationRepository.addProjectApplicationInfo(application);
 
         // Add questionnaires info
@@ -178,4 +178,15 @@ public class ProjectServiceImpl implements IProjectService {
     public int getTotalQuestions() {
         return questionRepository.getTotalQuestions();
     }
+
+    public Application getApplicationBy(String userName){
+        return applicationRepository.getApplicationBy(userName);
+    }
+
+    @Override
+    public Questionnaire getQuestionnaire(Long applicationId, Integer questionnaireNumber) {
+        return applicationRepository.getQuestionnaireBy(applicationId, questionnaireNumber);
+    }
+
+
 }

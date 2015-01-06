@@ -326,24 +326,21 @@ define(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler
                     userManagement.View.showUserProfileEditView();
                     userManagement.Controller.renderUserProfileEditView(userName, "#userProfileEditView");
                 },
-                showQuestionnaireAnswers: function (questionnaireNo, cellphone) {
+                showQuestionnaire: function (questionnaireNumber, userName) {
                     // before initial table
-                    userManagement.View.showQuestionnaire(questionnaireNo);
+                    userManagement.View.showQuestionnaire(questionnaireNumber);
 
-                    var userCellphone = cellphone;
-                    if (userCellphone != "") {
-                        $("#cellphone").val(userCellphone);
-
-                        // clean questionnaire comments
+                    var name = userName;
+                    if (name != "") {
+                        $("#cellphone").val(name);
                         $("#commentContent").val("");
                     } else {
-                        userCellphone = $("#cellphone").val();
+                        name = $("#cellphone").val();
                     }
                     $.ajax({
-                        type : "get",
+                        type : "GET",
                         dataType : "json",
-                        url : 'questionAndAnswer',
-                        data : "questionnaireNo=" + questionnaireNo + "&cellphone=" + userCellphone,
+                        url : 'user-personal-center/users/' + userName + '/application',
                         success : function(data) {
                             userManagement.View.renderQuestionnaireView(questionnaireNo, data);
                         },
