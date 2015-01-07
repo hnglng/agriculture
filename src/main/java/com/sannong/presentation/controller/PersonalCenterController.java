@@ -14,7 +14,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.sannong.domain.applications.Answer;
 import com.sannong.domain.applications.Application;
 import com.sannong.domain.sms.SMS;
 import com.sannong.domain.user.User;
@@ -218,38 +217,6 @@ public class PersonalCenterController {
         }
     }
 
-    @RequestMapping(value = "/updateAnswersAndComment", method = RequestMethod.POST)
-    public @ResponseBody DTO updateAnswersAndComment(@ModelAttribute("answerForm") Answer answer) throws Exception{
-
-    	String userName = null;
-        Boolean result = true;
-
-    	if (answer.getAnswers() == null){
-    		result = false;
-    		return new DTO(result,null);
-    	}
-
-        if (answer.getApplicant() != null){
-        	userName = answer.getApplicant().getUserName();
-        }else {
-        	Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        	if (principal instanceof UserDetails) {
-        		SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            	userName = ((UserDetails) principal).getUsername();
-        	}else{
-        		SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            	userName = principal.toString();
-        	}
-        }
-
-        User applicant = new User();
-        applicant.setUserName(userName);
-        answer.setApplicant(applicant);
-        result = projectService.updateAnswersAndComment(answer);
-
-        return new DTO(result,null);
-    }
 
     @RequestMapping(value = "/exportCSV", method = RequestMethod.POST)
     public @ResponseBody DTO exportAll(HttpServletRequest request) throws Exception {

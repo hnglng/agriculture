@@ -93,9 +93,28 @@
 
 	<select id="findQuestionnaire" parameterType="HashMap" resultType="Questionnaire">
 		<![CDATA[
-                SELECT * FROM questionnaires WHERE application_id = #{applicationId} AND questionnaire_number = #{questionnaireNumber}
+                SELECT
+				qn.application_id,
+				qn.questionnaire_number,
+				qn.questionnaire_committed,
+				qn.answers,
+				qn.creation_time,
+				qn.last_updated,
+				q.question_id,
+				q.option1,
+				q.option2,
+				q.option3,
+				q.option4,
+				q.option5,
+				q.question_content,
+				q.single_selection_only
+                FROM questionnaires qn, questions q
+                WHERE qn.application_id = #{applicationId}
+                AND qn.questionnaire_number = #{questionnaireNumber}
+                AND qn.questionnaire_number = q.questionnaire_number
                 ]]>
 	</select>
+
 
 	<resultMap type="Question" id="questionResultMap">
 		<id property="questionId" column="question_id" />
@@ -115,5 +134,11 @@
             from questions where questionnaire_number = #{questionnaireNumber}
         ]]>
 	</select>
+
+	<select id="getTotalQuestions" resultType="int">
+		<![CDATA[select count(*) from questions]]>
+	</select>
+
+
 </mapper>
 

@@ -10,8 +10,6 @@
     	<typeAlias type="com.sannong.domain.applications.Application" alias="Application" />
         <typeAlias type="com.sannong.domain.applications.Questionnaire" alias="Questionnaire" />
         <typeAlias type="com.sannong.domain.applications.Question" alias="Question" />
-        <typeAlias type="com.sannong.domain.applications.Answer" alias="Answer" />
-        <typeAlias type="com.sannong.domain.applications.Comment" alias="Comment" />
         <typeAlias type="com.sannong.domain.sms.SMS" alias="SMS" />
         <typeAlias type="com.sannong.domain.region.Province" alias="Province" />
         <typeAlias type="com.sannong.domain.region.City" alias="City" />
@@ -22,11 +20,6 @@
     	<mapper resource="com/sannong/infrastructure/persistence/repositories/mybatis/user.map.xml"/>
     	<mapper resource="com/sannong/infrastructure/persistence/repositories/mybatis/application.map.xml"/>
     	<mapper resource="com/sannong/infrastructure/persistence/repositories/mybatis/sms.map.xml"/>
-    	<mapper resource="com/sannong/infrastructure/persistence/repositories/mybatis/authority.map.xml"/>
-    	<mapper resource="com/sannong/infrastructure/persistence/repositories/mybatis/questionnaire.map.xml"/>
         <mapper resource="com/sannong/infrastructure/persistence/repositories/mybatis/region.map.xml"/>
-        <mapper resource="com/sannong/infrastructure/persistence/repositories/mybatis/answer.map.xml"/>
-        <mapper resource="com/sannong/infrastructure/persistence/repositories/mybatis/question.map.xml"/>
-        <mapper resource="com/sannong/infrastructure/persistence/repositories/mybatis/comment.map.xml"/>
     </mappers>
 </configuration>

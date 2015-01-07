@@ -43,78 +43,13 @@ public class ProjectServiceImpl implements IProjectService {
     @Autowired
     private AuthorityRepository authorityRepository;
     @Autowired
-    private QuestionnaireRepository questionnaireRepository;
-    @Autowired
-    private AnswerRepository answerRepository;
-    @Autowired
     private ISmsService smsService;
     @Autowired
     private RegionFactory regionFactory;
     @Autowired
     private MailContentFactory mailContentFactory;
     @Autowired
-    private QuestionRepository questionRepository;
-    @Autowired
     private MailAsyncSender mailAsyncSender;
-    @Autowired
-    private CommentRepository commentRepository;
-
-    /**
-     * Update answers to answer fields relatively
-     *
-     * @param answer
-     * @author William Zhang
-     */
-    private void setAnswers(Answer answer) {
-
-        int questionnaireNo = answer.getQuestionnaireNo();
-        StringBuffer sb = new StringBuffer();
-
-        for (String answerString : answer.getAnswers()) {
-            sb.append(answerString + ";");
-        }
-        String answers = sb.toString().substring(0,
-                sb.toString().length() - 1);
-
-        switch (questionnaireNo) {
-            case 1:
-                answer.setQuestionnaire1Answers(answers);
-                break;
-            case 2:
-                answer.setQuestionnaire2Answers(answers);
-                break;
-            case 3:
-                answer.setQuestionnaire3Answers(answers);
-                break;
-            case 4:
-                answer.setQuestionnaire4Answers(answers);
-                break;
-            case 5:
-                answer.setQuestionnaire5Answers(answers);
-                break;
-            default:
-                answer.setQuestionnaire1Answers(answers);
-                break;
-        }
-    }
-
-    public boolean updateAnswersAndComment(Answer answer) throws Exception {
-
-        boolean result = true;
-        setAnswers(answer);
-        try {
-            answerRepository.updateAnswers(answer);
-            
-            if (answer.getComment() != null && answer.getComment().getContent() != null){
-            	Timestamp createTime = new Timestamp(System.currentTimeMillis());
-            	answer.getComment().setCreateTime(createTime);
-            	commentRepository.addComment(answer);
-            }
-        } catch (Exception e) {
-            result = false;
-        }
-        return result;
-    }
 
     public void sendMailToAdmin(Region region, String applicantName, String timeOfSubmission, String cellphone) {
 
@@ -157,7 +92,7 @@ public class ProjectServiceImpl implements IProjectService {
         questionnaire.setLastUpdated(creationTime);
         questionnaire.setAnswers(application.getQuestionnaires().get(0).getAnswers());
         questionnaire.setConcatenatedAnswers(questionnaire.getConcatenatedAnswers());
-        questionnaireRepository.addQuestionnaire(questionnaire);
+        applicationRepository.addQuestionnaire(questionnaire);
 
         // Send email to admin
         Region region = regionFactory.build(user.getCompanyProvince(), user.getCompanyCity(), user.getCompanyDistrict());
@@ -171,12 +106,12 @@ public class ProjectServiceImpl implements IProjectService {
     }
 
     public List<Question> getQuestionsByQuestionnaireNumber(Integer number) {
-        List<Question> questions = questionnaireRepository.findQuestionsByQuestionnaireNumber(number);
+        List<Question> questions = applicationRepository.findQuestionsByQuestionnaireNumber(number);
         return questions;
     }
 
     public int getTotalQuestions() {
-        return questionRepository.getTotalQuestions();
+        return applicationRepository.getTotalQuestions();
     }
 
     public Application getApplicationBy(String userName){

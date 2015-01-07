@@ -201,4 +201,9 @@
 		<![CDATA[update users set password = #{password}, last_updated = #{lastUpdated} where username = #{userName}]]>
 	</update>
 
+	<insert id="addUserAuthority" parameterType="Map">
+		<![CDATA[insert into authorities(username,authority) values(#{userName},#{authority})]]>
+	</insert>
+
+
 </mapper>
