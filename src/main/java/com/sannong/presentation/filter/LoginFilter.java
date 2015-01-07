@@ -28,7 +28,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         String usernameParamValue = request.getParameter(usernameParamName);
         RequestWrapper requestWrapper = new RequestWrapper(request);
         try{
-            String userName = userService.getUserNameByCellphone(usernameParamValue);
+            String userName = userService.getUserNameByMobilePhone(usernameParamValue);
 
             if (StringUtils.isNotBlank(userName)){
                 requestWrapper.addParameter(usernameParamName, userName);

@@ -74,20 +74,36 @@ define(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler
                         $(".error").empty();
                     }
                 },
-                renderQuestionnaireComments: function(data, answerStatus){
-                    //comment service
+                renderApplicationComments: function(data){
+                    var applicationId = data.applicationId,
+                        comments = data.comments,
+                        lastQuestionnaireNumber = data.questionnaires.length,
+                        lastQuestionnaireCommitted = data.questionnaires[lastQuestionnaireNumber - 1].questionnaireCommitted;
+
                     if ($("#applicationId")){
-                        $("#applicationId").val(data.application.applicationId);
+                        $("#applicationId").val(applicationId);
                     }
-                    questionnaire.View.renderQuestionnaireComments(data, answerStatus);
 
+                    if (comments != null && comments != ""){
+                        if($("#questionnaireStatus")){
+                            $("#questionnaireStatus").text(comments);
+                            $("#questionnaireStatus").show();
+                        }
+                    } else if (lastQuestionnaireNumber == 5 && lastQuestionnaireCommitted === true){
+                        $("#questionnaireStatus").text("您的申请正在审核中。请保存手机畅通，我们的工作人员会尽快联系您。");
+                        $("#questionnaireStatus").show();
+                    } else{
+                        $("#questionnaireStatus").text("请完成所有问卷调查，然后我们的工作人员会第一时间联系您。");
+                        $("#questionnaireStatus").show();
+                    }
                 },
-                renderQuestionnaireView: function(questionnaireNo, data){
-                    var answerStatus = data.answerStatus,
-                        answerStatusStr = answerStatus.toString(),
-                        latestQuestionnaireNo = parseInt(answerStatusStr.substring(0, 1), 10);
+                renderQuestionnaireView: function(questionnaireNumber, data){
+                    var latestQuestionnaireNumber = data.questionnaires.length,
+                        questionnaireObj = data.questionnaires[questionnaireNumber - 1],
+                        concatenatedAnswers = questionnaireObj.concatenatedAnswers,
+                        user = data.user;
 
-                    if (parseInt(questionnaireNo, 10) > latestQuestionnaireNo){
+                    if (questionnaireNumber > latestQuestionnaireNumber){
                         $("#update").removeClass("orange-bt-small").addClass("gray-bt-small");
                         $("#update").attr("disabled",true);
                     }else{
@@ -95,18 +111,17 @@ define(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler
                         $("#update").attr("disabled", false);
                     }
 
-                    if (data.applicant != null) {
-                        $("#userName").val(data.applicant.userName);
-                        $("#userRealName").text(data.applicant.realName);
+                    if (user != null) {
+                        $("#userName").val(user.userName);
+                        $("#userRealName").text(user.realName);
                         $("#userTextShow").show();
                     }
 
-                    questionnaire.View.renderQuestionnaireView(data);
+                    questionnaire.View.renderQuestionnaireView(questionnaireObj);
 
-                    var answerString = questionnaire.getAnswers(questionnaireNo, data);
-                    questionnaire.View.fillAnswers(questionnaireNo, answerString, false);
+                    questionnaire.View.fillAnswers(questionnaireNumber, concatenatedAnswers, false);
 
-                    userManagement.View.renderQuestionnaireComments(data, answerStatus);
+                    userManagement.View.renderApplicationComments(data);
                 }
 
             };
@@ -150,7 +165,7 @@ define(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler
                         data : parameter,
                         success : function(totalCount) {
                             // pagination and data list presentation
-                            paginationHandle(totalCount, parameter);
+                            showTotalPageNumber(totalCount, parameter);
                         }
                     });
                 },
@@ -261,19 +276,19 @@ define(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler
                     });
                 },
                 q1: function(){
-                    userManagement.Controller.showQuestionnaireAnswers(1,"");
+                    userManagement.Controller.showQuestionnaire(1,"");
                 },
                 q2: function(){
-                    userManagement.Controller.showQuestionnaireAnswers(2,"");
+                    userManagement.Controller.showQuestionnaire(2,"");
                 },
                 q3: function(){
-                    userManagement.Controller.showQuestionnaireAnswers(3,"");
+                    userManagement.Controller.showQuestionnaire(3,"");
                 },
                 q4: function(){
-                    userManagement.Controller.showQuestionnaireAnswers(4,"");
+                    userManagement.Controller.showQuestionnaire(4,"");
                 },
                 q5: function(){
-                    userManagement.Controller.showQuestionnaireAnswers(5,"");
+                    userManagement.Controller.showQuestionnaire(5,"");
                 },
                 renderUserProfileEditView: function(userName, viewName){
                     ajaxHandler.sendRequest({
@@ -326,26 +341,22 @@ define(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler
                     userManagement.View.showUserProfileEditView();
                     userManagement.Controller.renderUserProfileEditView(userName, "#userProfileEditView");
                 },
-                showQuestionnaireAnswers: function (questionnaireNo, cellphone) {
-                    // before initial table
-                    userManagement.View.showQuestionnaire(questionnaireNo);
+                showQuestionnaire: function (questionnaireNumber, userName) {
+                    userManagement.View.showQuestionnaire(questionnaireNumber);
 
-                    var userCellphone = cellphone;
-                    if (userCellphone != "") {
-                        $("#cellphone").val(userCellphone);
-
-                        // clean questionnaire comments
+                    if (userName != "") {
+                        $("#cellphone").val(userName);
                         $("#commentContent").val("");
                     } else {
-                        userCellphone = $("#cellphone").val();
+                        userName = $("#cellphone").val();
                     }
+
                     $.ajax({
-                        type : "get",
+                        type : "GET",
                         dataType : "json",
-                        url : 'questionAndAnswer',
-                        data : "questionnaireNo=" + questionnaireNo + "&cellphone=" + userCellphone,
+                        url : 'user-personal-center/applications/' + userName,
                         success : function(data) {
-                            userManagement.View.renderQuestionnaireView(questionnaireNo, data);
+                            userManagement.View.renderQuestionnaireView(questionnaireNumber, data);
                         },
                         fail: function(data){
 
@@ -358,52 +369,37 @@ define(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler
             /************************************************************
              * Private functions
              ************************************************************/
-            function show(currentPageIndex) {
-                var parameter = "pageIndex=" + currentPageIndex;
+            function showUserPagination(pageNumber) {
                 $("#userTextShow").hide();
 
                 $.ajax({
-                    type : "get",
-                    dataType : "text",
-                    url : "userTotalCount",
-                    success : function(totalCount, parameter) {
-                        // pagination presentation
-                        paginationHandle(totalCount);
-                    }
-                });
-            }
-
-            function paginationHandle(totalCount, parameter) {
-                var pageIndex = 0;
-                var pageSize = 10;
-
-                //初始化分页
-                $("#totalPage").text(Math.ceil(totalCount/pageSize));
-
-                //加载表格数据
-                InitTable(1, parameter);
-            }
-
-            function InitTable(pageIndex, parameter) {
-                $.ajax({
-                    type : "get",
+                    type : "GET",
                     dataType : "json",
-                    url : 'showApplicants',
-                    data : "pageIndex=" + pageIndex + "&" + parameter,
+                    url : 'user-personal-center/users/page/' + pageNumber,
                     success : function(data) {
-                        var handleHelper = handlebars.registerHelper("addOne",
-                            function(index) {
-                                return index + 1;
-                            });
-                        var handle = handlebars.compile($("#table-template").html());
-                        var html = handle(data);
+                        handlebars.registerHelper("addOne", function(index){return index + 1;});
+                        var compiler = handlebars.compile($("#table-template").html()),
+                            html = compiler(data);
                         $("#userList").empty();
                         $("#userList").append(html);
                     }
                 });
             }
 
-            function init(){
+            function showPageTotal() {
+                $.ajax({
+                    type : "GET",
+                    dataType : "text",
+                    url : "user-personal-center/userTotalCount",
+                    success : function(totalCount) {
+                        var pageSize = 10;
+                        $("#totalPage").text(Math.ceil(totalCount/pageSize));
+                    }
+                });
+            }
+
+
+            function subscribeEvent(){
                 eventHandler.subscribe("userManagement:cancel", userManagement.Controller.cancel);
                 eventHandler.subscribe("userManagement:update", userManagement.Controller.update);
                 eventHandler.subscribe("userManagement:submit", userManagement.Controller.submit);
@@ -423,8 +419,9 @@ define(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler
              * DOM ready function
              ************************/
             $(function() {
-                init();
-                show(1);
+                subscribeEvent();
+                showPageTotal();
+                showUserPagination(1);
             })
 
             sannong.UserManagement = userManagement;

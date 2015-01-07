@@ -2,13 +2,12 @@ package com.sannong.presentation.controller;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
-import com.sannong.domain.applications.Question;
+import com.sannong.domain.applications.Questionnaire;
 import com.sannong.domain.message.ResponseStatus;
 import com.sannong.infrastructure.util.PasswordGenerator;
 import com.sannong.presentation.model.Response;
@@ -21,8 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.sannong.domain.applications.Application;
-import com.sannong.service.IProjectService;
-import com.sannong.service.IUserService;
+import com.sannong.service.IProjectApplicationService;
 import com.sannong.service.IValidationService;
 
 
@@ -37,9 +35,7 @@ public class ProjectApplicationController {
     private static final String PROJECT_APPLICATION_PAGE = "project-application";
 
     @Resource
-    private IProjectService projectService;
-    @Resource
-    private IUserService userService;
+    private IProjectApplicationService projectApplicationService;
     @Autowired
     private IValidationService validationService;
     @Autowired
@@ -52,23 +48,24 @@ public class ProjectApplicationController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ModelAndView add(@ModelAttribute("projectAppForm") Application application) throws Exception {
-        projectService.makeApplication(application);
+        projectApplicationService.addApplication(application);
         return new ModelAndView(PROJECT_APPLICATION_COMPLETION_PAGE);
     }
 
     @RequestMapping(value = "project-application-completion", method = RequestMethod.GET)
-    public ModelAndView showProjectApplicationCompletion() {
+    public ModelAndView showCompletion() {
 
         Map<String, Object> models = new HashMap<String, Object>();
         models.put("project-application-completion", new Object());
         return new ModelAndView(PROJECT_APPLICATION_COMPLETION_PAGE, models);
     }
 
-
     @RequestMapping(value = "/questionnaire/{number}", method = RequestMethod.GET)
-    public @ResponseBody List<Question> getQuestionsByQuestionnaire(@PathVariable("number") Integer number) throws Exception{
-        List<Question> questions = projectService.getQuestionsByQuestionnaireNumber(number);
-        return questions;
+    public @ResponseBody
+    Questionnaire getQuestionnaire(@PathVariable("number") Integer number) throws Exception{
+        Questionnaire questionnaire = new Questionnaire();
+        questionnaire.setQuestions(projectApplicationService.getQuestionsByQuestionnaireNumber(number));
+        return questionnaire;
     }
 
     @RequestMapping(value = "project-application/validate-application-form", method = RequestMethod.POST)

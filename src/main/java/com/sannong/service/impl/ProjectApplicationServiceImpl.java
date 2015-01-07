@@ -18,10 +18,9 @@ import com.sannong.domain.region.RegionFactory;
 import com.sannong.domain.region.Region;
 import com.sannong.domain.user.RoleType;
 import com.sannong.infrastructure.mail.MailAsyncSender;
-import com.sannong.domain.user.AuthorityRepository;
 import com.sannong.domain.user.UserRepository;
 import com.sannong.infrastructure.util.PasswordGenerator;
-import com.sannong.service.IProjectService;
+import com.sannong.service.IProjectApplicationService;
 import com.sannong.service.ISmsService;
 
 
@@ -32,20 +31,14 @@ import com.sannong.service.ISmsService;
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class ProjectServiceImpl implements IProjectService {
+public class ProjectApplicationServiceImpl implements IProjectApplicationService {
 
-    private static final Logger logger = Logger.getLogger(ProjectServiceImpl.class);
+    private static final Logger logger = Logger.getLogger(ProjectApplicationServiceImpl.class);
 
     @Autowired
     private UserRepository userRepository;
     @Autowired
     private ApplicationRepository applicationRepository;
-    @Autowired
-    private AuthorityRepository authorityRepository;
-    @Autowired
-    private QuestionnaireRepository questionnaireRepository;
-    @Autowired
-    private AnswerRepository answerRepository;
     @Autowired
     private ISmsService smsService;
     @Autowired
@@ -53,68 +46,7 @@ public class ProjectServiceImpl implements IProjectService {
     @Autowired
     private MailContentFactory mailContentFactory;
     @Autowired
-    private QuestionRepository questionRepository;
-    @Autowired
     private MailAsyncSender mailAsyncSender;
-    @Autowired
-    private CommentRepository commentRepository;
-
-    /**
-     * Update answers to answer fields relatively
-     *
-     * @param answer
-     * @author William Zhang
-     */
-    private void setAnswers(Answer answer) {
-
-        int questionnaireNo = answer.getQuestionnaireNo();
-        StringBuffer sb = new StringBuffer();
-
-        for (String answerString : answer.getAnswers()) {
-            sb.append(answerString + ";");
-        }
-        String answers = sb.toString().substring(0,
-                sb.toString().length() - 1);
-
-        switch (questionnaireNo) {
-            case 1:
-                answer.setQuestionnaire1Answers(answers);
-                break;
-            case 2:
-                answer.setQuestionnaire2Answers(answers);
-                break;
-            case 3:
-                answer.setQuestionnaire3Answers(answers);
-                break;
-            case 4:
-                answer.setQuestionnaire4Answers(answers);
-                break;
-            case 5:
-                answer.setQuestionnaire5Answers(answers);
-                break;
-            default:
-                answer.setQuestionnaire1Answers(answers);
-                break;
-        }
-    }
-
-    public boolean updateAnswersAndComment(Answer answer) throws Exception {
-
-        boolean result = true;
-        setAnswers(answer);
-        try {
-            answerRepository.updateAnswers(answer);
-            
-            if (answer.getComment() != null && answer.getComment().getContent() != null){
-            	Timestamp createTime = new Timestamp(System.currentTimeMillis());
-            	answer.getComment().setCreateTime(createTime);
-            	commentRepository.addComment(answer);
-            }
-        } catch (Exception e) {
-            result = false;
-        }
-        return result;
-    }
 
     public void sendMailToAdmin(Region region, String applicantName, String timeOfSubmission, String cellphone) {
 
@@ -122,7 +54,7 @@ public class ProjectServiceImpl implements IProjectService {
         mailAsyncSender.sendMail(mailContent);
     }
 
-    public void makeApplication(Application application) {
+    public void addApplication(Application application) {
 
         User user = application.getUser();
 
@@ -135,17 +67,17 @@ public class ProjectServiceImpl implements IProjectService {
         Timestamp creationTime = new Timestamp(System.currentTimeMillis());
         user.setCreationTime(creationTime);
         user.setLastUpdated(creationTime);
-        userRepository.addUserInfo(user);
+        userRepository.addUser(user);
 
         // Add authorities
         Map<String, Object> authorityMap = new HashMap<String, Object>();
         authorityMap.put("userName", mobilePhone);
         authorityMap.put("authority", RoleType.ROLE_USER.toString());
-        authorityRepository.addUserAuthority(authorityMap);
+        userRepository.addUserAuthority(authorityMap);
 
         // Add application info
         application.setUser(user);
-        application.setCreationDate(creationTime);
+        application.setCreationTime(creationTime);
         applicationRepository.addProjectApplicationInfo(application);
 
         // Add questionnaires info
@@ -157,7 +89,7 @@ public class ProjectServiceImpl implements IProjectService {
         questionnaire.setLastUpdated(creationTime);
         questionnaire.setAnswers(application.getQuestionnaires().get(0).getAnswers());
         questionnaire.setConcatenatedAnswers(questionnaire.getConcatenatedAnswers());
-        questionnaireRepository.addQuestionnaire(questionnaire);
+        applicationRepository.addQuestionnaire(questionnaire);
 
         // Send email to admin
         Region region = regionFactory.build(user.getCompanyProvince(), user.getCompanyCity(), user.getCompanyDistrict());
@@ -171,11 +103,22 @@ public class ProjectServiceImpl implements IProjectService {
     }
 
     public List<Question> getQuestionsByQuestionnaireNumber(Integer number) {
-        List<Question> questions = questionnaireRepository.findQuestionsByQuestionnaireNumber(number);
+        List<Question> questions = applicationRepository.findQuestionsByQuestionnaireNumber(number);
         return questions;
     }
 
     public int getTotalQuestions() {
-        return questionRepository.getTotalQuestions();
+        return applicationRepository.getTotalQuestions();
     }
+
+    public Application getApplicationBy(String userName){
+        return applicationRepository.getApplicationBy(userName);
+    }
+
+    @Override
+    public Questionnaire getQuestionnaire(Long applicationId, Integer questionnaireNumber) {
+        return applicationRepository.getQuestionnaireBy(applicationId, questionnaireNumber);
+    }
+
+
 }
