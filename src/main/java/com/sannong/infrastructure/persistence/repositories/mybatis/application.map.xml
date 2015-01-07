@@ -9,6 +9,7 @@
 		<result property="comments" column="comments" />
 		<result property="creationTime" column="creation_time" />
 		<association property="questionnaires" resultMap="com.sannong.domain.applications.ApplicationRepository.questionnaireResultMap" />
+		<association property="user" resultMap="com.sannong.domain.user.UserRepository.userResultMap" />
 	</resultMap>
 
 

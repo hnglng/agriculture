@@ -276,19 +276,19 @@ define(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler
                     });
                 },
                 q1: function(){
-                    userManagement.Controller.showQuestionnaireAnswers(1,"");
+                    userManagement.Controller.showQuestionnaire(1,"");
                 },
                 q2: function(){
-                    userManagement.Controller.showQuestionnaireAnswers(2,"");
+                    userManagement.Controller.showQuestionnaire(2,"");
                 },
                 q3: function(){
-                    userManagement.Controller.showQuestionnaireAnswers(3,"");
+                    userManagement.Controller.showQuestionnaire(3,"");
                 },
                 q4: function(){
-                    userManagement.Controller.showQuestionnaireAnswers(4,"");
+                    userManagement.Controller.showQuestionnaire(4,"");
                 },
                 q5: function(){
-                    userManagement.Controller.showQuestionnaireAnswers(5,"");
+                    userManagement.Controller.showQuestionnaire(5,"");
                 },
                 renderUserProfileEditView: function(userName, viewName){
                     ajaxHandler.sendRequest({
