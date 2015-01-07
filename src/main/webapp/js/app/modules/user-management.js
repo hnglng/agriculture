@@ -138,11 +138,11 @@ define(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler
 
                     var parameter;
                     if (searchKey == "手机号"){
-                        parameter = "cellphone=" + searchValue;
+                        parameter = "mobilePhone=" + searchValue;
                     }else if (searchKey == "姓名"){
                         parameter = "realName=" + searchValue;
                     }else if (searchKey == "工作单位"){
-                        parameter = "company=" + searchValue;
+                        parameter = "companyName=" + searchValue;
                     }else if (searchKey == "职位"){
                         parameter = "jobTitle=" + searchValue;
                     }else if (searchKey == "电子邮箱"){
@@ -155,19 +155,20 @@ define(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler
                     var districtIndex = $("#districtQuerySelect").val();
 
                     parameter = parameter + "&provinceIndex=" + provinceIndex + "&cityIndex=" + cityIndex + "&districtIndex=" + districtIndex;
-                    //parameter = "realName=william&provinceIndex=&cityIndex=&districtIndex=";
-                    searchParams = parameter;
+//                    searchParams = parameter;
 
                     $.ajax({
                         type : "get",
                         dataType : "text",
-                        url : "userTotalCount",
+                        url : "user-personal-center/userTotalCount",
                         data : parameter,
                         success : function(totalCount) {
                             // pagination and data list presentation
-                            showTotalPageNumber(totalCount, parameter);
+                            var pageSize = 10;
+                            $("#totalPage").text(Math.ceil(totalCount/pageSize));
                         }
                     });
+                    showUserPagination(1,parameter);
                 },
                 cancel: function () {
                     userManagement.View.userTextShow.hide();
@@ -249,11 +250,11 @@ define(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler
                         parameter;
 
                     if (searchKey == "手机号"){
-                        parameter = "cellphone=" + searchValue;
+                        parameter = "mobilePhone=" + searchValue;
                     }else if (searchKey == "姓名"){
                         parameter = "realName=" + searchValue;
                     }else if (searchKey == "工作单位"){
-                        parameter = "company=" + searchValue;
+                        parameter = "companyName=" + searchValue;
                     }else if (searchKey == "职位"){
                         parameter = "jobTitle=" + searchValue;
                     }else if (searchKey == "电子邮箱"){
@@ -267,11 +268,11 @@ define(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler
                     $.ajax({
                         type : "post",
                         dataType : "json",
-                        url : "exportCSV",
+                        url : "user-personal-center/exportCSV",
                         data : parameter,
                         success : function(data) {
                             $('#exportModal').modal('hide');
-                            location.href = "/sannong/downloadCsv?csvFileName=" + data.returnValue;
+                            location.href = "/sannong/user-personal-center/downloadCsv?csvFileName=" + data.returnValue;
                         }
                     });
                 },
@@ -345,10 +346,10 @@ define(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler
                     userManagement.View.showQuestionnaire(questionnaireNumber);
 
                     if (userName != "") {
-                        $("#cellphone").val(userName);
+                        $("#mobilePhone").val(userName);
                         $("#commentContent").val("");
                     } else {
-                        userName = $("#cellphone").val();
+                        userName = $("#mobilePhone").val();
                     }
 
                     $.ajax({
@@ -369,13 +370,14 @@ define(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler
             /************************************************************
              * Private functions
              ************************************************************/
-            function showUserPagination(pageNumber) {
+            function showUserPagination(pageNumber,parameter) {
                 $("#userTextShow").hide();
 
                 $.ajax({
                     type : "GET",
                     dataType : "json",
-                    url : 'user-personal-center/users/page/' + pageNumber,
+                    url : 'user-personal-center/users/page/'+pageNumber,
+                    data : parameter,
                     success : function(data) {
                         handlebars.registerHelper("addOne", function(index){return index + 1;});
                         var compiler = handlebars.compile($("#table-template").html()),
