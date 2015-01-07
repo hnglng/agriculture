@@ -30,9 +30,12 @@
 			q.option3,
 			q.option4,
 			q.option5,
-			q.single_selection_only
-        	from applications a, questionnaires qn, questions q
+			q.single_selection_only,
+			u.username,
+			u.real_name
+        	from applications a, questionnaires qn, questions q, users u
         	where a.username=#{userName}
+        	and a.username = u.username
         	and a.application_id = qn.application_id
         	and qn.questionnaire_number = q.questionnaire_number
         ]]>

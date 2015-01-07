@@ -81,6 +81,10 @@ public class Questionnaire implements Serializable {
 
 	public String getConcatenatedAnswers() {
 
+		if (answers == null){
+			return concatenatedAnswers;
+		}
+
 		for (String answer : answers){
 			concatenatedAnswers = concatenatedAnswers + answer + ",";
 		}

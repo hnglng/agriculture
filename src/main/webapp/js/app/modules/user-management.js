@@ -74,20 +74,36 @@ define(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler
                         $(".error").empty();
                     }
                 },
-                renderQuestionnaireComments: function(data, answerStatus){
-                    //comment service
+                renderApplicationComments: function(data){
+                    var applicationId = data.applicationId,
+                        comments = data.comments,
+                        lastQuestionnaireNumber = data.questionnaires.length,
+                        lastQuestionnaireCommitted = data.questionnaires[lastQuestionnaireNumber - 1].questionnaireCommitted;
+
                     if ($("#applicationId")){
-                        $("#applicationId").val(data.application.applicationId);
+                        $("#applicationId").val(applicationId);
                     }
-                    questionnaire.View.renderQuestionnaireComments(data, answerStatus);
 
+                    if (comments != null && comments != ""){
+                        if($("#questionnaireStatus")){
+                            $("#questionnaireStatus").text(comments);
+                            $("#questionnaireStatus").show();
+                        }
+                    } else if (lastQuestionnaireNumber == 5 && lastQuestionnaireCommitted === true){
+                        $("#questionnaireStatus").text("您的申请正在审核中。请保存手机畅通，我们的工作人员会尽快联系您。");
+                        $("#questionnaireStatus").show();
+                    } else{
+                        $("#questionnaireStatus").text("请完成所有问卷调查，然后我们的工作人员会第一时间联系您。");
+                        $("#questionnaireStatus").show();
+                    }
                 },
-                renderQuestionnaireView: function(questionnaireNo, data){
-                    var answerStatus = data.answerStatus,
-                        answerStatusStr = answerStatus.toString(),
-                        latestQuestionnaireNo = parseInt(answerStatusStr.substring(0, 1), 10);
+                renderQuestionnaireView: function(questionnaireNumber, data){
+                    var latestQuestionnaireNumber = data.questionnaires.length,
+                        questionnaireObj = data.questionnaires[questionnaireNumber - 1],
+                        concatenatedAnswers = questionnaireObj.concatenatedAnswers,
+                        user = data.user;
 
-                    if (parseInt(questionnaireNo, 10) > latestQuestionnaireNo){
+                    if (questionnaireNumber > latestQuestionnaireNumber){
                         $("#update").removeClass("orange-bt-small").addClass("gray-bt-small");
                         $("#update").attr("disabled",true);
                     }else{
@@ -95,18 +111,17 @@ define(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler
                         $("#update").attr("disabled", false);
                     }
 
-                    if (data.applicant != null) {
-                        $("#userName").val(data.applicant.userName);
-                        $("#userRealName").text(data.applicant.realName);
+                    if (user != null) {
+                        $("#userName").val(user.userName);
+                        $("#userRealName").text(user.realName);
                         $("#userTextShow").show();
                     }
 
-                    questionnaire.View.renderQuestionnaireView(data);
+                    questionnaire.View.renderQuestionnaireView(questionnaireObj);
 
-                    var answerString = questionnaire.getAnswers(questionnaireNo, data);
-                    questionnaire.View.fillAnswers(questionnaireNo, answerString, false);
+                    questionnaire.View.fillAnswers(questionnaireNumber, concatenatedAnswers, false);
 
-                    userManagement.View.renderQuestionnaireComments(data, answerStatus);
+                    userManagement.View.renderApplicationComments(data);
                 }
 
             };
@@ -327,22 +342,21 @@ define(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler
                     userManagement.Controller.renderUserProfileEditView(userName, "#userProfileEditView");
                 },
                 showQuestionnaire: function (questionnaireNumber, userName) {
-                    // before initial table
                     userManagement.View.showQuestionnaire(questionnaireNumber);
 
-                    var name = userName;
-                    if (name != "") {
-                        $("#cellphone").val(name);
+                    if (userName != "") {
+                        $("#cellphone").val(userName);
                         $("#commentContent").val("");
                     } else {
-                        name = $("#cellphone").val();
+                        userName = $("#cellphone").val();
                     }
+
                     $.ajax({
                         type : "GET",
                         dataType : "json",
-                        url : 'user-personal-center/users/' + userName + '/application',
+                        url : 'user-personal-center/applications/' + userName,
                         success : function(data) {
-                            userManagement.View.renderQuestionnaireView(questionnaireNo, data);
+                            userManagement.View.renderQuestionnaireView(questionnaireNumber, data);
                         },
                         fail: function(data){
 

@@ -147,7 +147,7 @@ public class PersonalCenterController {
     	return userService.getUserTotalCount(buildUserQueryCondition(request));
     }
 
-    @RequestMapping(value = "/users/{userName}/application", method = RequestMethod.GET)
+    @RequestMapping(value = "/applications/{userName}", method = RequestMethod.GET)
     public @ResponseBody
     Application getUserApplication(@PathVariable("userName") String userName) throws Exception {
         return projectService.getApplicationBy(userName);

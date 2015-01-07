@@ -14,28 +14,6 @@ define(['jquery', 'sannong', 'handlebars'], function($, sannong, handlebars) {
     
     var questionnaire = {};
 
-    questionnaire.getAnswers = function(questionnaireNo, data){
-        var answerString = "";
-        switch (questionnaireNo){
-            case 1 :
-                answerString = data.questionnaire1Answers;
-                break;
-            case 2 :
-                answerString = data.questionnaire2Answers;
-                break;
-            case 3 :
-                answerString = data.questionnaire3Answers;
-                break;
-            case 4 :
-                answerString = data.questionnaire4Answers;
-                break;
-            case 5 :
-                answerString = data.questionnaire5Answers;
-                break;
-        }
-        return answerString;
-    }
-
     questionnaire.View = {
         resetQuestionnaireView: function(questionnaireNo){
             if ($("#q" + questionnaireNo).parent().hasClass("disabled")) {
@@ -66,28 +44,25 @@ define(['jquery', 'sannong', 'handlebars'], function($, sannong, handlebars) {
                 })
             }
         },
-        renderQuestionnaireView: function(data){
+        renderQuestionnaireView: function(questionnaire){
             //fill out questionnaire
-            var handleCheckbox = handlebars.compile($("#question-template-checkbox").html()),
-                handleRadio = handlebars.compile($("#question-template-radio").html()),
-                questionObject = null,
+            var checkboxCompiler = handlebars.compile($("#question-template-checkbox").html()),
+                radioCompiler = handlebars.compile($("#question-template-radio").html()),
+                questions = questionnaire.questions,
+                question = null,
                 html = null;
 
             $("#questionnaire").empty();
 
-            for (var i = 0; i < data.length; i++){
-                handlebars.registerHelper("fromOne",function(){
-                    return i+1;
-                });
-                handlebars.registerHelper("fromZero",function(){
-                    return i;
-                });
+            for (var i = 0; i < questions.length; i++){
+                handlebars.registerHelper("fromOne",function(){ return i + 1; });
+                handlebars.registerHelper("fromZero",function(){ return i; });
 
-                questionObject = data[i];
-                if (questionObject.singleSelectionOnly == 1){
-                    html = handleRadio(questionObject);
+                question = questions[i];
+                if (question.singleSelectionOnly == 1){
+                    html = radioCompiler(question);
                 }else{
-                    html = handleCheckbox(questionObject);
+                    html = checkboxCompiler(question);
                 }
                 $("#questionnaire").append(html);
             }
@@ -158,44 +133,28 @@ define(['jquery', 'sannong', 'handlebars'], function($, sannong, handlebars) {
         },
         fillAnswers: function(questionnaireNo, answerString, disableAnswerOptions){
             if (answerString != "" && answerString != null){
-                var answer = answerString.split(";");
-                var singleAnswer = "";
+                var answers = answerString.split(",");
 
-                for (var i = 0;i < answer.length;i++){
-                    var $_radios = $(".J_group_choice").eq(i).find("input");
+                for (var i = 0;i < answers.length;i++){
+                    var $_radios = $(".J_group_choice").eq(i).find("input"),
+                        answer = answers[i];
+
                     $_radios.each(function(){
                         if (disableAnswerOptions == true){
                             $(this).attr("disabled","disabled");
                         }
-                        singleAnswer = answer[i].split(",");
-                        for (var j = 0;j < singleAnswer.length;j++){
-                            if($(this).val()===singleAnswer[j]){
-                                if ($(this).parent(".radioCustom")){
-                                    $(this).parent(".radioCustom").addClass("radioCustom-checked");
-                                }
-                                if ($(this).parent(".checkboxCustom")){
-                                    $(this).parent(".checkboxCustom").toggleClass("checkboxCustom-checked");
-                                    $(this).attr("checked", "checked");
-                                }
+
+                        if($(this).val() === answer){
+                            if ($(this).parent(".radioCustom")){
+                                $(this).parent(".radioCustom").addClass("radioCustom-checked");
+                            }
+                            if ($(this).parent(".checkboxCustom")){
+                                $(this).parent(".checkboxCustom").toggleClass("checkboxCustom-checked");
+                                $(this).attr("checked", "checked");
                             }
                         }
                     });
                 }
-            }
-        },
-        renderQuestionnaireComments: function(data, answerStatus){
-            if (data.comment != null && data.comment.content != null && data.comment.content != ""){
-                var comment = data.comment.content;
-                if($("#questionnaireStatus")){
-                    $("#questionnaireStatus").text(comment);
-                    $("#questionnaireStatus").show();
-                }
-            } else if (answerStatus == 51){
-                $("#questionnaireStatus").text("您的申请正在审核中。请保存手机畅通，我们的工作人员会尽快联系您。");
-                $("#questionnaireStatus").show();
-            } else{
-                $("#questionnaireStatus").text("请完成所有问卷调查，然后我们的工作人员会第一时间联系您。");
-                $("#questionnaireStatus").show();
             }
         },
         renderQuestionnaireAnswers: function(questionnaireNo, data){
