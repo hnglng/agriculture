@@ -39,8 +39,6 @@ public class ProjectApplicationController {
 
     @Resource
     private IProjectService projectService;
-    @Resource
-    private IUserService userService;
     @Autowired
     private IValidationService validationService;
     @Autowired
@@ -53,18 +51,17 @@ public class ProjectApplicationController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ModelAndView add(@ModelAttribute("projectAppForm") Application application) throws Exception {
-        projectService.makeApplication(application);
+        projectService.addApplication(application);
         return new ModelAndView(PROJECT_APPLICATION_COMPLETION_PAGE);
     }
 
     @RequestMapping(value = "project-application-completion", method = RequestMethod.GET)
-    public ModelAndView showProjectApplicationCompletion() {
+    public ModelAndView showCompletion() {
 
         Map<String, Object> models = new HashMap<String, Object>();
         models.put("project-application-completion", new Object());
         return new ModelAndView(PROJECT_APPLICATION_COMPLETION_PAGE, models);
     }
-
 
     @RequestMapping(value = "/questionnaire/{number}", method = RequestMethod.GET)
     public @ResponseBody

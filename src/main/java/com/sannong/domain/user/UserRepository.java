@@ -20,6 +20,8 @@ public interface UserRepository {
 
     void addUser(User user);
 
+    void addUserAuthority(Map<String,Object> authorityMap);
+
     void updateUser(User user);
 
     void updatePassword(User user);

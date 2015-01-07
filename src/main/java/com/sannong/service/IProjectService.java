@@ -16,6 +16,6 @@ public interface IProjectService {
 
     int getTotalQuestions();
 
-    void makeApplication(Application application) throws Exception;
+    void addApplication(Application application) throws Exception;
 
 }

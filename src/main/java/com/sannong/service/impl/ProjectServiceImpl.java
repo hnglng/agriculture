@@ -18,7 +18,6 @@ import com.sannong.domain.region.RegionFactory;
 import com.sannong.domain.region.Region;
 import com.sannong.domain.user.RoleType;
 import com.sannong.infrastructure.mail.MailAsyncSender;
-import com.sannong.domain.user.AuthorityRepository;
 import com.sannong.domain.user.UserRepository;
 import com.sannong.infrastructure.util.PasswordGenerator;
 import com.sannong.service.IProjectService;
@@ -41,8 +40,6 @@ public class ProjectServiceImpl implements IProjectService {
     @Autowired
     private ApplicationRepository applicationRepository;
     @Autowired
-    private AuthorityRepository authorityRepository;
-    @Autowired
     private ISmsService smsService;
     @Autowired
     private RegionFactory regionFactory;
@@ -57,7 +54,7 @@ public class ProjectServiceImpl implements IProjectService {
         mailAsyncSender.sendMail(mailContent);
     }
 
-    public void makeApplication(Application application) {
+    public void addApplication(Application application) {
 
         User user = application.getUser();
 
@@ -76,7 +73,7 @@ public class ProjectServiceImpl implements IProjectService {
         Map<String, Object> authorityMap = new HashMap<String, Object>();
         authorityMap.put("userName", mobilePhone);
         authorityMap.put("authority", RoleType.ROLE_USER.toString());
-        authorityRepository.addUserAuthority(authorityMap);
+        userRepository.addUserAuthority(authorityMap);
 
         // Add application info
         application.setUser(user);
