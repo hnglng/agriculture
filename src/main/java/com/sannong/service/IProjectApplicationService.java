@@ -7,7 +7,7 @@ import com.sannong.domain.applications.Application;
 import com.sannong.domain.applications.Question;
 import com.sannong.domain.applications.Questionnaire;
 
-public interface IProjectService {
+public interface IProjectApplicationService {
     Application getApplicationBy(String userName);
 
     Questionnaire getQuestionnaire(Long applicationId, Integer questionnaireNumber);

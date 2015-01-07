@@ -47,7 +47,7 @@ public class PersonalCenterController {
     @Resource
     private ISmsService smsService;
     @Resource
-    private IProjectService projectService;
+    private IProjectApplicationService projectService;
     @Autowired
     private IValidationService validationService;
     @Autowired

@@ -20,7 +20,7 @@ import com.sannong.domain.user.RoleType;
 import com.sannong.infrastructure.mail.MailAsyncSender;
 import com.sannong.domain.user.UserRepository;
 import com.sannong.infrastructure.util.PasswordGenerator;
-import com.sannong.service.IProjectService;
+import com.sannong.service.IProjectApplicationService;
 import com.sannong.service.ISmsService;
 
 
@@ -31,9 +31,9 @@ import com.sannong.service.ISmsService;
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class ProjectServiceImpl implements IProjectService {
+public class ProjectApplicationServiceImpl implements IProjectApplicationService {
 
-    private static final Logger logger = Logger.getLogger(ProjectServiceImpl.class);
+    private static final Logger logger = Logger.getLogger(ProjectApplicationServiceImpl.class);
 
     @Autowired
     private UserRepository userRepository;
