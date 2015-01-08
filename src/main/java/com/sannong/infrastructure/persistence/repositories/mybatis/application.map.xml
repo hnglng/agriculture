@@ -33,7 +33,9 @@
 			q.option5,
 			q.single_selection_only,
 			u.username,
-			u.real_name
+			u.real_name,
+			u.mobile_phone,
+			u.company_name
         	from applications a, questionnaires qn, questions q, users u
         	where a.username=#{userName}
         	and a.username = u.username

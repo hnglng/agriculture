@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -247,8 +248,13 @@ public class PersonalCenterController {
         map.put("pageSum", pageSum);
 
         List<User> applicants = userService.getUserByFuzzyMatch(map);
+        List<Application> applicationList = new ArrayList<Application>();
+        for(User application :applicants){
+            Application app = projectService.getApplicationBy(application.getUserName());
+            applicationList.add(app);
+        }
         int questionSum = projectService.getTotalQuestions();
-        String filePath = CsvExporter.export(applicants,questionSum);
+        String filePath = CsvExporter.export(applicationList,questionSum);
 
         String[] filePathSplit = filePath.split("/");
         String fileName = filePathSplit[3];
