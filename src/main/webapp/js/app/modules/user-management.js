@@ -150,11 +150,11 @@ define(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler
                     }else if (searchKey == "单位地址"){
                         parameter = "companyAddress=" + searchValue;
                     }
-                    var provinceIndex = $("#provinceQuerySelect").val();
-                    var cityIndex = $("#cityQuerySelect").val();
-                    var districtIndex = $("#districtQuerySelect").val();
+                    var provinceId = $("#provinceQuerySelect").val();
+                    var cityId = $("#cityQuerySelect").val();
+                    var districtId = $("#districtQuerySelect").val();
 
-                    parameter = parameter + "&provinceIndex=" + provinceIndex + "&cityIndex=" + cityIndex + "&districtIndex=" + districtIndex;
+                    parameter = parameter + "&provinceId=" + provinceId + "&cityId=" + cityId + "&districtId=" + districtId;
 //                    searchParams = parameter;
 
                     $.ajax({
@@ -165,7 +165,11 @@ define(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler
                         success : function(totalCount) {
                             // pagination and data list presentation
                             var pageSize = 10;
-                            $("#totalPage").text(Math.ceil(totalCount/pageSize));
+                            if(totalCount == 0){
+                                $("#totalPage").text(1);
+                            }else{
+                                $("#totalPage").text(Math.ceil(totalCount/pageSize));
+                            }
                         }
                     });
                     showUserPagination(1,parameter);
@@ -244,9 +248,9 @@ define(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler
                 exportCSV: function() {
                     var searchKey = $("#searchKey").val(),
                         searchValue = $("#searchValue").val(),
-                        provinceIndex = $("#provinceQuerySelect").val(),
-                        cityIndex = $("#cityQuerySelect").val(),
-                        districtIndex = $("#districtQuerySelect").val(),
+                        provinceId = $("#provinceQuerySelect").val(),
+                        cityId = $("#cityQuerySelect").val(),
+                        districtId = $("#districtQuerySelect").val(),
                         parameter;
 
                     if (searchKey == "手机号"){
@@ -263,7 +267,7 @@ define(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler
                         parameter = "companyAddress=" + searchValue;
                     }
 
-                    parameter = parameter + "&provinceIndex=" + provinceIndex + "&cityIndex=" + cityIndex + "&districtIndex=" + districtIndex;
+                    parameter = parameter + "&provinceId=" + provinceId + "&cityId=" + cityId + "&districtId=" + districtId;
 
                     $.ajax({
                         type : "post",
@@ -395,7 +399,11 @@ define(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler
                     url : "user-personal-center/userTotalCount",
                     success : function(totalCount) {
                         var pageSize = 10;
-                        $("#totalPage").text(Math.ceil(totalCount/pageSize));
+                        if(totalCount == 0){
+                            $("#totalPage").text(1);
+                        }else{
+                            $("#totalPage").text(Math.ceil(totalCount/pageSize));
+                        }
                     }
                 });
             }
