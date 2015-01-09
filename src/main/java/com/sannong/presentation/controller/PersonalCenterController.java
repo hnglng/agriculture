@@ -251,7 +251,9 @@ public class PersonalCenterController {
         List<Application> applicationList = new ArrayList<Application>();
         for(User application :applicants){
             Application app = projectService.getApplicationBy(application.getUserName());
-            applicationList.add(app);
+            if(app != null && app.getQuestionnaires().size() > 0){
+                applicationList.add(app);
+            }
         }
         int questionSum = projectService.getTotalQuestions();
         String filePath = CsvExporter.export(applicationList,questionSum);
