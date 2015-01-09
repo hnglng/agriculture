@@ -13,7 +13,7 @@ define(['jquery', 'sannong', 'ajaxHandler'], function($, sannong, ajaxHandler) {
             var citySelect = $(select);
             $(select + ' option').remove();
             for (var i in options){
-                var optionValue = options[i].cityIndex;
+                var optionValue = options[i].cityId;
                 var optionText = options[i].cityName;
                 var option = "<option value=" + optionValue + ">" + optionText + "</option>";
                 citySelect.append(option);
@@ -23,7 +23,7 @@ define(['jquery', 'sannong', 'ajaxHandler'], function($, sannong, ajaxHandler) {
             var districtSelect = $(select);
             $(select + ' option').remove();
             for (var i in options){
-                var optionValue = options[i].districtIndex;
+                var optionValue = options[i].districtId;
                 var optionText = options[i].districtName;
                 var option = "<option value=" + optionValue + ">" + optionText + "</option>";
                 districtSelect.append(option);
@@ -99,7 +99,7 @@ define(['jquery', 'sannong', 'ajaxHandler'], function($, sannong, ajaxHandler) {
                     ajaxHandler.sendRequest({
                         url: 'getCitiesWithDistricts',
                         type: 'POST',
-                        data: {'provinceIndex': $("#companyProvinceSelect").val()},
+                        data: {'provinceId': $("#companyProvinceSelect").val()},
                         success: function(data){
                             $("#wrap_citySelect").remove();
                             $("#citySelectDiv").html('<select id="companyCitySelect" name="applicant.companyCity" class="select-hidden"></select>');
@@ -138,7 +138,7 @@ define(['jquery', 'sannong', 'ajaxHandler'], function($, sannong, ajaxHandler) {
                     ajaxHandler.sendRequest({
                         url: 'getCitiesWithDistricts',
                         type: 'POST',
-                        data: {'provinceIndex': parseInt(selectedRel, 10)},
+                        data: {'provinceId': parseInt(selectedRel, 10)},
                         success: function(data){
                             $("#wrap_citySelect").remove();
                             $("#citySelectDiv").html('<select id="citySelect" name="companyCity" class="select-hidden"></select>');
@@ -160,7 +160,7 @@ define(['jquery', 'sannong', 'ajaxHandler'], function($, sannong, ajaxHandler) {
                     ajaxHandler.sendRequest({
                         url: 'getDistricts',
                         type: 'POST',
-                        data: {'cityIndex': parseInt(selectedRel, 10)},
+                        data: {'cityId': parseInt(selectedRel, 10)},
                         success: function(data){
                             $("#wrap_districtSelect").remove();
                             $("#districtSelectDiv").html('<select id="districtSelect" name="companyDistrict" class="select-hidden"></select>');
@@ -177,7 +177,7 @@ define(['jquery', 'sannong', 'ajaxHandler'], function($, sannong, ajaxHandler) {
                     ajaxHandler.sendRequest({
                         url: 'getCitiesWithDistricts',
                         type: 'POST',
-                        data: {'provinceIndex': parseInt(selectedRel, 10)},
+                        data: {'provinceId': parseInt(selectedRel, 10)},
                         success: function(data){
                             $("#wrap_cityQuerySelect").remove();
                             $("#cityQuerySelectDiv").html('<select id="cityQuerySelect" name="cityQuerySelect" class="select-hidden"></select>');
@@ -200,7 +200,7 @@ define(['jquery', 'sannong', 'ajaxHandler'], function($, sannong, ajaxHandler) {
                     ajaxHandler.sendRequest({
                         url: 'getDistricts',
                         type: 'POST',
-                        data: {'cityIndex': parseInt(selectedRel, 10)},
+                        data: {'cityId': parseInt(selectedRel, 10)},
                         success: function(data){
                             $("#wrap_districtQuerySelect").remove();
                             $("#districtQuerySelectDiv").html('<select id="districtQuerySelect" name="districtQuerySelect" class="select-hidden"></select>');

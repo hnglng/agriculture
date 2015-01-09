@@ -138,11 +138,11 @@ define(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler
 
                     var parameter;
                     if (searchKey == "手机号"){
-                        parameter = "cellphone=" + searchValue;
+                        parameter = "mobilePhone=" + searchValue;
                     }else if (searchKey == "姓名"){
                         parameter = "realName=" + searchValue;
                     }else if (searchKey == "工作单位"){
-                        parameter = "company=" + searchValue;
+                        parameter = "companyName=" + searchValue;
                     }else if (searchKey == "职位"){
                         parameter = "jobTitle=" + searchValue;
                     }else if (searchKey == "电子邮箱"){
@@ -150,24 +150,29 @@ define(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler
                     }else if (searchKey == "单位地址"){
                         parameter = "companyAddress=" + searchValue;
                     }
-                    var provinceIndex = $("#provinceQuerySelect").val();
-                    var cityIndex = $("#cityQuerySelect").val();
-                    var districtIndex = $("#districtQuerySelect").val();
+                    var provinceId = $("#provinceQuerySelect").val();
+                    var cityId = $("#cityQuerySelect").val();
+                    var districtId = $("#districtQuerySelect").val();
 
-                    parameter = parameter + "&provinceIndex=" + provinceIndex + "&cityIndex=" + cityIndex + "&districtIndex=" + districtIndex;
-                    //parameter = "realName=william&provinceIndex=&cityIndex=&districtIndex=";
-                    searchParams = parameter;
+                    parameter = parameter + "&provinceId=" + provinceId + "&cityId=" + cityId + "&districtId=" + districtId;
+//                    searchParams = parameter;
 
                     $.ajax({
                         type : "get",
                         dataType : "text",
-                        url : "userTotalCount",
+                        url : "user-personal-center/userTotalCount",
                         data : parameter,
                         success : function(totalCount) {
                             // pagination and data list presentation
-                            showTotalPageNumber(totalCount, parameter);
+                            var pageSize = 10;
+                            if(totalCount == 0){
+                                $("#totalPage").text(1);
+                            }else{
+                                $("#totalPage").text(Math.ceil(totalCount/pageSize));
+                            }
                         }
                     });
+                    showUserPagination(1,parameter);
                 },
                 cancel: function () {
                     userManagement.View.userTextShow.hide();
@@ -243,17 +248,17 @@ define(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler
                 exportCSV: function() {
                     var searchKey = $("#searchKey").val(),
                         searchValue = $("#searchValue").val(),
-                        provinceIndex = $("#provinceQuerySelect").val(),
-                        cityIndex = $("#cityQuerySelect").val(),
-                        districtIndex = $("#districtQuerySelect").val(),
+                        provinceId = $("#provinceQuerySelect").val(),
+                        cityId = $("#cityQuerySelect").val(),
+                        districtId = $("#districtQuerySelect").val(),
                         parameter;
 
                     if (searchKey == "手机号"){
-                        parameter = "cellphone=" + searchValue;
+                        parameter = "mobilePhone=" + searchValue;
                     }else if (searchKey == "姓名"){
                         parameter = "realName=" + searchValue;
                     }else if (searchKey == "工作单位"){
-                        parameter = "company=" + searchValue;
+                        parameter = "companyName=" + searchValue;
                     }else if (searchKey == "职位"){
                         parameter = "jobTitle=" + searchValue;
                     }else if (searchKey == "电子邮箱"){
@@ -262,16 +267,16 @@ define(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler
                         parameter = "companyAddress=" + searchValue;
                     }
 
-                    parameter = parameter + "&provinceIndex=" + provinceIndex + "&cityIndex=" + cityIndex + "&districtIndex=" + districtIndex;
+                    parameter = parameter + "&provinceId=" + provinceId + "&cityId=" + cityId + "&districtId=" + districtId;
 
                     $.ajax({
                         type : "post",
                         dataType : "json",
-                        url : "exportCSV",
+                        url : "user-personal-center/exportCSV",
                         data : parameter,
                         success : function(data) {
                             $('#exportModal').modal('hide');
-                            location.href = "/sannong/downloadCsv?csvFileName=" + data.returnValue;
+                            location.href = "/sannong/user-personal-center/downloadCsv?csvFileName=" + data.returnValue;
                         }
                     });
                 },
@@ -345,10 +350,10 @@ define(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler
                     userManagement.View.showQuestionnaire(questionnaireNumber);
 
                     if (userName != "") {
-                        $("#cellphone").val(userName);
+                        $("#mobilePhone").val(userName);
                         $("#commentContent").val("");
                     } else {
-                        userName = $("#cellphone").val();
+                        userName = $("#mobilePhone").val();
                     }
 
                     $.ajax({
@@ -369,13 +374,14 @@ define(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler
             /************************************************************
              * Private functions
              ************************************************************/
-            function showUserPagination(pageNumber) {
+            function showUserPagination(pageNumber,parameter) {
                 $("#userTextShow").hide();
 
                 $.ajax({
                     type : "GET",
                     dataType : "json",
-                    url : 'user-personal-center/users/page/' + pageNumber,
+                    url : 'user-personal-center/users/page/'+pageNumber,
+                    data : parameter,
                     success : function(data) {
                         handlebars.registerHelper("addOne", function(index){return index + 1;});
                         var compiler = handlebars.compile($("#table-template").html()),
@@ -393,7 +399,11 @@ define(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler
                     url : "user-personal-center/userTotalCount",
                     success : function(totalCount) {
                         var pageSize = 10;
-                        $("#totalPage").text(Math.ceil(totalCount/pageSize));
+                        if(totalCount == 0){
+                            $("#totalPage").text(1);
+                        }else{
+                            $("#totalPage").text(Math.ceil(totalCount/pageSize));
+                        }
                     }
                 });
             }

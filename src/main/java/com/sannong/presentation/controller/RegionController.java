@@ -27,20 +27,20 @@ public class RegionController {
     }
 
     @RequestMapping(value = "getCities")
-    public @ResponseBody List<City> getCities(Long provinceIndex) {
-        return regionService.getCities(provinceIndex);
+    public @ResponseBody List<City> getCities(Long provinceId) {
+        return regionService.getCities(provinceId);
     }
 
     @RequestMapping(value = "getDistricts")
-    public @ResponseBody List<District> getDistricts(Long cityIndex) {
-        return regionService.getDistricts(cityIndex);
+    public @ResponseBody List<District> getDistricts(Long cityId) {
+        return regionService.getDistricts(cityId);
     }
 
     @RequestMapping(value = "getCitiesWithDistricts")
     public @ResponseBody
-    Map<String, Object> getCitiesWithDistrict(Long provinceIndex) {
+    Map<String, Object> getCitiesWithDistrict(Long provinceId) {
         Map<String, Object> models = new HashMap<String, Object>();
-        List<City> cities = regionService.getCities(provinceIndex);
+        List<City> cities = regionService.getCities(provinceId);
         if (!cities.isEmpty()){
             models.put("cities", cities);
             City city = cities.get(0);

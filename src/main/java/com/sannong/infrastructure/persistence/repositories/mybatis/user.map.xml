@@ -107,7 +107,7 @@
 		select count(*) from users
 		<where>
 			<if test="realName != null and realName != '' and realName != 'null' ">
-				user_name like CONCAT('%',#{realName},'%')
+				real_name like CONCAT('%',#{realName},'%')
 			</if>
 			<if test="userName != null and userName != '' and userName != 'null' ">
 				and username like CONCAT('%',#{userName},'%')
