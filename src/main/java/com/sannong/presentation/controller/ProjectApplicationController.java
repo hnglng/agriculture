@@ -1,27 +1,25 @@
 package com.sannong.presentation.controller;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import com.sannong.domain.applications.ApplicationSpecification;
 import com.sannong.domain.applications.Questionnaire;
-import com.sannong.domain.message.ResponseStatus;
+import com.sannong.domain.share.ResponseStatus;
 import com.sannong.infrastructure.util.PasswordGenerator;
 import com.sannong.presentation.model.Response;
 import com.sannong.service.ISmsService;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.sannong.domain.applications.Application;
 import com.sannong.service.IProjectApplicationService;
-import com.sannong.service.IValidationService;
 
 
 /**
@@ -30,34 +28,43 @@ import com.sannong.service.IValidationService;
 @Controller
 @RequestMapping(value = "project-application")
 public class ProjectApplicationController {
-	private static final Logger logger = Logger.getLogger(ProjectApplicationController.class);
-    private static final String PROJECT_APPLICATION_COMPLETION_PAGE = "project-application-completion";
-    private static final String PROJECT_APPLICATION_PAGE = "project-application";
+    private static final String APPLICATION_PAGE = "project-application";
+    private static final String COMPLETION_PAGE = "project-application-completion";
 
-    @Resource
+    @Autowired
     private IProjectApplicationService projectApplicationService;
     @Autowired
-    private IValidationService validationService;
-    @Autowired
     private ISmsService smsService;
+    @Qualifier("applicationSpecification")
+    @Autowired
+    private ApplicationSpecification applicationSpec;
+
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView show() {
-        return new ModelAndView(PROJECT_APPLICATION_PAGE);
+        return new ModelAndView(APPLICATION_PAGE);
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ModelAndView add(@ModelAttribute("projectAppForm") Application application) throws Exception {
-        projectApplicationService.addApplication(application);
-        return new ModelAndView(PROJECT_APPLICATION_COMPLETION_PAGE);
+    public @ResponseBody
+    Response add(@ModelAttribute("projectAppForm") Application application) throws Exception {
+        Response response = new Response();
+        if (applicationSpec.isSatisfiedBy(application)) {
+            projectApplicationService.addApplication(application);
+            response.setStatusCode(ResponseStatus.OK.getCode());
+            response.setURI(COMPLETION_PAGE);
+        }else{
+            response.setStatusCode(ResponseStatus.FAILED.getCode());
+            response.setData(applicationSpec.getUnsatisfiedReasons());
+        }
+        return response;
     }
 
     @RequestMapping(value = "project-application-completion", method = RequestMethod.GET)
     public ModelAndView showCompletion() {
-
         Map<String, Object> models = new HashMap<String, Object>();
         models.put("project-application-completion", new Object());
-        return new ModelAndView(PROJECT_APPLICATION_COMPLETION_PAGE, models);
+        return new ModelAndView(COMPLETION_PAGE, models);
     }
 
     @RequestMapping(value = "/questionnaire/{number}", method = RequestMethod.GET)
@@ -68,60 +75,29 @@ public class ProjectApplicationController {
         return questionnaire;
     }
 
-    @RequestMapping(value = "project-application/validate-application-form", method = RequestMethod.POST)
-    public @ResponseBody
-    Response validateForm(HttpServletRequest request) throws IOException {
-        String cellphone = request.getParameter("cellphone");
-        String validationCode = request.getParameter("validationCode");
-
-        if (validationService.validateUniqueCellphone(cellphone) == false){
-            return new Response(
-                    ResponseStatus.CELLPHONE_NOT_UNIQUE.getStatusCode(),
-                    ResponseStatus.CELLPHONE_NOT_UNIQUE.getStatusDescription());
-        }else if(validationService.validateValidationCode(cellphone, validationCode) == false){
-            return new Response(
-                    ResponseStatus.CAPTCHA_INCORRECT.getStatusCode(),
-                    ResponseStatus.CAPTCHA_INCORRECT.getStatusDescription());
-        }else{
-            return new Response(
-                    ResponseStatus.SUCCESS.getStatusCode(),
-                    ResponseStatus.SUCCESS.getStatusDescription());
-
-        }
-    }
-
-    @RequestMapping(value = "project-application/sendValidationCode",method = RequestMethod.POST)
+    @RequestMapping(value = "/captcha",method = RequestMethod.POST)
     public @ResponseBody Response sendCaptchaCode(HttpServletRequest request){
-        String cellphone = request.getParameter("applicant.cellphone");
-        if (StringUtils.isBlank(cellphone)){
-            cellphone = request.getParameter("cellphone");
+        String mobilePhone = request.getParameter("user.mobilePhone");
+        if (StringUtils.isBlank(mobilePhone)){
+            mobilePhone = request.getParameter("mobilePhone");
         }
-
-        if (StringUtils.isBlank(cellphone)){
-            return new Response(
-                    ResponseStatus.CELLPHONE_IS_NULL.getStatusCode(),
-                    ResponseStatus.CELLPHONE_IS_NULL.getStatusDescription());
-        }
-
-        if (validationService.validateUniqueCellphone(cellphone) == false){
-            return new Response(
-                    ResponseStatus.CELLPHONE_NOT_UNIQUE.getStatusCode(),
-                    ResponseStatus.CELLPHONE_NOT_UNIQUE.getStatusDescription());
-        }else{
-            String validationCode = PasswordGenerator.generateValidationCode(4);
-            String result = smsService.sendValidationCode(cellphone, validationCode);
+        Response response = new Response();
+        if (applicationSpec.isMobilePhoneNotNull(mobilePhone)
+                && applicationSpec.isMobilePhoneNotRegistered(mobilePhone)) {
+            String captcha = PasswordGenerator.generateValidationCode(4);
+            String result = smsService.sendValidationCode(mobilePhone, captcha);
             if (StringUtils.isNotBlank(result)){
-                return new Response(
-                        ResponseStatus.CAPTCHA_WAS_SENT.getStatusCode(),
-                        ResponseStatus.CAPTCHA_WAS_SENT.getStatusDescription());
-
+                response.setStatusCode(ResponseStatus.CAPTCHA_SENT.getCode());
+                response.setStatusMessage(ResponseStatus.CAPTCHA_SENT.getMessage());
             }else{
-                return new Response(
-                        ResponseStatus.SMS_SEND_CAPTCHA_FAILURE.getStatusCode(),
-                        ResponseStatus.SMS_SEND_CAPTCHA_FAILURE.getStatusDescription());
+                response.setStatusCode(ResponseStatus.CAPTCHA_UNSENT.getCode());
+                response.setStatusMessage(ResponseStatus.CAPTCHA_UNSENT.getMessage());
             }
-
+        }else{
+            response.setStatusCode(ResponseStatus.FAILED.getCode());
+            response.setData(applicationSpec.getUnsatisfiedReasons());
         }
+        return response;
     }
 
 }

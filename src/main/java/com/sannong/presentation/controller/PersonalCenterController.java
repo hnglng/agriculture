@@ -19,7 +19,7 @@ import com.sannong.domain.sms.SMS;
 import com.sannong.domain.user.User;
 import com.sannong.domain.region.City;
 import com.sannong.domain.region.District;
-import com.sannong.domain.message.ResponseStatus;
+import com.sannong.domain.share.ResponseStatus;
 import com.sannong.infrastructure.util.PasswordGenerator;
 import com.sannong.presentation.model.Response;
 import com.sannong.service.*;
@@ -73,6 +73,7 @@ public class PersonalCenterController {
             }
         }
 
+        Response response = new Response();
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("userName", userName);
         List<User> users = userService.getUserByCondition(map);
@@ -84,15 +85,15 @@ public class PersonalCenterController {
             models.put("userProfile", users.get(0));
             models.put("cities", cities);
             models.put("districts", districts);
-            return new Response(
-                    ResponseStatus.SUCCESS.getStatusCode(),
-                    ResponseStatus.SUCCESS.getStatusDescription(),
-                    models);
+
+            response.setStatusCode(ResponseStatus.OK.getCode());
+            response.setStatusMessage(ResponseStatus.OK.getMessage());
+            response.setData(models);
         }else{
-            return new Response(
-                    ResponseStatus.USER_NOT_FOUND.getStatusCode(),
-                    ResponseStatus.USER_NOT_FOUND.getStatusDescription());
+            response.setStatusCode(ResponseStatus.USER_NOT_FOUND.getCode());
+            response.setStatusMessage(ResponseStatus.USER_NOT_FOUND.getMessage());
         }
+        return response;
     }
 
     @RequestMapping(value = {"/user-profile"}, method = RequestMethod.POST)
@@ -188,6 +189,7 @@ public class PersonalCenterController {
             }
         }
 
+        Response response = new Response();
         Map<String,Object> map = new HashMap<String,Object>();
         map.put("userName", userName);
         List<User> users = userService.getUserByCondition(map);
@@ -195,26 +197,23 @@ public class PersonalCenterController {
             User user = users.get(0);
             String encryptOldPassword = PasswordGenerator.encryptPassword(oldPassword, userName);
             if ( ! (user.getPassword().equals(encryptOldPassword))){
-                return new Response(
-                        ResponseStatus.OLD_PASSWORD_MISMATCH.getStatusCode(),
-                        ResponseStatus.OLD_PASSWORD_MISMATCH.getStatusDescription());
+                response.setStatusCode(ResponseStatus.OLD_PASSWORD_MISMATCH.getCode());
+                response.setStatusMessage(ResponseStatus.OLD_PASSWORD_MISMATCH.getMessage());
             }else if ( ! (newPassword.equals(confirmedPassword)) ){
-                return new Response(
-                        ResponseStatus.CONFIRMED_PASSWORD_MISMATCH.getStatusCode(),
-                        ResponseStatus.CONFIRMED_PASSWORD_MISMATCH.getStatusDescription());
+                response.setStatusCode(ResponseStatus.CONFIRMED_PASSWORD_MISMATCH.getCode());
+                response.setStatusMessage(ResponseStatus.CONFIRMED_PASSWORD_MISMATCH.getMessage());
             }
             String encryptedNewPassword = PasswordGenerator.encryptPassword(newPassword, userName);
             user.setPassword(encryptedNewPassword);
             userService.updatePassword(user);
-
-            return new Response(
-                    ResponseStatus.PASSWORD_UPDATED.getStatusCode(),
-                    ResponseStatus.PASSWORD_UPDATED.getStatusDescription());
+            response.setStatusCode(ResponseStatus.PASSWORD_UPDATED.getCode());
+            response.setStatusMessage(ResponseStatus.PASSWORD_UPDATED.getMessage());
         }else{
-            return new Response(
-                    ResponseStatus.USER_NOT_FOUND.getStatusCode(),
-                    ResponseStatus.USER_NOT_FOUND.getStatusDescription());
+            response.setStatusCode(ResponseStatus.USER_NOT_FOUND.getCode());
+            response.setStatusMessage(ResponseStatus.USER_NOT_FOUND.getMessage());
         }
+
+        return response;
     }
 
 

@@ -18,6 +18,9 @@
     <context:property-placeholder location="/WEB-INF/jdbc.properties" />
     
     <context:component-scan base-package="com.sannong" >
+        <context:include-filter type="regex" expression="com.sannong.domain.*"/>
+        <context:exclude-filter type="regex" expression="com.sannong.domain.share.ResponseStatus"/>
+        <context:exclude-filter type="regex" expression="com.sannong.domain.user.RoleType"/>
         <context:exclude-filter type="annotation"  expression="org.springframework.stereotype.Controller" />
     </context:component-scan>
     

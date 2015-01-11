@@ -1,6 +1,5 @@
 package com.sannong.domain.applications;
 
-import com.sannong.domain.sms.SMS;
 import com.sannong.domain.user.User;
 
 import java.io.Serializable;

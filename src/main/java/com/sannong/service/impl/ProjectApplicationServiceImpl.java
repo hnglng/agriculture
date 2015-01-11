@@ -48,12 +48,6 @@ public class ProjectApplicationServiceImpl implements IProjectApplicationService
     @Autowired
     private MailAsyncSender mailAsyncSender;
 
-    public void sendMailToAdmin(Region region, String applicantName, String timeOfSubmission, String cellphone) {
-
-        String mailContent = mailContentFactory.build(region, applicantName, timeOfSubmission, cellphone);
-        mailAsyncSender.sendMail(mailContent);
-    }
-
     public void addApplication(Application application) {
 
         User user = application.getUser();
@@ -99,7 +93,12 @@ public class ProjectApplicationServiceImpl implements IProjectApplicationService
 
         // Send sms message to user
         smsService.sendLoginMessage(mobilePhone, password);
+    }
 
+    private void sendMailToAdmin(Region region, String applicantName, String timeOfSubmission, String cellphone) {
+
+        String mailContent = mailContentFactory.build(region, applicantName, timeOfSubmission, cellphone);
+        mailAsyncSender.sendMail(mailContent);
     }
 
     public List<Question> getQuestionsByQuestionnaireNumber(Integer number) {

@@ -10,7 +10,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import com.sannong.domain.user.User;
-import com.sannong.domain.message.ResponseStatus;
+import com.sannong.domain.share.ResponseStatus;
 import com.sannong.infrastructure.util.PasswordGenerator;
 import com.sannong.presentation.model.Response;
 import com.sannong.service.ISmsService;
@@ -78,33 +78,32 @@ public class LoginController {
 
     @RequestMapping(value = "login-success", method = RequestMethod.POST)
     public @ResponseBody
-    Response handleLoginSuccessOnPost(HttpServletRequest request) {
-        return handleLoginSuccess(request);
+    Response handleLoginSuccessOnPost() {
+        return handleLoginSuccess();
     }
 
     @RequestMapping(value = "login-success", method = RequestMethod.GET)
     public @ResponseBody
-    Response handleLoginSuccess(HttpServletRequest request) {
-        Map<String, Object> models = new HashMap<String, Object>();
-        models.put("redirect", USER_PERSONAL_CENTER_PAGE);
-        return new Response(
-                ResponseStatus.LOGIN_SUCCESS.getStatusCode(),
-                ResponseStatus.LOGIN_SUCCESS.getStatusDescription(),
-                models);
+    Response handleLoginSuccess() {
+        Response response = new Response();
+        response.setStatusCode(ResponseStatus.LOGIN_SUCCESS.getCode());
+        response.setStatusMessage(ResponseStatus.LOGIN_SUCCESS.getMessage());
+        response.setURI(USER_PERSONAL_CENTER_PAGE);
+        return response;
     }
 
     @RequestMapping(value = "login-failure", method = RequestMethod.POST)
     public @ResponseBody
-    Response handleLoginFailureOnPost(HttpServletRequest request) {
-        return handleLoginFailure(request);
+    Response handleLoginFailureOnPost() {
+        return handleLoginFailure();
     }
 
     @RequestMapping(value = "login-failure", method = RequestMethod.GET)
     public @ResponseBody
-    Response handleLoginFailure(HttpServletRequest request) {
+    Response handleLoginFailure() {
         return new Response(
-                ResponseStatus.USERNAME_OR_PASSWORD_ERROR.getStatusCode(),
-                ResponseStatus.USERNAME_OR_PASSWORD_ERROR.getStatusDescription());
+                ResponseStatus.USERNAME_OR_PASSWORD_ERROR.getCode(),
+                ResponseStatus.USERNAME_OR_PASSWORD_ERROR.getMessage());
     }
 
     /**
@@ -123,17 +122,16 @@ public class LoginController {
         paramMap.put("cellphone", cellphone);
         paramMap.put("realName", realName);
 
+        Response response = new Response();
         List<User> users = userService.getUserByCondition(paramMap);
         if (users.isEmpty()) {
-            return new Response(
-                    ResponseStatus.NAME_OR_CELLPHONE_NOT_FOUND.getStatusCode(),
-                    ResponseStatus.NAME_OR_CELLPHONE_NOT_FOUND.getStatusDescription());
+            response.setStatusCode(ResponseStatus.NAME_OR_CELLPHONE_NOT_FOUND.getCode());
+            response.setStatusMessage(ResponseStatus.NAME_OR_CELLPHONE_NOT_FOUND.getMessage());
         } else {
             User user = users.get(0);
             if (!(user.getMobilePhone().equals(cellphone) && user.getRealName().equals(realName))) {
-                return new Response(
-                        ResponseStatus.NAME_OR_CELLPHONE_MISMATCH.getStatusCode(),
-                        ResponseStatus.NAME_OR_CELLPHONE_MISMATCH.getStatusDescription());
+                response.setStatusCode(ResponseStatus.NAME_OR_CELLPHONE_MISMATCH.getCode());
+                response.setStatusMessage(ResponseStatus.NAME_OR_CELLPHONE_MISMATCH.getMessage());
             }
             String password = PasswordGenerator.generatePassword(6);
             String smsResponse = smsService.sendNewPasswordMessage(cellphone, password);
@@ -141,22 +139,21 @@ public class LoginController {
                 user.setPassword(PasswordGenerator.encryptPassword(password, user.getUserName()));
                 user.setLastUpdated(new Timestamp(System.currentTimeMillis()));
                 userService.updatePassword(user);
-                return new Response(
-                        ResponseStatus.NEW_PASSWORD_WAS_SENT.getStatusCode(),
-                        ResponseStatus.NEW_PASSWORD_WAS_SENT.getStatusDescription());
+                response.setStatusCode(ResponseStatus.PASSWORD_SENT.getCode());
+                response.setStatusMessage(ResponseStatus.PASSWORD_SENT.getMessage());
             } else {
-                return new Response(
-                        ResponseStatus.SMS_SEND_NEW_PASSWORD_FAILURE.getStatusCode(),
-                        ResponseStatus.SMS_SEND_NEW_PASSWORD_FAILURE.getStatusDescription());
+                response.setStatusCode(ResponseStatus.PASSWORD_UNSENT.getCode());
+                response.setStatusMessage(ResponseStatus.PASSWORD_UNSENT.getMessage());
             }
         }
+        return response;
     }
 
     @RequestMapping(value = "login/realName", method = RequestMethod.POST)
     public @ResponseBody Response getRealName(){
         Map<String, Object> models = new HashMap<String, Object>();
         Map<String, Object> queryParamMap = new HashMap<String, Object>();
-
+        Response response = new Response();
         try {
             UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext()
                     .getAuthentication().getPrincipal();
@@ -171,15 +168,15 @@ public class LoginController {
             }
 
             models.put("realName", realName);
+            response.setStatusCode(ResponseStatus.OK.getCode());
+            response.setStatusMessage(ResponseStatus.OK.getMessage());
+            response.setData(models);
         }catch(Exception ex){
             logger.error(ex.getMessage());
-            return new Response(ResponseStatus.FAILURE.getStatusCode(),
-                    ResponseStatus.FAILURE.getStatusDescription());
+            response.setStatusCode(ResponseStatus.FAILED.getCode());
+            response.setStatusMessage(ResponseStatus.FAILED.getMessage());
         }
-
-        return new Response(ResponseStatus.SUCCESS.getStatusCode(),
-                            ResponseStatus.SUCCESS.getStatusDescription(),
-                            models);
+        return response;
     }
 
 }

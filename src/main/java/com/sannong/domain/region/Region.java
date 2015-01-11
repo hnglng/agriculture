@@ -12,6 +12,8 @@ public class Region {
     private City city;
     private District district;
 
+    public Region(){}
+
     public Region(Province province, City city, District district) {
         this.province = province;
         this.city = city;

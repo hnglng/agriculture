@@ -60,9 +60,9 @@ define(['jquery', 'bootstrap', 'sannong', 'validate', 'ajaxHandler', 'formValida
                         },
                         success: function (response) {
                             if (response.statusCode < 2000) {
-                                window.location.href = response.models.redirect;
+                                window.location.href = response.uri;
                             } else {
-                                showLoginError(response.statusDescription);
+                                showLoginError(response.statusMessage);
                             }
                         },
                         fail: function (response) {
@@ -87,10 +87,10 @@ define(['jquery', 'bootstrap', 'sannong', 'validate', 'ajaxHandler', 'formValida
                         },
                         success: function(response){
                             if (response.statusCode < 2000){
-                                showMessage(response.statusDescription)
+                                showMessage(response.statusMessage)
                                 additionalMethods.updateTimeLabel("#forgotPasswordForm_sendNewPasswordBtn", "密码");
                             }else{
-                                showError(response.statusDescription)
+                                showError(response.statusMessage)
                             }
                         },
                         fail: function(response){
@@ -115,9 +115,9 @@ define(['jquery', 'bootstrap', 'sannong', 'validate', 'ajaxHandler', 'formValida
                         success: function (response) {
                             if (response.statusCode < 2000) {
 
-                                window.location.href = response.models.redirect;
+                                window.location.href = response.uri;
                             } else {
-                                showError(response.statusDescription);
+                                showError(response.statusMessage);
                             }
                         },
                         fail: function (response) {

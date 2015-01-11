@@ -1,51 +1,66 @@
 package com.sannong.presentation.model;
 
 
-import java.util.Map;
+
 
 /**
  * Created by Bright Huang on 11/29/14.
  */
-public class Response {
-    private int statusCode;                 // refer to ResponseStatus.java
-    private String statusDescription;       // refer to ResponseStatus.java
-    private Map<String, Object> models;
+public class Response<T> {
+    private Integer statusCode;
+    private String statusMessage;
+    private String URI;
+    private T data;
 
-    public Response() {
-    }
+    public Response() {}
 
-    public Response(int statusCode, String statusDescription) {
+    public Response(Integer statusCode, String statusMessage) {
         this.statusCode = statusCode;
-        this.statusDescription = statusDescription;
+        this.statusMessage = statusMessage;
     }
 
-    public Response(int statusCode, String statusDescription, Map models) {
+    public Response(Integer statusCode, String statusMessage, String URI) {
         this.statusCode = statusCode;
-        this.statusDescription = statusDescription;
-        this.models = models;
+        this.statusMessage = statusMessage;
+        this.URI = URI;
     }
 
-    public int getStatusCode() {
+    public Response(Integer statusCode, String statusMessage, String URI, T data) {
+        this.statusCode = statusCode;
+        this.statusMessage = statusMessage;
+        this.URI = URI;
+        this.data = data;
+    }
+
+    public Integer getStatusCode() {
         return statusCode;
     }
 
-    public void setStatusCode(int statusCode) {
+    public void setStatusCode(Integer statusCode) {
         this.statusCode = statusCode;
     }
 
-    public String getStatusDescription() {
-        return statusDescription;
+    public String getStatusMessage() {
+        return statusMessage;
     }
 
-    public void setStatusDescription(String statusDescription) {
-        this.statusDescription = statusDescription;
+    public void setStatusMessage(String statusMessage) {
+        this.statusMessage = statusMessage;
     }
 
-    public Map<String, Object> getModels() {
-        return models;
+    public String getURI() {
+        return URI;
     }
 
-    public void setModels(Map<String, Object> models) {
-        this.models = models;
+    public void setURI(String URI) {
+        this.URI = URI;
+    }
+
+    public T getData() {
+        return data;
+    }
+
+    public void setData(T data) {
+        this.data = data;
     }
 }
