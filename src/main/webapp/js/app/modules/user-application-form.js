@@ -32,6 +32,24 @@ define(['jquery', 'bootstrap', 'sannong', 'validate',  'formValidator', 'additio
             }
 
             userApplicationForm.Controller = {
+                showMyApplication: function(questionnaireNumber) {
+                    questionnaire.View.resetQuestionnaireView(questionnaireNumber);
+
+                    $("#questionnaireNo").val(questionnaireNumber);
+
+                    $.ajax({
+                        type : "GET",
+                        dataType : "json",
+                        url : 'user-personal-center/myapplication',
+                        success : function(application) {
+                            questionnaire.Controller.renderQuestionnaireAnswers(questionnaireNumber, application)
+                        },
+                        fail: function(response){
+
+                        }
+                    });
+
+                },
                 stage: function(){
                     submitForm(0);
                 },
@@ -61,19 +79,19 @@ define(['jquery', 'bootstrap', 'sannong', 'validate',  'formValidator', 'additio
                     return false;
                 },
                 q1: function(){
-                    questionnaire.Controller.showQuestionnaireAnswers(1);
+                    userApplicationForm.Controller.showMyApplication(1);
                 },
                 q2: function(){
-                    questionnaire.Controller.showQuestionnaireAnswers(2);
+                    userApplicationForm.Controller.showMyApplication(2);
                 },
                 q3: function(){
-                    questionnaire.Controller.showQuestionnaireAnswers(3);
+                    userApplicationForm.Controller.showMyApplication(3);
                 },
                 q4: function(){
-                    questionnaire.Controller.showQuestionnaireAnswers(4);
+                    userApplicationForm.Controller.showMyApplication(4);
                 },
                 q5: function(){
-                    questionnaire.Controller.showQuestionnaireAnswers(5);
+                    userApplicationForm.Controller.showMyApplication(5);
                 }
             };
 

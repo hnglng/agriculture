@@ -13,6 +13,7 @@ define(['jquery', 'sannong', 'handlebars'], function($, sannong, handlebars) {
     }
     
     var questionnaire = {};
+    questionnaire.Model = {1:null, 2:null, 3:null, 4:null, 5:null};
 
     questionnaire.View = {
         resetQuestionnaireView: function(questionnaireNo){
@@ -122,12 +123,12 @@ define(['jquery', 'sannong', 'handlebars'], function($, sannong, handlebars) {
             $("#questionnaireSubmit").attr("disabled","disabled");
             $("#questionnaireSubmit").removeClass("orange-bt-small").addClass("gray-bt-small");
         },
-        enableNextTab: function(currentQuestionnaireNo){
+        enableNextTab: function(currentQuestionnaireNumber){
             //下一个选项卡可用
-            if ($("#q" + (currentQuestionnaireNo + 1).toString()).parent().hasClass("disabled")){
-                $("#q" + (currentQuestionnaireNo + 1).toString()).parent().removeClass("disabled");
-                $("#q" + (currentQuestionnaireNo + 1).toString()).attr("data-toggle","tab").addClass("meta-event-source");
-                $("#q" + (currentQuestionnaireNo + 1).toString()).parent().removeAttr("data-toggle").removeAttr("title").removeAttr("data-original-title");
+            if ($("#q" + (currentQuestionnaireNumber + 1).toString()).parent().hasClass("disabled")){
+                $("#q" + (currentQuestionnaireNumber + 1).toString()).parent().removeClass("disabled");
+                $("#q" + (currentQuestionnaireNumber + 1).toString()).attr("data-toggle","tab").addClass("meta-event-source");
+                $("#q" + (currentQuestionnaireNumber + 1).toString()).parent().removeAttr("data-toggle").removeAttr("title").removeAttr("data-original-title");
             }
 
         },
@@ -160,54 +161,98 @@ define(['jquery', 'sannong', 'handlebars'], function($, sannong, handlebars) {
                 }
             }
         },
-        renderQuestionnaireAnswers: function(questionnaireNo, data){
-            // answerStatus: 10, 11, 20, 21, 30, 31, 40, 41, 50, 51
-            // the first digit represent questionnaire page number, it indicates how many questionnaire were done.
-            // the second digit represent questionnaire completion status, 0 means temporarily saved, 1 means questionnaire was finished.
-            var answerStatus = data.answerStatus,
-                answerStatusStr =  answerStatus.toString(),
-                latestQuestionnaireNo = parseInt(answerStatusStr.substring(0,1), 10),
-                stageOrCommit = answerStatusStr.substring(1,2),//stage: 问卷暂存, commit: 问卷提交
-                currentQuestionnaireNo = questionnaireNo,
-                disableAnswerOptions = true;
+        renderApplicationComments: function(application){
+            var applicationId = application.applicationId,
+                comments = application.comments,
+                lastQuestionnaireNumber = application.questionnaires.length,
+                lastQuestionnaireCommitted = application.questionnaires[lastQuestionnaireNumber - 1].questionnaireCommitted;
 
-            if (currentQuestionnaireNo == latestQuestionnaireNo && stageOrCommit == 0){         // 当前页面是填写的最大问卷, 暂存状态
-                disableAnswerOptions = false;
-                questionnaire.View.enableSaveButtons();
-                questionnaire.View.disableSubsequentTab(currentQuestionnaireNo + 1);
-            }else if(currentQuestionnaireNo < latestQuestionnaireNo && stageOrCommit == 0){     // 当前页面小于填写的最大问卷, 暂存状态
-                disableAnswerOptions = true;
-                questionnaire.View.disableSaveButtons();
-                questionnaire.View.disableSubsequentTab(latestQuestionnaireNo + 1);
-            }else if (currentQuestionnaireNo == latestQuestionnaireNo && stageOrCommit == 1){   // 当前页面是填写的最大问卷, 提交状态
-                disableAnswerOptions = true;
-                questionnaire.View.disableSaveButtons();
-                questionnaire.View.enableNextTab(currentQuestionnaireNo);
-                //之后第二个开始不可用
-                questionnaire.View.disableSubsequentTab(currentQuestionnaireNo + 2);
-            }else if(currentQuestionnaireNo < latestQuestionnaireNo && stageOrCommit == 1){     // 当前页面小于填写的最大问卷, 提交状态
-                disableAnswerOptions = true;
-                questionnaire.View.disableSaveButtons();
-                questionnaire.View.disableSubsequentTab(latestQuestionnaireNo + 2);
-            }else if (currentQuestionnaireNo == (latestQuestionnaireNo + 1) && stageOrCommit == 1){
-                disableAnswerOptions = false;
-                questionnaire.View.enableSaveButtons();
-                questionnaire.View.disableSubsequentTab(currentQuestionnaireNo + 1);
-            }else{
-                return;
+            if ($("#applicationId")){
+                $("#applicationId").val(applicationId);
             }
 
-            questionnaire.View.renderQuestionnaireView(data);
-
-            var answerString = questionnaire.getAnswers(questionnaireNo, data);
-            questionnaire.View.fillAnswers(questionnaireNo, answerString, disableAnswerOptions);
-
-            questionnaire.View.renderQuestionnaireComments(data, answerStatus);
-
+            if (comments != null && comments != ""){
+                if($("#questionnaireStatus")){
+                    $("#questionnaireStatus").text(comments);
+                    $("#questionnaireStatus").show();
+                }
+            } else if (lastQuestionnaireNumber == 5 && lastQuestionnaireCommitted === true){
+                $("#questionnaireStatus").text("您的申请正在审核中。请保存手机畅通，我们的工作人员会尽快联系您。");
+                $("#questionnaireStatus").show();
+            } else{
+                $("#questionnaireStatus").text("请完成所有问卷调查，然后我们的工作人员会第一时间联系您。");
+                $("#questionnaireStatus").show();
+            }
         }
     };
 
     questionnaire.Controller = {
+        showQuestionnaire: function(questionnaireNumber){
+            if (questionnaire.Model[questionnaireNumber] !== null){
+                questionnaire.View.renderQuestionnaireView(questionnaire.Model[questionnaireNumber]);
+            }
+            else{
+                $.ajax({
+                    type: "GET",
+                    dataType: "json",
+                    url: 'project-application/questionnaire/' + questionnaireNumber,
+                    success: function(response) {
+                        if (questionnaire.Model[questionnaireNumber] === null){
+                            questionnaire.Model[questionnaireNumber] = response;
+                        }
+                        questionnaire.View.renderQuestionnaireView(response);
+                    }
+                });
+            }
+        },
+        renderQuestionnaireAnswers: function(questionnaireNumber, application){
+            var latestQuestionnaireNumber = application.questionnaires.length,
+                latestQuestionnaire = application.questionnaires[latestQuestionnaireNumber - 1],
+                latestQuestionnaireCommitted = latestQuestionnaire.questionnaireCommitted,
+                currentQuestionnaire = application.questionnaires[questionnaireNumber - 1],
+                currentQuestionnaireNumber = questionnaireNumber,
+                disableAnswerOptions = true;
+
+            if (currentQuestionnaireNumber == latestQuestionnaireNumber && latestQuestionnaireCommitted == false){         // 当前页面是填写的最大问卷, 暂存状态
+                disableAnswerOptions = false;
+                questionnaire.View.enableSaveButtons();
+                questionnaire.View.disableSubsequentTab(currentQuestionnaireNumber + 1);
+            }else if(currentQuestionnaireNumber < latestQuestionnaireNumber && latestQuestionnaireCommitted == false){     // 当前页面小于填写的最大问卷, 暂存状态
+                disableAnswerOptions = true;
+                questionnaire.View.disableSaveButtons();
+                questionnaire.View.disableSubsequentTab(latestQuestionnaireNumber + 1);
+            }else if (currentQuestionnaireNumber == latestQuestionnaireNumber && latestQuestionnaireCommitted == true){   // 当前页面是填写的最大问卷, 提交状态
+                disableAnswerOptions = true;
+                questionnaire.View.disableSaveButtons();
+                questionnaire.View.enableNextTab(currentQuestionnaireNumber);
+                //之后第二个开始不可用
+                questionnaire.View.disableSubsequentTab(currentQuestionnaireNumber + 2);
+            }else if(currentQuestionnaireNumber < latestQuestionnaireNumber && latestQuestionnaireCommitted == true){     // 当前页面小于填写的最大问卷, 提交状态
+                disableAnswerOptions = true;
+                questionnaire.View.disableSaveButtons();
+                questionnaire.View.disableSubsequentTab(latestQuestionnaireNumber + 2);
+            }else if (currentQuestionnaireNumber == (latestQuestionnaireNumber + 1) && latestQuestionnaireCommitted == true){
+                disableAnswerOptions = false;
+                questionnaire.View.enableSaveButtons();
+                questionnaire.View.disableSubsequentTab(currentQuestionnaireNumber + 1);
+            }else{
+                return;
+            }
+
+            if (currentQuestionnaire === null || currentQuestionnaire === undefined) {
+                questionnaire.Controller.showQuestionnaire(currentQuestionnaireNumber);
+            }else{
+                questionnaire.View.renderQuestionnaireView(currentQuestionnaire);
+            }
+
+            if (currentQuestionnaire !== null && currentQuestionnaire !== undefined){
+                questionnaire.View.fillAnswers(questionnaireNumber, currentQuestionnaire.concatenatedAnswers, disableAnswerOptions);
+            }
+
+            questionnaire.View.renderApplicationComments(application);
+
+        }
+
     };
 
     sannong.Questionnaire = questionnaire;

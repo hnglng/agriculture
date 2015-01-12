@@ -74,34 +74,11 @@ define(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler
                         $(".error").empty();
                     }
                 },
-                renderApplicationComments: function(data){
-                    var applicationId = data.applicationId,
-                        comments = data.comments,
-                        lastQuestionnaireNumber = data.questionnaires.length,
-                        lastQuestionnaireCommitted = data.questionnaires[lastQuestionnaireNumber - 1].questionnaireCommitted;
-
-                    if ($("#applicationId")){
-                        $("#applicationId").val(applicationId);
-                    }
-
-                    if (comments != null && comments != ""){
-                        if($("#questionnaireStatus")){
-                            $("#questionnaireStatus").text(comments);
-                            $("#questionnaireStatus").show();
-                        }
-                    } else if (lastQuestionnaireNumber == 5 && lastQuestionnaireCommitted === true){
-                        $("#questionnaireStatus").text("您的申请正在审核中。请保存手机畅通，我们的工作人员会尽快联系您。");
-                        $("#questionnaireStatus").show();
-                    } else{
-                        $("#questionnaireStatus").text("请完成所有问卷调查，然后我们的工作人员会第一时间联系您。");
-                        $("#questionnaireStatus").show();
-                    }
-                },
-                renderQuestionnaireView: function(questionnaireNumber, data){
-                    var latestQuestionnaireNumber = data.questionnaires.length,
-                        questionnaireObj = data.questionnaires[questionnaireNumber - 1],
+                renderQuestionnaireView: function(questionnaireNumber, application){
+                    var latestQuestionnaireNumber = application.questionnaires.length,
+                        questionnaireObj = application.questionnaires[questionnaireNumber - 1],
                         concatenatedAnswers = questionnaireObj.concatenatedAnswers,
-                        user = data.user;
+                        user = application.user;
 
                     if (questionnaireNumber > latestQuestionnaireNumber){
                         $("#update").removeClass("orange-bt-small").addClass("gray-bt-small");
@@ -121,7 +98,7 @@ define(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler
 
                     questionnaire.View.fillAnswers(questionnaireNumber, concatenatedAnswers, false);
 
-                    userManagement.View.renderApplicationComments(data);
+                    questionnaire.View.renderApplicationComments(application);
                 }
 
             };
