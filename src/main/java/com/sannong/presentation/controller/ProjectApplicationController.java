@@ -26,7 +26,6 @@ import com.sannong.service.IProjectApplicationService;
  * Created by Bright Huang on 10/14/14.
  */
 @Controller
-@RequestMapping(value = "project-application")
 public class ProjectApplicationController {
     private static final String APPLICATION_PAGE = "project-application";
     private static final String COMPLETION_PAGE = "project-application-completion";
@@ -40,21 +39,21 @@ public class ProjectApplicationController {
     private ApplicationSpecification applicationSpec;
 
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(value="project-application", method = RequestMethod.GET)
     public ModelAndView show() {
         return new ModelAndView(APPLICATION_PAGE);
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(value="project-application", method = RequestMethod.POST)
     public @ResponseBody
     Response add(@ModelAttribute("projectAppForm") Application application) throws Exception {
         Response response = new Response();
         if (applicationSpec.isSatisfiedBy(application)) {
             projectApplicationService.addApplication(application);
             response.setStatusCode(ResponseStatus.OK.getCode());
-            response.setURI(COMPLETION_PAGE);
+            response.setURI("project-application-completion");
         }else{
-            response.setStatusCode(ResponseStatus.FAILED.getCode());
+            response.setStatusCode(ResponseStatus.FAILURE.getCode());
             response.setData(applicationSpec.getUnsatisfiedReasons());
         }
         return response;
@@ -67,7 +66,7 @@ public class ProjectApplicationController {
         return new ModelAndView(COMPLETION_PAGE, models);
     }
 
-    @RequestMapping(value = "/questionnaire/{number}", method = RequestMethod.GET)
+    @RequestMapping(value = "project-application/questionnaire/{number}", method = RequestMethod.GET)
     public @ResponseBody
     Questionnaire getQuestionnaire(@PathVariable("number") Integer number) throws Exception{
         Questionnaire questionnaire = new Questionnaire();
@@ -75,15 +74,14 @@ public class ProjectApplicationController {
         return questionnaire;
     }
 
-    @RequestMapping(value = "/captcha",method = RequestMethod.POST)
+    @RequestMapping(value = "project-application/captcha",method = RequestMethod.POST)
     public @ResponseBody Response sendCaptchaCode(HttpServletRequest request){
         String mobilePhone = request.getParameter("user.mobilePhone");
         if (StringUtils.isBlank(mobilePhone)){
             mobilePhone = request.getParameter("mobilePhone");
         }
         Response response = new Response();
-        if (applicationSpec.isMobilePhoneNotNull(mobilePhone)
-                && applicationSpec.isMobilePhoneNotRegistered(mobilePhone)) {
+        if (applicationSpec.isSatisfiedBy(mobilePhone)) {
             String captcha = PasswordGenerator.generateValidationCode(4);
             String result = smsService.sendValidationCode(mobilePhone, captcha);
             if (StringUtils.isNotBlank(result)){
@@ -94,7 +92,8 @@ public class ProjectApplicationController {
                 response.setStatusMessage(ResponseStatus.CAPTCHA_UNSENT.getMessage());
             }
         }else{
-            response.setStatusCode(ResponseStatus.FAILED.getCode());
+            response.setStatusCode(ResponseStatus.FAILURE.getCode());
+            response.setStatusMessage(ResponseStatus.FAILURE.getMessage());
             response.setData(applicationSpec.getUnsatisfiedReasons());
         }
         return response;

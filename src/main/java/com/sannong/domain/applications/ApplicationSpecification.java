@@ -1,6 +1,5 @@
 package com.sannong.domain.applications;
 
-import com.sannong.domain.applications.Application;
 import com.sannong.domain.share.ISpecification;
 import com.sannong.domain.share.ResponseStatus;
 import com.sannong.domain.sms.SMS;
@@ -33,14 +32,23 @@ public class ApplicationSpecification implements ISpecification<Application>{
     @Override
     public boolean isSatisfiedBy(Application application){
         String mobilePhone = application.getUser().getMobilePhone();
+        String smsValidationCode = application.getSms().getSmsValidationCode();
+
         boolean isMobilePhoneNotNull = isMobilePhoneNotNull(mobilePhone);
         boolean isMobilePhoneNotExisted = isMobilePhoneNotRegistered(mobilePhone);
-        boolean isValidationCodeValid = isValidationCodeValid(mobilePhone);
+        boolean isValidationCodeValid = isValidationCodeValid(mobilePhone, smsValidationCode);
 
         return isMobilePhoneNotNull && isMobilePhoneNotExisted && isValidationCodeValid;
     }
 
-    public boolean isMobilePhoneNotNull(String mobilePhone){
+    public boolean isSatisfiedBy(String mobilePhone){
+        boolean isMobilePhoneNotNull = isMobilePhoneNotNull(mobilePhone);
+        boolean isMobilePhoneNotExisted = isMobilePhoneNotRegistered(mobilePhone);
+        return isMobilePhoneNotNull && isMobilePhoneNotExisted;
+    }
+
+
+    private boolean isMobilePhoneNotNull(String mobilePhone){
         if (StringUtils.isNotBlank(mobilePhone)){
             return true;
         }else{
@@ -51,7 +59,7 @@ public class ApplicationSpecification implements ISpecification<Application>{
         }
     }
 
-    public boolean isMobilePhoneNotRegistered(String mobilePhone) {
+    private boolean isMobilePhoneNotRegistered(String mobilePhone) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("mobilePhone", mobilePhone);
         List<User> users = userRepository.getUserByCondition(map);
@@ -59,16 +67,16 @@ public class ApplicationSpecification implements ISpecification<Application>{
             return true;
         } else {
             unsatisfiedReasons.put(
-                    ResponseStatus.CELLPHONE_NOT_UNIQUE.getCode(),
-                    ResponseStatus.CELLPHONE_NOT_UNIQUE.getMessage());
+                    ResponseStatus.CELLPHONE_EXISTED.getCode(),
+                    ResponseStatus.CELLPHONE_EXISTED.getMessage());
             return false;
         }
     }
 
-    private boolean isValidationCodeValid(String mobilePhone){
+    private boolean isValidationCodeValid(String mobilePhone, String smsValidationCode){
         SMS sms = new SMS();
         sms.setMobilePhone(mobilePhone);
-        sms.setSmsValidationCode(mobilePhone);
+        sms.setSmsValidationCode(smsValidationCode);
         List<SMS> smsList = smsRepository.getSmsByCellphoneAndValidationCode(sms);
         if (smsList.isEmpty()) {
             unsatisfiedReasons.put(

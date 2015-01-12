@@ -69,7 +69,7 @@
 
 	<insert id="addProjectApplicationInfo" useGeneratedKeys="true" keyProperty="applicationId" parameterType="Application">
      	<![CDATA[
-     		insert into applications(username,creation_time) values(#{user.userName},#{creationDate})
+     		insert into applications(username,creation_time) values(#{user.userName},#{creationTime})
      	]]>
 	</insert>
 

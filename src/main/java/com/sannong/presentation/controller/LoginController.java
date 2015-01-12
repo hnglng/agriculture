@@ -173,8 +173,8 @@ public class LoginController {
             response.setData(models);
         }catch(Exception ex){
             logger.error(ex.getMessage());
-            response.setStatusCode(ResponseStatus.FAILED.getCode());
-            response.setStatusMessage(ResponseStatus.FAILED.getMessage());
+            response.setStatusCode(ResponseStatus.FAILURE.getCode());
+            response.setStatusMessage(ResponseStatus.FAILURE.getMessage());
         }
         return response;
     }

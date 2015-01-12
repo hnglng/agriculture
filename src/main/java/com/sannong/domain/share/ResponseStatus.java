@@ -12,10 +12,12 @@ public enum ResponseStatus {
     LOGIN_SUCCESS(1002, "登录成功"),
     PASSWORD_SENT(1003, "新密码已发送"),
     CAPTCHA_SENT(1004, "验证码已发送"),
+    REDIRECT(1005, "重定向"),
+    MULTI_STATUS(1006, "多个状态"),
     /**
      * 2000 - 2999, failure status
      */
-    FAILED(2000, "失败"),
+    FAILURE(2000, "失败"),
     USER_NOT_FOUND(2001, "用户不存在"),
     PASSWORD_INCORRECT(2002, "密码不正确"),
     OLD_PASSWORD_MISMATCH(2003, "旧密码不匹配"),
@@ -27,10 +29,12 @@ public enum ResponseStatus {
     NAME_OR_CELLPHONE_NOT_FOUND(2009, "姓名或手机号码不存在"),
     NAME_OR_CELLPHONE_MISMATCH(2010, "姓名或手机号码不匹配"),
     PASSWORD_UNSENT(2011, "新密码发送失败"),
-    CELLPHONE_NOT_UNIQUE(2012, "手机号码已存在"),
+    CELLPHONE_EXISTED(2012, "手机号码已存在"),
     CAPTCHA_UNSENT(2013, "验证码发送失败"),
     CELLPHONE_IS_NULL(2014, "手机号码为空"),
-    USERNAME_OR_PASSWORD_ERROR(2015, "用户名或密码错误");
+    USERNAME_OR_PASSWORD_ERROR(2015, "用户名或密码错误"),
+    REDIRECT_BY_FAILURE(2016, "因失败重定向"),
+    MULTI_FAILED_STATUS(2017, "多个失败状态");
 
     private int code;
     private String message;

@@ -55,33 +55,32 @@ require(['../main'], function () {
 
             projectApplication.Controller = {
                 handleValidationCodeClick: function(){
-                    projectApplication.View.enableSubmitButton();
+                    //projectApplication.View.enableSubmitButton();
 
                     if ($("#projectAppForm_validationBtn").hasClass("disabled")){
                         return;
                     }
 
-                    /*
                     if (formValidator.getValidator("#projectAppForm").form() == true) {
                         ajaxHandler.sendRequest({
-                            url: 'project-application/sendValidationCode',
+                            url: 'project-application/captcha',
                             type: 'POST',
-                            data: {cellphone: $("#projectAppForm_cellphone").val()},
+                            data: {mobilePhone: $("#projectAppForm_cellphone").val()},
                             success: function (response) {
                                 if (response.statusCode < 2000) {
                                     additionalMethods.updateTimeLabel("#projectAppForm_validationBtn", "验证码");
                                     projectApplication.View.enableSubmitButton();
                                     $("#projectAppForm_validationBtn").addClass("disabled");
                                     $("#projectAppForm_validationCode").removeAttr("disabled");
-                                    projectApplication.View.showValidationCodeMessage(response.statusDescription);
+                                    projectApplication.View.showValidationCodeMessage(response.statusMessage);
                                 } else {
                                     $("#projectAppForm_validationBtn").removeClass("disabled");
                                     $("#projectAppForm_validationCode").attr({disabled: "disabled"});
                                     projectApplication.View.disableSubmitButton();
                                     if (response.statusCode == 2012){
-                                        projectApplication.View.showUniqueCellphoneError(response.statusDescription);
+                                        projectApplication.View.showUniqueCellphoneError(response.statusMessage);
                                     }else{
-                                        projectApplication.View.showValidationCodeError(response.statusDescription);
+                                        projectApplication.View.showValidationCodeError(response.statusMessage);
                                     }
                                 }
                             },
@@ -94,39 +93,24 @@ require(['../main'], function () {
 
                         });
                     }
-                    */
                 },
                 handleFormSubmit: function(){
-                    $("#projectAppModelTrigger").click();
-                    /*
+                    //$("#projectAppModelTrigger").click();
                     if ($("#projectAppForm_submit").hasClass("disabled") == true) { return;}
 
                     if (formValidator.getValidator("#projectAppForm").form() == true){
-
-                        ajaxHandler.sendRequest({
-                            type: "POST",
-                            url: "project-application/validate-application-form",
-                            dataType: "json",
-                            data: {
-                                cellphone: $("#projectAppForm_cellphone").val(),
-                                validationCode: $("#projectAppForm_validationCode").val()
-                            },
-                            success: function (response) {
-                                if (response.statusCode < 2000) {
-                                    $("#projectAppModelTrigger").click();
-                                } else{
-                                    projectApplication.View.showValidationCodeError(response.statusDescription);
-                                }
-                            },
-                            fail: function (response) {
-                                projectApplication.View.showValidationCodeError(response.statusDescription);
-                            }
-                        });
+                        $("#projectAppModelTrigger").click();
                     }
-                    */
                 },
                 handleConfirmedSubmit: function(){
-                    $("#projectAppForm").submit();
+                    $("#projectAppForm").ajaxSubmit(function(response) {
+                        if (response.statusCode < 2000) {
+                            window.location.href = response.uri;
+                        } else{
+                            $("#closeModal").click();
+                            projectApplication.View.showValidationCodeError(response.statusMessage);
+                        }
+                    });
                 }
             };
 

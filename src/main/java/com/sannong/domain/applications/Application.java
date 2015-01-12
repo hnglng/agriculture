@@ -1,5 +1,6 @@
 package com.sannong.domain.applications;
 
+import com.sannong.domain.sms.SMS;
 import com.sannong.domain.user.User;
 
 import java.io.Serializable;
@@ -19,6 +20,7 @@ public class Application implements Serializable{
 	private List<Questionnaire> questionnaires;
 	private String comments;
 	private Timestamp creationTime;
+	private SMS sms;
 
 	public Long getApplicationId() {
 		return applicationId;
@@ -58,5 +60,13 @@ public class Application implements Serializable{
 
 	public void setCreationTime(Timestamp creationTime) {
 		this.creationTime = creationTime;
+	}
+
+	public SMS getSms() {
+		return sms;
+	}
+
+	public void setSms(SMS sms) {
+		this.sms = sms;
 	}
 }

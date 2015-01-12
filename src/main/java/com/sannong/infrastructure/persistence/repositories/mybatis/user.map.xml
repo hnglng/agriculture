@@ -40,14 +40,14 @@
 		 last_updated
 		 from users
 			 <where>
+				 <if test="mobilePhone != null">
+					 mobile_phone = #{mobilePhone}
+				 </if>
 				 <if test="userName != null">
-					 username = #{userName}
+					 and username = #{userName}
 				 </if>
 				 <if test="realName != null">
 					 and real_name = #{realName}
-				 </if>
-				 <if test="cellphone != null">
-					 and mobile_phone = #{mobilePhone}
 				 </if>
 			</where>
      </select>
