@@ -82,7 +82,7 @@ public class ProjectApplicationServiceImpl implements IProjectApplicationService
         questionnaire.setCreationTime(creationTime);
         questionnaire.setLastUpdated(creationTime);
         questionnaire.setAnswers(application.getQuestionnaires().get(0).getAnswers());
-        questionnaire.setConcatenatedAnswers(questionnaire.getConcatenatedAnswers());
+        //questionnaire.setConcatenatedAnswers(questionnaire.getConcatenatedAnswers());
         applicationRepository.addQuestionnaire(questionnaire);
 
         // Send email to admin

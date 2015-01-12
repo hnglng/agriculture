@@ -1,6 +1,8 @@
 package com.sannong.domain.applications;
 
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
@@ -80,14 +82,18 @@ public class Questionnaire implements Serializable {
 
 	public String getConcatenatedAnswers() {
 
-		if (answers == null){
+		if (StringUtils.isNotBlank(concatenatedAnswers)){
 			return concatenatedAnswers;
+		} else if (answers == null){
+			return "";
+		} else if (answers.size() > 0){
+			for (String answer : answers) {
+				concatenatedAnswers = concatenatedAnswers + answer + ";";
+			}
+			return concatenatedAnswers.substring(0, concatenatedAnswers.lastIndexOf(";"));
+		} else{
+			return "";
 		}
-
-		for (String answer : answers){
-			concatenatedAnswers = concatenatedAnswers + answer + ",";
-		}
-		return concatenatedAnswers.substring(0, concatenatedAnswers.lastIndexOf(","));
 	}
 
 	public void setConcatenatedAnswers(String concatenatedAnswers) {

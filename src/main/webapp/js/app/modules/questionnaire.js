@@ -133,25 +133,28 @@ define(['jquery', 'sannong', 'handlebars'], function($, sannong, handlebars) {
         },
         fillAnswers: function(questionnaireNo, answerString, disableAnswerOptions){
             if (answerString != "" && answerString != null){
-                var answers = answerString.split(",");
+                var answersByQuestion = answerString.split(";");
 
-                for (var i = 0;i < answers.length;i++){
-                    var $_radios = $(".J_group_choice").eq(i).find("input"),
-                        answer = answers[i];
+                for (var i = 0;i < answersByQuestion.length;i++){
+                    var $_radios = $(".J_group_choice").eq(i).find("input");
 
                     $_radios.each(function(){
                         if (disableAnswerOptions == true){
                             $(this).attr("disabled","disabled");
                         }
 
-                        if($(this).val() === answer){
-                            if ($(this).parent(".radioCustom")){
-                                $(this).parent(".radioCustom").addClass("radioCustom-checked");
+                        var answers = answersByQuestion[i].split(",");
+                        for (var j = 0;j < answers.length;j++){
+                            if($(this).val() === answers[j]){
+                                if ($(this).parent(".radioCustom")){
+                                    $(this).parent(".radioCustom").addClass("radioCustom-checked");
+                                }
+                                if ($(this).parent(".checkboxCustom")){
+                                    $(this).parent(".checkboxCustom").toggleClass("checkboxCustom-checked");
+                                    $(this).attr("checked", "checked");
+                                }
                             }
-                            if ($(this).parent(".checkboxCustom")){
-                                $(this).parent(".checkboxCustom").toggleClass("checkboxCustom-checked");
-                                $(this).attr("checked", "checked");
-                            }
+
                         }
                     });
                 }
