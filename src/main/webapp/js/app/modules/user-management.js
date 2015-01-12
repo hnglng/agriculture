@@ -77,7 +77,6 @@ define(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler
                 renderQuestionnaireView: function(questionnaireNumber, application){
                     var latestQuestionnaireNumber = application.questionnaires.length,
                         questionnaireObj = application.questionnaires[questionnaireNumber - 1],
-                        concatenatedAnswers = questionnaireObj.concatenatedAnswers,
                         user = application.user;
 
                     if (questionnaireNumber > latestQuestionnaireNumber){
@@ -94,9 +93,15 @@ define(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler
                         $("#userTextShow").show();
                     }
 
-                    questionnaire.View.renderQuestionnaireView(questionnaireObj);
+                    if (questionnaireObj === null || questionnaireObj === undefined) {
+                        questionnaire.Controller.showQuestionnaire(questionnaireNumber);
+                    }else{
+                        questionnaire.View.renderQuestionnaireView(questionnaireObj);
+                    }
 
-                    questionnaire.View.fillAnswers(questionnaireNumber, concatenatedAnswers, false);
+                    if (questionnaireObj !== null && questionnaireObj !== undefined){
+                        questionnaire.View.fillAnswers(questionnaireNumber, questionnaireObj.concatenatedAnswers, false);
+                    }
 
                     questionnaire.View.renderApplicationComments(application);
                 }
