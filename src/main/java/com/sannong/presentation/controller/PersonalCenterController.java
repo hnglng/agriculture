@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.sannong.domain.applications.Application;
+import com.sannong.domain.applications.Questionnaire;
 import com.sannong.domain.sms.SMS;
 import com.sannong.domain.user.User;
 import com.sannong.domain.region.City;
@@ -65,12 +66,7 @@ public class PersonalCenterController {
     public @ResponseBody Response showUserProfile(HttpServletRequest request) {
         String userName = request.getParameter("userName");
         if (StringUtils.isBlank(userName)){
-            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            if (principal instanceof UserDetails) {
-                userName = ((UserDetails) principal).getUsername();
-            } else {
-                userName = principal.toString();
-            }
+            userName = getSignedInUserName();
         }
 
         Response response = new Response();
@@ -94,6 +90,17 @@ public class PersonalCenterController {
             response.setStatusMessage(ResponseStatus.USER_NOT_FOUND.getMessage());
         }
         return response;
+    }
+
+    private String getSignedInUserName(){
+        String userName;
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof UserDetails) {
+            userName = ((UserDetails) principal).getUsername();
+        } else {
+            userName = principal.toString();
+        }
+        return userName;
     }
 
     @RequestMapping(value = {"/user-profile"}, method = RequestMethod.POST)
@@ -152,7 +159,12 @@ public class PersonalCenterController {
     Application getUserApplication(@PathVariable("userName") String userName) throws Exception {
         return projectService.getApplicationBy(userName);
     }
-
+    @RequestMapping(value = "/myapplication", method = RequestMethod.GET)
+    public @ResponseBody
+    Application getMyApplication() throws Exception {
+        String userName = getSignedInUserName();
+        return projectService.getApplicationBy(userName);
+    }
 
     private Map buildUserQueryCondition(HttpServletRequest request){
         Map<String, Object> map = new HashMap<String,Object>();

@@ -18,6 +18,29 @@ require(['../main'], function () {
             userPersonalCenter.View = {
             };
 
+            function showMyQuestionnaireAnswers(questionnaireNumber) {
+                questionnaire.View.resetQuestionnaireView(questionnaireNumber);
+
+                $("#questionnaireNo").val(questionnaireNumber);
+
+                $.ajax({
+                    type : "GET",
+                    dataType : "json",
+                    url : 'user-personal-center/myapplication',
+                    success : function(response) {
+                        var data = response.questionnaires[questionnaireNumber - 1],
+                            concatenatedAnswers = data.concatenatedAnswers;
+                        questionnaire.View.renderQuestionnaireView(data);
+                        questionnaire.View.fillAnswers(questionnaireNumber, concatenatedAnswers, false);
+                        userManagement.View.renderApplicationComments(response);
+
+                    },
+                    fail: function(data){
+
+                    }
+                });
+
+            }
             userPersonalCenter.init = function(){
 
                 $("#userManagementTab").click(function(){
@@ -37,7 +60,7 @@ require(['../main'], function () {
                 eventHandler.registerEventListener();
                 userPersonalCenter.init();
                  if ($("#userAppFormTab").length > 0){
-                    questionnaire.Controller.showQuestionnaireAnswers(1);
+                     showMyQuestionnaireAnswers(1);
                 }
             })
 

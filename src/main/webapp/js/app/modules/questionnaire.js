@@ -208,32 +208,6 @@ define(['jquery', 'sannong', 'handlebars'], function($, sannong, handlebars) {
     };
 
     questionnaire.Controller = {
-        showProjectQuestionnaire: function(){
-            $.ajax({
-                type: "GET",
-                dataType: "json",
-                url: 'project-application/questionnaire/1',
-                success: function(data) {
-                    questionnaire.View.renderQuestionnaireView(data);
-                }
-            });
-        },
-        showQuestionnaireAnswers: function(questionnaireNo) {
-            questionnaire.View.resetQuestionnaireView(questionnaireNo);
-
-            $("#questionnaireNo").val(questionnaireNo);
-            var questionnaireNo = parseInt(questionnaireNo);
-
-            $.ajax({
-                type: "get",
-                dataType: "json",
-                url: 'questionAndAnswer',
-                data: "questionnaireNo=" + questionnaireNo,
-                success: function(data) {
-                    questionnaire.View.renderQuestionnaireAnswers(questionnaireNo, data);
-                }
-            });
-        }
     };
 
     sannong.Questionnaire = questionnaire;

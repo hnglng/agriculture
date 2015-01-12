@@ -54,6 +54,16 @@ require(['../main'], function () {
             };
 
             projectApplication.Controller = {
+                showProjectQuestionnaire: function(){
+                    $.ajax({
+                        type: "GET",
+                        dataType: "json",
+                        url: 'project-application/questionnaire/1',
+                        success: function(data) {
+                            questionnaire.View.renderQuestionnaireView(data);
+                        }
+                    });
+                },
                 handleValidationCodeClick: function(){
                     //projectApplication.View.enableSubmitButton();
 
@@ -130,7 +140,7 @@ require(['../main'], function () {
 
             $(function() {
                 selector.initSelect('select');
-                questionnaire.Controller.showProjectQuestionnaire();
+                projectApplication.Controller.showProjectQuestionnaire();
                 registerEventListener();
             });
 
