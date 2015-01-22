@@ -21,7 +21,7 @@ requirejs.config({
         "login": "app/modules/login",
         "eventHandler": "app/modules/event-handler",
         "userManagement": "app/modules/user-management",
-        "userApplicationForm": "app/modules/user-application-form",
+        "userApplication": "app/modules/user-application",
         "userPassword": "app/modules/user-password",
         "userProfile": "app/modules/user-profile",
         "custom": "app/modules/custom",
@@ -94,9 +94,9 @@ requirejs.config({
             deps :['jquery'],
             exports : "userManagement"
         },
-        "userApplicationForm": {
+        "userApplication": {
             deps :['jquery'],
-            exports : "userApplicationForm"
+            exports : "userApplication"
         },
         "userPassword": {
             deps :['jquery'],

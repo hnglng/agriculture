@@ -74,7 +74,7 @@
                         </sec:authorize>
                         <sec:authorize access="hasRole('ROLE_USER') and isAuthenticated()">
                             <div id="userAppFormTabPane" role="tabpane" class="tab-pane active">
-                                <jsp:include page='user-application-form.jsp'/>
+                                <jsp:include page='user-application.jsp'/>
                             </div>
                         </sec:authorize>
                         <sec:authorize access="(hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')) and isAuthenticated()">

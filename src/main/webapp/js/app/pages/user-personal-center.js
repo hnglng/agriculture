@@ -4,11 +4,11 @@
 require(['../main'], function () {
     require(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler',
             'formValidator', 'additionalMethods', 'pagination', 'selector', 'jqueryForm',
-            'questionnaire', 'login', 'eventHandler', 'userManagement', 'userApplicationForm',
+            'questionnaire', 'login', 'eventHandler', 'userManagement', 'userApplication',
             'userProfile', 'userPassword', 'custom'],
         function($, bootstrap, handlebars, sannong, validate, ajaxHandler,
                  formValidator, additionalMethods, pagination, selector, jqueryForm,
-                 questionnaire, login, eventHandler, userManagement, userApplicationForm,
+                 questionnaire, login, eventHandler, userManagement, userApplication,
                  userProfile, userPassword, custom) {
 
             "use strict";
@@ -37,7 +37,7 @@ require(['../main'], function () {
                 eventHandler.registerEventListener();
                 userPersonalCenter.init();
                  if ($("#userAppFormTab").length > 0){
-                     userApplicationForm.Controller.showMyApplication(1);
+                     userApplication.Controller.showMyApplication(1);
 
                 }
             })

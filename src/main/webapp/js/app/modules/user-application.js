@@ -6,7 +6,7 @@ define(['jquery', 'bootstrap', 'sannong', 'validate',  'formValidator', 'additio
 
             "use strict";
 
-            var userApplicationForm = {};
+            var userApplication = {};
 
             function submitForm(saveOrSubmit){
                 if (formValidator.getValidator("#answerForm").form() == true){
@@ -31,7 +31,7 @@ define(['jquery', 'bootstrap', 'sannong', 'validate',  'formValidator', 'additio
                 }
             }
 
-            userApplicationForm.Controller = {
+            userApplication.Controller = {
                 showMyApplication: function(questionnaireNumber) {
                     questionnaire.View.resetQuestionnaireView(questionnaireNumber);
 
@@ -79,32 +79,32 @@ define(['jquery', 'bootstrap', 'sannong', 'validate',  'formValidator', 'additio
                     return false;
                 },
                 q1: function(){
-                    userApplicationForm.Controller.showMyApplication(1);
+                    userApplication.Controller.showMyApplication(1);
                 },
                 q2: function(){
-                    userApplicationForm.Controller.showMyApplication(2);
+                    userApplication.Controller.showMyApplication(2);
                 },
                 q3: function(){
-                    userApplicationForm.Controller.showMyApplication(3);
+                    userApplication.Controller.showMyApplication(3);
                 },
                 q4: function(){
-                    userApplicationForm.Controller.showMyApplication(4);
+                    userApplication.Controller.showMyApplication(4);
                 },
                 q5: function(){
-                    userApplicationForm.Controller.showMyApplication(5);
+                    userApplication.Controller.showMyApplication(5);
                 }
             };
 
             function subscribeEvent(){
-                eventHandler.subscribe("userApplicationForm:save", userApplicationForm.Controller.stage);
-                eventHandler.subscribe("userApplicationForm:submit", userApplicationForm.Controller.submitForm);
-                eventHandler.subscribe("userApplicationForm:confirmSubmit", userApplicationForm.Controller.confirmSubmit);
+                eventHandler.subscribe("userApplication:save", userApplication.Controller.stage);
+                eventHandler.subscribe("userApplication:submit", userApplication.Controller.submitForm);
+                eventHandler.subscribe("userApplication:confirmSubmit", userApplication.Controller.confirmSubmit);
 
-                eventHandler.subscribe("userApplicationForm:q1", userApplicationForm.Controller.q1);
-                eventHandler.subscribe("userApplicationForm:q2", userApplicationForm.Controller.q2);
-                eventHandler.subscribe("userApplicationForm:q3", userApplicationForm.Controller.q3);
-                eventHandler.subscribe("userApplicationForm:q4", userApplicationForm.Controller.q4);
-                eventHandler.subscribe("userApplicationForm:q5", userApplicationForm.Controller.q5);
+                eventHandler.subscribe("userApplication:q1", userApplication.Controller.q1);
+                eventHandler.subscribe("userApplication:q2", userApplication.Controller.q2);
+                eventHandler.subscribe("userApplication:q3", userApplication.Controller.q3);
+                eventHandler.subscribe("userApplication:q4", userApplication.Controller.q4);
+                eventHandler.subscribe("userApplication:q5", userApplication.Controller.q5);
             }
 
 
@@ -116,7 +116,7 @@ define(['jquery', 'bootstrap', 'sannong', 'validate',  'formValidator', 'additio
             })
 
 
-            sannong.UserApplicationForm = userApplicationForm;
-            return userApplicationForm;
+            sannong.UserApplicationForm = userApplication;
+            return userApplication;
 
 });
