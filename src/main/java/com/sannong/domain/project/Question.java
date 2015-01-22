@@ -1,4 +1,4 @@
-package com.sannong.domain.applications;
+package com.sannong.domain.project;
 
 import java.io.Serializable;
 

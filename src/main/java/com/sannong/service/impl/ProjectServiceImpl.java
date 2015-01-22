@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.sannong.domain.applications.*;
+import com.sannong.domain.project.*;
 import com.sannong.domain.user.User;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ import com.sannong.domain.user.RoleType;
 import com.sannong.infrastructure.mail.MailAsyncSender;
 import com.sannong.domain.user.UserRepository;
 import com.sannong.infrastructure.util.PasswordGenerator;
-import com.sannong.service.IProjectApplicationService;
+import com.sannong.service.IProjectService;
 import com.sannong.service.ISmsService;
 
 
@@ -31,9 +31,9 @@ import com.sannong.service.ISmsService;
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class ProjectApplicationServiceImpl implements IProjectApplicationService {
+public class ProjectServiceImpl implements IProjectService {
 
-    private static final Logger logger = Logger.getLogger(ProjectApplicationServiceImpl.class);
+    private static final Logger logger = Logger.getLogger(ProjectServiceImpl.class);
 
     @Autowired
     private UserRepository userRepository;

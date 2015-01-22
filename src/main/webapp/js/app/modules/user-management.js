@@ -275,10 +275,10 @@ define(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler
                 renderUserProfileEditView: function(userName, viewName){
                     ajaxHandler.sendRequest({
                         type: "GET",
-                        url: "user-personal-center/user-profile",
-                        data:{userName: userName},
+                        url: "/user-management/users/" + userName + '/profile',
+
                         success: function(response){
-                            if (response.statusCode < 2000){
+                            if (response.code < 2000){
                                 var userProfileViewHandler = handlebars.compile($("#user-profile-template").html());
                                 var html = userProfileViewHandler(response.models.userProfile);
                                 $(viewName).empty();
@@ -336,7 +336,7 @@ define(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler
                     $.ajax({
                         type : "GET",
                         dataType : "json",
-                        url : 'user-personal-center/applications/' + userName,
+                        url : '/user-management/users/' + userName + '/application',
                         success : function(data) {
                             userManagement.View.renderQuestionnaireView(questionnaireNumber, data);
                         },
@@ -357,7 +357,8 @@ define(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler
                 $.ajax({
                     type : "GET",
                     dataType : "json",
-                    url : 'user-personal-center/users/page/' + pageNumber,
+                    url : '/user-management/users',
+                    data:{pageNumber:1, perPage:10},
                     success : function(data) {
                         handlebars.registerHelper("addOne", function(index){return index + 1;});
                         var compiler = handlebars.compile($("#table-template").html()),
@@ -372,7 +373,7 @@ define(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler
                 $.ajax({
                     type : "GET",
                     dataType : "text",
-                    url : "user-personal-center/userTotalCount",
+                    url : "/user-management/users/count",
                     success : function(totalCount) {
                         var pageSize = 10;
                         $("#totalPage").text(Math.ceil(totalCount/pageSize));

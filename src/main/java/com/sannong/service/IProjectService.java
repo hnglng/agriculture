@@ -1,13 +1,12 @@
 package com.sannong.service;
 
 import java.util.List;
-import java.util.Map;
 
-import com.sannong.domain.applications.Application;
-import com.sannong.domain.applications.Question;
-import com.sannong.domain.applications.Questionnaire;
+import com.sannong.domain.project.Application;
+import com.sannong.domain.project.Question;
+import com.sannong.domain.project.Questionnaire;
 
-public interface IProjectApplicationService {
+public interface IProjectService {
     Application getApplicationBy(String userName);
 
     Questionnaire getQuestionnaire(Long applicationId, Integer questionnaireNumber);

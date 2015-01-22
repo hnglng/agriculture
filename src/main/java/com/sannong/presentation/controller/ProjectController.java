@@ -5,8 +5,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.sannong.domain.applications.ApplicationSpecification;
-import com.sannong.domain.applications.Questionnaire;
+import com.sannong.domain.project.ApplicationSpecification;
+import com.sannong.domain.project.Questionnaire;
 import com.sannong.domain.share.ResponseStatus;
 import com.sannong.infrastructure.util.PasswordGenerator;
 import com.sannong.presentation.model.Response;
@@ -18,20 +18,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.sannong.domain.applications.Application;
-import com.sannong.service.IProjectApplicationService;
+import com.sannong.domain.project.Application;
+import com.sannong.service.IProjectService;
 
 
 /**
  * Created by Bright Huang on 10/14/14.
  */
 @Controller
-public class ProjectApplicationController {
+public class ProjectController {
     private static final String APPLICATION_PAGE = "project-application";
     private static final String COMPLETION_PAGE = "project-application-completion";
 
     @Autowired
-    private IProjectApplicationService projectApplicationService;
+    private IProjectService projectApplicationService;
     @Autowired
     private ISmsService smsService;
     @Qualifier("applicationSpecification")

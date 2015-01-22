@@ -1,9 +1,7 @@
-package com.sannong.domain.applications;
+package com.sannong.domain.project;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.sannong.domain.applications.Application;
 
 import java.util.List;
 

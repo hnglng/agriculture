@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>  
 <!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.sannong.domain.applications.ApplicationRepository">
+<mapper namespace="com.sannong.domain.project.ApplicationRepository">
 	<cache eviction="FIFO" flushInterval="60000" size="512" readOnly="true" />
 
     <resultMap type="Application" id="applicationResultMap">
         <id property="applicationId" column="application_id" />
 		<result property="comments" column="comments" />
 		<result property="creationTime" column="creation_time" />
-		<association property="questionnaires" resultMap="com.sannong.domain.applications.ApplicationRepository.questionnaireResultMap" />
+		<association property="questionnaires" resultMap="com.sannong.domain.project.ApplicationRepository.questionnaireResultMap" />
 		<association property="user" resultMap="com.sannong.domain.user.UserRepository.userResultMap" />
 	</resultMap>
 
@@ -80,7 +80,7 @@
 		<result property="questionnaireCommitted" column="questionnaire_committed" />
 		<result property="creationTime" column="creation_time" />
 		<result property="lastUpdated" column="last_updated" />
-		<association property="questions" resultMap="com.sannong.domain.applications.ApplicationRepository.questionResultMap" />
+		<association property="questions" resultMap="com.sannong.domain.project.ApplicationRepository.questionResultMap" />
 	</resultMap>
 
 
