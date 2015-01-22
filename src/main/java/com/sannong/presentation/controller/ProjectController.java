@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.sannong.domain.project.ApplicationSpecification;
 import com.sannong.domain.project.Questionnaire;
-import com.sannong.domain.share.ResponseStatus;
+import com.sannong.domain.common.ResponseStatus;
 import com.sannong.infrastructure.util.PasswordGenerator;
 import com.sannong.presentation.model.Response;
 import com.sannong.service.ISmsService;

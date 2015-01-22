@@ -1,7 +1,7 @@
 package com.sannong.domain.project;
 
-import com.sannong.domain.share.ISpecification;
-import com.sannong.domain.share.ResponseStatus;
+import com.sannong.domain.common.ISpecification;
+import com.sannong.domain.common.ResponseStatus;
 import com.sannong.domain.sms.SMS;
 import com.sannong.domain.sms.SmsRepository;
 import com.sannong.domain.user.User;

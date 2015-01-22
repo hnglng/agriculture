@@ -1,4 +1,4 @@
-package com.sannong.domain.share;
+package com.sannong.domain.common;
 
 import java.util.Map;
 

@@ -1,4 +1,4 @@
-package com.sannong.domain.share;
+package com.sannong.domain.common;
 
 /**
  * Created by Bright Huang on 1/21/15.

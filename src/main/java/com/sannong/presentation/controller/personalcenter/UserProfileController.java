@@ -2,7 +2,7 @@ package com.sannong.presentation.controller.personalcenter;
 
 import com.sannong.domain.region.City;
 import com.sannong.domain.region.District;
-import com.sannong.domain.share.ResponseStatus;
+import com.sannong.domain.common.ResponseStatus;
 import com.sannong.domain.sms.SMS;
 import com.sannong.domain.user.User;
 import com.sannong.infrastructure.util.PasswordGenerator;
