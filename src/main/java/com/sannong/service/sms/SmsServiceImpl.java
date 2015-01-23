@@ -5,7 +5,7 @@ import com.sannong.domain.sms.SmsUrlFactory;
 import com.sannong.domain.sms.SMS;
 import com.sannong.domain.sms.SmsRepository;
 import com.sannong.infrastructure.sms.SmsSender;
-import com.sannong.infrastructure.util.AppConfig;
+import com.sannong.infrastructure.util.AppConfigReader;
 import com.sannong.infrastructure.util.PasswordGenerator;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -28,7 +28,7 @@ public class SmsServiceImpl implements ISmsService {
     @Autowired
     private SmsRepository smsRepository;
     @Autowired
-    private AppConfig appConfig;
+    private AppConfigReader appConfigReader;
     @Autowired
     private SmsUrlFactory smsUrlFactory;
 
@@ -69,11 +69,11 @@ public class SmsServiceImpl implements ISmsService {
             return 0;
         }
 
-        if (request.getSession().getAttribute(appConfig.getSessionSmsCodes()) == null) {
+        if (request.getSession().getAttribute(appConfigReader.getSessionSmsCodes()) == null) {
             return 1;
         }
 
-        Map<Date, String> map = (HashMap<Date, String>) request.getSession().getAttribute(appConfig.getSessionSmsCodes());
+        Map<Date, String> map = (HashMap<Date, String>) request.getSession().getAttribute(appConfigReader.getSessionSmsCodes());
 
         Iterator iterator = map.entrySet().iterator();
         while (iterator.hasNext()) {
@@ -125,23 +125,23 @@ public class SmsServiceImpl implements ISmsService {
             sms.setSmsValidationCode(regcode);
 
             Date ts = new Date(System.currentTimeMillis());
-            if (request.getSession().getAttribute(appConfig.getSessionSmsCodes()) != null) {
-                map = (HashMap<Date, String>) request.getSession().getAttribute(appConfig.getSessionSmsCodes());
+            if (request.getSession().getAttribute(appConfigReader.getSessionSmsCodes()) != null) {
+                map = (HashMap<Date, String>) request.getSession().getAttribute(appConfigReader.getSessionSmsCodes());
             }
             map.put(ts, regcode);
 
-            request.getSession().setAttribute(appConfig.getSessionSmsCodes(), map);
+            request.getSession().setAttribute(appConfigReader.getSessionSmsCodes(), map);
 
             String content = "验证码为:" + regcode;
             if (smstype.equals("0")) {
-                content = appConfig.getProperty("sms-welcome").replace("{0}", regcode);
+                content = appConfigReader.getProperty("sms-welcome").replace("{0}", regcode);
             }
             if (smstype.equals("1")) {
-                content = appConfig.getProperty("sms-changeMobile").replace("{0}", regcode);
+                content = appConfigReader.getProperty("sms-changeMobile").replace("{0}", regcode);
                 //content="改变你在三农网上的注册手机号码，验证码为:"+regcode;
             }
             if (smstype.equals("2")) {
-                content = appConfig.getProperty("sms-newPassword").replace("{0}", regcode);
+                content = appConfigReader.getProperty("sms-newPassword").replace("{0}", regcode);
                 //content="你在三农网上新密码为:"+regcode;
             }
 

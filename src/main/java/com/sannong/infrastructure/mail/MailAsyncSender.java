@@ -1,6 +1,6 @@
 package com.sannong.infrastructure.mail;
 
-import com.sannong.infrastructure.util.AppConfig;
+import com.sannong.infrastructure.util.AppConfigReader;
 import jodd.mail.Email;
 import jodd.mail.SendMailSession;
 import jodd.mail.SimpleAuthenticator;
@@ -31,13 +31,13 @@ public class MailAsyncSender {
 
     public void sendMail(String mailContent){
         try{
-            AppConfig appConfig = new AppConfig();
-            String smtpSender = appConfig.getProperty("smtp-sender");
-            String smtpServerName = appConfig.getProperty("smtp-server");
-            String smtpAccount = appConfig.getProperty("smtp-account");
-            String smtpPassword = appConfig.getProperty("smtp-password");
-            String mailOfReceivers = appConfig.getProperty("newApp-admin-email");
-            String mailSubject = appConfig.getProperty("newApp-email-subject");
+            AppConfigReader appConfigReader = new AppConfigReader();
+            String smtpSender = appConfigReader.getProperty("smtp-sender");
+            String smtpServerName = appConfigReader.getProperty("smtp-server");
+            String smtpAccount = appConfigReader.getProperty("smtp-account");
+            String smtpPassword = appConfigReader.getProperty("smtp-password");
+            String mailOfReceivers = appConfigReader.getProperty("newApp-admin-email");
+            String mailSubject = appConfigReader.getProperty("newApp-email-subject");
 
             taskExecutor.execute(new SendTask(smtpSender, smtpServerName, smtpAccount,
                     smtpPassword, mailOfReceivers, mailContent, mailSubject));
