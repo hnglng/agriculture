@@ -11,7 +11,7 @@ import java.util.List;
  * @author william zhang
  * create application class
  */
-public class Application implements Serializable{
+public class ApplicationEntity implements Serializable{
 
 	private static final long serialVersionUID = 4282850771969955235L;
 	

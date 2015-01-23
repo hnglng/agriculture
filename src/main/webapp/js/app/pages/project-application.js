@@ -58,7 +58,7 @@ require(['../main'], function () {
                     $.ajax({
                         type: "GET",
                         dataType: "json",
-                        url: 'project-application/questionnaire/1',
+                        url: 'project-application/questionnaires/1',
                         success: function(data) {
                             questionnaire.View.renderQuestionnaireView(data);
                         }

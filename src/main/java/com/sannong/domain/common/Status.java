@@ -3,20 +3,13 @@ package com.sannong.domain.common;
 /**
  * Created by Bright Huang on 11/29/14.
  */
-public enum ResponseStatus {
-    /**
-     * 1000 - 1999, success status
-     */
+public enum Status {
     OK(1000, "成功"),
     PASSWORD_UPDATED(1001, "密码已更新"),
     LOGIN_SUCCESS(1002, "登录成功"),
     PASSWORD_SENT(1003, "新密码已发送"),
     CAPTCHA_SENT(1004, "验证码已发送"),
-    REDIRECT(1005, "重定向"),
-    MULTI_STATUS(1006, "多个状态"),
-    /**
-     * 2000 - 2999, failure status
-     */
+    //////////////////////////////////
     FAILURE(2000, "失败"),
     USER_NOT_FOUND(2001, "用户不存在"),
     PASSWORD_INCORRECT(2002, "密码不正确"),
@@ -32,14 +25,12 @@ public enum ResponseStatus {
     CELLPHONE_EXISTED(2012, "手机号码已存在"),
     CAPTCHA_UNSENT(2013, "验证码发送失败"),
     CELLPHONE_IS_NULL(2014, "手机号码为空"),
-    USERNAME_OR_PASSWORD_ERROR(2015, "用户名或密码错误"),
-    REDIRECT_BY_FAILURE(2016, "因失败重定向"),
-    MULTI_FAILED_STATUS(2017, "多个失败状态");
+    USERNAME_OR_PASSWORD_ERROR(2015, "用户名或密码错误");
 
     private int code;
     private String message;
 
-    private ResponseStatus(int code, String message) {
+    private Status(int code, String message) {
         this.code = code;
         this.message = message;
     }

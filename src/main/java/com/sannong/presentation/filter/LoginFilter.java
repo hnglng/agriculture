@@ -26,12 +26,12 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
             throws AuthenticationException {
         String usernameParamName = getUsernameParameter();
         String usernameParamValue = request.getParameter(usernameParamName);
-        RequestWrapper requestWrapper = new RequestWrapper(request);
+        HttpRequestWrapper httpRequestWrapper = new HttpRequestWrapper(request);
         try{
             String userName = userService.getUserNameByMobilePhone(usernameParamValue);
 
             if (StringUtils.isNotBlank(userName)){
-                requestWrapper.addParameter(usernameParamName, userName);
+                httpRequestWrapper.addParameter(usernameParamName, userName);
             }
         }catch(Exception ex){
             logger.error(ex.getMessage());
@@ -39,10 +39,10 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         Authentication authentication;
 
-        if (requestWrapper.getParamMap().isEmpty()){
+        if (httpRequestWrapper.getParamMap().isEmpty()){
             authentication = super.attemptAuthentication(request, response);
         }else{
-            authentication = super.attemptAuthentication(requestWrapper, response);
+            authentication = super.attemptAuthentication(httpRequestWrapper, response);
         }
 
         return authentication;

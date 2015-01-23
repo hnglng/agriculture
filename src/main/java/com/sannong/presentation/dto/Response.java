@@ -1,4 +1,4 @@
-package com.sannong.presentation.model;
+package com.sannong.presentation.dto;
 
 
 

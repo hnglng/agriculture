@@ -8,7 +8,7 @@ import java.util.Map;
 /**
  * Created by Bright Huang on 11/19/14.
  */
-public class RequestWrapper extends HttpServletRequestWrapper {
+public class HttpRequestWrapper extends HttpServletRequestWrapper {
     private Map<String, String> paramMap = new HashMap<String, String>();
     /**
      * Constructs a request object wrapping the given request.
@@ -16,7 +16,7 @@ public class RequestWrapper extends HttpServletRequestWrapper {
      * @param request
      * @throws IllegalArgumentException if the request is null
      */
-    public RequestWrapper(HttpServletRequest request) {
+    public HttpRequestWrapper(HttpServletRequest request) {
         super(request);
     }
 

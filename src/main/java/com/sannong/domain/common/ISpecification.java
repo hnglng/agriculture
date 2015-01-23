@@ -1,6 +1,7 @@
 package com.sannong.domain.common;
 
-import java.util.Map;
+
+import java.util.List;
 
 /**
  * Created by Bright Huang on 1/9/15.
@@ -8,6 +9,7 @@ import java.util.Map;
 public interface ISpecification<T> {
 
     boolean isSatisfiedBy(T t);
-    Map<Integer, String> getUnsatisfiedReasons();
+
+    List<Error> getErrors();
 
 }

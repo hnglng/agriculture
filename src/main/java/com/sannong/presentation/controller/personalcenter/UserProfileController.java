@@ -2,11 +2,11 @@ package com.sannong.presentation.controller.personalcenter;
 
 import com.sannong.domain.region.City;
 import com.sannong.domain.region.District;
-import com.sannong.domain.common.ResponseStatus;
+import com.sannong.domain.common.Status;
 import com.sannong.domain.sms.SMS;
 import com.sannong.domain.user.User;
 import com.sannong.infrastructure.util.PasswordGenerator;
-import com.sannong.presentation.model.Response;
+import com.sannong.presentation.dto.Response;
 import com.sannong.service.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -76,12 +76,12 @@ public class UserProfileController {
             models.put("cities", cities);
             models.put("districts", districts);
 
-            response.setStatusCode(ResponseStatus.OK.getCode());
-            response.setStatusMessage(ResponseStatus.OK.getMessage());
+            response.setStatusCode(Status.OK.getCode());
+            response.setStatusMessage(Status.OK.getMessage());
             response.setData(models);
         }else{
-            response.setStatusCode(ResponseStatus.USER_NOT_FOUND.getCode());
-            response.setStatusMessage(ResponseStatus.USER_NOT_FOUND.getMessage());
+            response.setStatusCode(Status.USER_NOT_FOUND.getCode());
+            response.setStatusMessage(Status.USER_NOT_FOUND.getMessage());
         }
         return response;
     }
@@ -162,20 +162,20 @@ public class UserProfileController {
             User user = users.get(0);
             String encryptOldPassword = PasswordGenerator.encryptPassword(oldPassword, userName);
             if ( ! (user.getPassword().equals(encryptOldPassword))){
-                response.setStatusCode(ResponseStatus.OLD_PASSWORD_MISMATCH.getCode());
-                response.setStatusMessage(ResponseStatus.OLD_PASSWORD_MISMATCH.getMessage());
+                response.setStatusCode(Status.OLD_PASSWORD_MISMATCH.getCode());
+                response.setStatusMessage(Status.OLD_PASSWORD_MISMATCH.getMessage());
             }else if ( ! (newPassword.equals(confirmedPassword)) ){
-                response.setStatusCode(ResponseStatus.CONFIRMED_PASSWORD_MISMATCH.getCode());
-                response.setStatusMessage(ResponseStatus.CONFIRMED_PASSWORD_MISMATCH.getMessage());
+                response.setStatusCode(Status.CONFIRMED_PASSWORD_MISMATCH.getCode());
+                response.setStatusMessage(Status.CONFIRMED_PASSWORD_MISMATCH.getMessage());
             }
             String encryptedNewPassword = PasswordGenerator.encryptPassword(newPassword, userName);
             user.setPassword(encryptedNewPassword);
             userService.updatePassword(user);
-            response.setStatusCode(ResponseStatus.PASSWORD_UPDATED.getCode());
-            response.setStatusMessage(ResponseStatus.PASSWORD_UPDATED.getMessage());
+            response.setStatusCode(Status.PASSWORD_UPDATED.getCode());
+            response.setStatusMessage(Status.PASSWORD_UPDATED.getMessage());
         }else{
-            response.setStatusCode(ResponseStatus.USER_NOT_FOUND.getCode());
-            response.setStatusMessage(ResponseStatus.USER_NOT_FOUND.getMessage());
+            response.setStatusCode(Status.USER_NOT_FOUND.getCode());
+            response.setStatusMessage(Status.USER_NOT_FOUND.getMessage());
         }
 
         return response;

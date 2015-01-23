@@ -1,16 +1,17 @@
 package com.sannong.domain.project;
 
-import com.sannong.domain.common.ISpecification;
-import com.sannong.domain.common.ResponseStatus;
+import com.sannong.domain.common.*;
+import com.sannong.domain.common.Error;
 import com.sannong.domain.sms.SMS;
 import com.sannong.domain.sms.SmsRepository;
 import com.sannong.domain.user.User;
 import com.sannong.domain.user.UserRepository;
-import org.apache.commons.lang3.StringUtils;
+import com.sannong.presentation.command.CreateApplicationCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,9 +20,7 @@ import java.util.Map;
  * Created by Bright Huang on 1/7/15.
  */
 @Component
-public class ApplicationSpecification implements ISpecification<Application>{
-    Map<Integer, String> unsatisfiedReasons = new HashMap<Integer, String>();
-
+public class ApplicationSpecification implements ISpecification<CreateApplicationCommand>{
     @Qualifier("userRepository")
     @Autowired
     private UserRepository userRepository;
@@ -29,68 +28,55 @@ public class ApplicationSpecification implements ISpecification<Application>{
     @Autowired
     private SmsRepository smsRepository;
 
-    @Override
-    public boolean isSatisfiedBy(Application application){
-        String mobilePhone = application.getUser().getMobilePhone();
-        String smsValidationCode = application.getSms().getSmsValidationCode();
-
-        boolean isMobilePhoneNotNull = isMobilePhoneNotNull(mobilePhone);
-        boolean isMobilePhoneNotExisted = isMobilePhoneNotRegistered(mobilePhone);
-        boolean isValidationCodeValid = isValidationCodeValid(mobilePhone, smsValidationCode);
-
-        return isMobilePhoneNotNull && isMobilePhoneNotExisted && isValidationCodeValid;
-    }
-
-    public boolean isSatisfiedBy(String mobilePhone){
-        boolean isMobilePhoneNotNull = isMobilePhoneNotNull(mobilePhone);
-        boolean isMobilePhoneNotExisted = isMobilePhoneNotRegistered(mobilePhone);
-        return isMobilePhoneNotNull && isMobilePhoneNotExisted;
-    }
+    private List<Error> errors = new ArrayList<Error>();
 
 
-    private boolean isMobilePhoneNotNull(String mobilePhone){
-        if (StringUtils.isNotBlank(mobilePhone)){
-            return true;
-        }else{
-            unsatisfiedReasons.put(
-                    ResponseStatus.CELLPHONE_IS_NULL.getCode(),
-                    ResponseStatus.CELLPHONE_IS_NULL.getMessage());
-            return false;
-        }
-    }
-
-    private boolean isMobilePhoneNotRegistered(String mobilePhone) {
+    private boolean isMobilePhoneExisted(String mobilePhone) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("mobilePhone", mobilePhone);
         List<User> users = userRepository.getUserByCondition(map);
-        if (users.isEmpty()) {
-            return true;
-        } else {
-            unsatisfiedReasons.put(
-                    ResponseStatus.CELLPHONE_EXISTED.getCode(),
-                    ResponseStatus.CELLPHONE_EXISTED.getMessage());
-            return false;
-        }
+        return !users.isEmpty();
     }
 
-    private boolean isValidationCodeValid(String mobilePhone, String smsValidationCode){
+    private boolean isValidCaptcha(String mobilePhone, String smsValidationCode){
         SMS sms = new SMS();
         sms.setMobilePhone(mobilePhone);
         sms.setSmsValidationCode(smsValidationCode);
         List<SMS> smsList = smsRepository.getSmsByCellphoneAndValidationCode(sms);
-        if (smsList.isEmpty()) {
-            unsatisfiedReasons.put(
-                    ResponseStatus.CAPTCHA_INCORRECT.getCode(),
-                    ResponseStatus.CAPTCHA_INCORRECT.getMessage());
-            return false;
-        } else {
-            return true;
-        }
+        return !smsList.isEmpty();
+    }
+
+    private void addError(int code, String message, String field){
+        Error error = new Error();
+        error.setCode(code);
+        error.setMessage(message);
+        error.setField(field);
+        errors.add(error);
+
     }
 
     @Override
-    public Map<Integer, String> getUnsatisfiedReasons() {
-        return unsatisfiedReasons;
+    public boolean isSatisfiedBy(CreateApplicationCommand createApplicationCommand){
+        String mobilePhone = createApplicationCommand.getUser().getMobilePhone();
+        String smsValidationCode = createApplicationCommand.getSms().getSmsValidationCode();
+
+        boolean isMobilePhoneNotExisted = isMobilePhoneExisted(mobilePhone);
+        if (isMobilePhoneNotExisted){
+            addError(Status.CELLPHONE_EXISTED.getCode(), Status.CELLPHONE_EXISTED.getMessage(), "");
+        }
+
+        boolean isValidCaptcha = isValidCaptcha(mobilePhone, smsValidationCode);
+        if (isValidCaptcha){
+            addError(Status.CAPTCHA_INCORRECT.getCode(), Status.CAPTCHA_INCORRECT.getMessage(), "");
+        }
+
+        return isMobilePhoneNotExisted && isValidCaptcha;
     }
+
+    @Override
+    public List<Error> getErrors() {
+        return errors;
+    }
+
 
 }

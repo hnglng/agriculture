@@ -1,37 +1,34 @@
 package com.sannong.domain.common;
 
 /**
- * Created by Bright Huang on 1/21/15.
+ * Created by Bright Huang on 1/22/15.
  */
 public class Error {
+    private Integer code;
+    private String field;
+    private String message;
 
-    /**
-     HTTP Status Code Summary
-     200 OK - Everything worked as expected.
-     400 Bad Request - Often missing a required parameter.
-     401 Unauthorized - No valid API key provided.
-     402 Request Failed - Parameters were valid but request failed.
-     404 Not Found - The requested item doesn't exist.
-     500, 502, 503, 504 Server errors - something went wrong on Stripe's end.
-     */
+    public Integer getCode() {
+        return code;
+    }
 
-    /**
-     type
-     The type of error returned. Can be invalid_request_error, api_error, or card_error.
+    public void setCode(Integer code) {
+        this.code = code;
+    }
 
-     message
-     A human-readable message giving more details about the error. For card errors, these messages can be shown to your users.
+    public String getField() {
+        return field;
+    }
 
-     code optional
-     For card errors, a short string from amongst those listed on the right describing the kind of card error that occurred.
+    public void setField(String field) {
+        this.field = field;
+    }
 
-     param optional
-     The parameter the error relates to if the error is parameter-specific. You can use this to display a message near the correct form field, for example.
-     */
+    public String getMessage() {
+        return message;
+    }
 
-    //private static final String code;
-    //private static final String message;
-
-
-
+    public void setMessage(String message) {
+        this.message = message;
+    }
 }

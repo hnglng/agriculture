@@ -8,6 +8,7 @@ import java.util.Map;
 
 import com.sannong.domain.project.*;
 import com.sannong.domain.user.User;
+import com.sannong.presentation.command.CreateApplicationCommand;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,9 +49,9 @@ public class ProjectServiceImpl implements IProjectService {
     @Autowired
     private MailAsyncSender mailAsyncSender;
 
-    public void addApplication(Application application) {
+    public void createApplication(CreateApplicationCommand createApplicationCommand) {
 
-        User user = application.getUser();
+        User user = createApplicationCommand.getUser();
 
         // Add user info
         String password = PasswordGenerator.generatePassword(6);
@@ -70,18 +71,19 @@ public class ProjectServiceImpl implements IProjectService {
         userRepository.addUserAuthority(authorityMap);
 
         // Add application info
-        application.setUser(user);
-        application.setCreationTime(creationTime);
-        applicationRepository.addProjectApplicationInfo(application);
+        ApplicationEntity applicationEntity = new ApplicationEntity();
+        applicationEntity.setUser(user);
+        applicationEntity.setCreationTime(creationTime);
+        applicationRepository.addProjectApplicationInfo(applicationEntity);
 
         // Add questionnaires info
         Questionnaire questionnaire = new Questionnaire();
-        questionnaire.setApplicationId(application.getApplicationId());
+        questionnaire.setApplicationId(applicationEntity.getApplicationId());
         questionnaire.setQuestionnaireNumber(1);
         questionnaire.setQuestionnaireCommitted(true);
         questionnaire.setCreationTime(creationTime);
         questionnaire.setLastUpdated(creationTime);
-        questionnaire.setAnswers(application.getQuestionnaires().get(0).getAnswers());
+        questionnaire.setAnswers(applicationEntity.getQuestionnaires().get(0).getAnswers());
         //questionnaire.setConcatenatedAnswers(questionnaire.getConcatenatedAnswers());
         applicationRepository.addQuestionnaire(questionnaire);
 
@@ -110,7 +112,7 @@ public class ProjectServiceImpl implements IProjectService {
         return applicationRepository.getTotalQuestions();
     }
 
-    public Application getApplicationBy(String userName){
+    public ApplicationEntity getApplicationBy(String userName){
         return applicationRepository.getApplicationBy(userName);
     }
 

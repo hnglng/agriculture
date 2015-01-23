@@ -10,9 +10,9 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import com.sannong.domain.user.User;
-import com.sannong.domain.common.ResponseStatus;
+import com.sannong.domain.common.Status;
 import com.sannong.infrastructure.util.PasswordGenerator;
-import com.sannong.presentation.model.Response;
+import com.sannong.presentation.dto.Response;
 import com.sannong.service.ISmsService;
 import com.sannong.service.IUserService;
 import org.apache.commons.lang3.StringUtils;
@@ -86,8 +86,8 @@ public class LoginController {
     public @ResponseBody
     Response handleLoginSuccess() {
         Response response = new Response();
-        response.setStatusCode(ResponseStatus.LOGIN_SUCCESS.getCode());
-        response.setStatusMessage(ResponseStatus.LOGIN_SUCCESS.getMessage());
+        response.setStatusCode(Status.LOGIN_SUCCESS.getCode());
+        response.setStatusMessage(Status.LOGIN_SUCCESS.getMessage());
         response.setURI(USER_PERSONAL_CENTER_PAGE);
         return response;
     }
@@ -102,8 +102,8 @@ public class LoginController {
     public @ResponseBody
     Response handleLoginFailure() {
         return new Response(
-                ResponseStatus.USERNAME_OR_PASSWORD_ERROR.getCode(),
-                ResponseStatus.USERNAME_OR_PASSWORD_ERROR.getMessage());
+                Status.USERNAME_OR_PASSWORD_ERROR.getCode(),
+                Status.USERNAME_OR_PASSWORD_ERROR.getMessage());
     }
 
     /**
@@ -125,13 +125,13 @@ public class LoginController {
         Response response = new Response();
         List<User> users = userService.getUserByCondition(paramMap);
         if (users.isEmpty()) {
-            response.setStatusCode(ResponseStatus.NAME_OR_CELLPHONE_NOT_FOUND.getCode());
-            response.setStatusMessage(ResponseStatus.NAME_OR_CELLPHONE_NOT_FOUND.getMessage());
+            response.setStatusCode(Status.NAME_OR_CELLPHONE_NOT_FOUND.getCode());
+            response.setStatusMessage(Status.NAME_OR_CELLPHONE_NOT_FOUND.getMessage());
         } else {
             User user = users.get(0);
             if (!(user.getMobilePhone().equals(cellphone) && user.getRealName().equals(realName))) {
-                response.setStatusCode(ResponseStatus.NAME_OR_CELLPHONE_MISMATCH.getCode());
-                response.setStatusMessage(ResponseStatus.NAME_OR_CELLPHONE_MISMATCH.getMessage());
+                response.setStatusCode(Status.NAME_OR_CELLPHONE_MISMATCH.getCode());
+                response.setStatusMessage(Status.NAME_OR_CELLPHONE_MISMATCH.getMessage());
             }
             String password = PasswordGenerator.generatePassword(6);
             String smsResponse = smsService.sendNewPasswordMessage(cellphone, password);
@@ -139,11 +139,11 @@ public class LoginController {
                 user.setPassword(PasswordGenerator.encryptPassword(password, user.getUserName()));
                 user.setLastUpdated(new Timestamp(System.currentTimeMillis()));
                 userService.updatePassword(user);
-                response.setStatusCode(ResponseStatus.PASSWORD_SENT.getCode());
-                response.setStatusMessage(ResponseStatus.PASSWORD_SENT.getMessage());
+                response.setStatusCode(Status.PASSWORD_SENT.getCode());
+                response.setStatusMessage(Status.PASSWORD_SENT.getMessage());
             } else {
-                response.setStatusCode(ResponseStatus.PASSWORD_UNSENT.getCode());
-                response.setStatusMessage(ResponseStatus.PASSWORD_UNSENT.getMessage());
+                response.setStatusCode(Status.PASSWORD_UNSENT.getCode());
+                response.setStatusMessage(Status.PASSWORD_UNSENT.getMessage());
             }
         }
         return response;
@@ -168,13 +168,13 @@ public class LoginController {
             }
 
             models.put("realName", realName);
-            response.setStatusCode(ResponseStatus.OK.getCode());
-            response.setStatusMessage(ResponseStatus.OK.getMessage());
+            response.setStatusCode(Status.OK.getCode());
+            response.setStatusMessage(Status.OK.getMessage());
             response.setData(models);
         }catch(Exception ex){
             logger.error(ex.getMessage());
-            response.setStatusCode(ResponseStatus.FAILURE.getCode());
-            response.setStatusMessage(ResponseStatus.FAILURE.getMessage());
+            response.setStatusCode(Status.FAILURE.getCode());
+            response.setStatusMessage(Status.FAILURE.getMessage());
         }
         return response;
     }
