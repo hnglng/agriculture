@@ -1,4 +1,4 @@
-package com.sannong.domain.project;
+package com.sannong.domain.application;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;

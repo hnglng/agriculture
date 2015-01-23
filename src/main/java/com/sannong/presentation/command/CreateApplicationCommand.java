@@ -1,15 +1,17 @@
 package com.sannong.presentation.command;
 
-import com.sannong.domain.project.Questionnaire;
+import com.sannong.domain.application.Questionnaire;
 import com.sannong.domain.sms.SMS;
 import com.sannong.domain.user.User;
+
+import java.util.List;
 
 /**
  * Created by Bright Huang on 1/23/15.
  */
 public class CreateApplicationCommand {
     private User user;
-    private Questionnaire questionnaire;
+    private List<Questionnaire> questionnaires;
     private SMS sms;
 
     public User getUser() {
@@ -20,12 +22,12 @@ public class CreateApplicationCommand {
         this.user = user;
     }
 
-    public Questionnaire getQuestionnaire() {
-        return questionnaire;
+    public List<Questionnaire> getQuestionnaires() {
+        return questionnaires;
     }
 
-    public void setQuestionnaire(Questionnaire questionnaire) {
-        this.questionnaire = questionnaire;
+    public void setQuestionnaires(List<Questionnaire> questionnaires) {
+        this.questionnaires = questionnaires;
     }
 
     public SMS getSms() {

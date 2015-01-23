@@ -1,10 +1,10 @@
 package com.sannong.presentation.controller.personalcenter;
 
-import com.sannong.domain.project.ApplicationEntity;
+import com.sannong.domain.application.ApplicationEntity;
 import com.sannong.domain.user.User;
 import com.sannong.infrastructure.export.CsvExporter;
 import com.sannong.presentation.dto.DTO;
-import com.sannong.service.project.IProjectService;
+import com.sannong.service.application.IApplicationService;
 import com.sannong.service.user.IUserService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.annotations.Param;
@@ -37,7 +37,7 @@ public class UserManagementController {
     @Resource
     private IUserService userService;
     @Resource
-    private IProjectService projectService;
+    private IApplicationService projectService;
 
 
     private Map buildUserQueryCondition(HttpServletRequest request){
@@ -69,7 +69,7 @@ public class UserManagementController {
     }
 
     /**
-     * Get users by pagination.
+     * Get users with pagination.
      *  URL example: https://api.github.com/user/repos?page=3&per_page=100>
      * @param pageNumber
      * @param perPage

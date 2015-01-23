@@ -1,13 +1,13 @@
-package com.sannong.service.project;
+package com.sannong.service.application;
 
 import java.util.List;
 
-import com.sannong.domain.project.ApplicationEntity;
-import com.sannong.domain.project.Question;
-import com.sannong.domain.project.Questionnaire;
+import com.sannong.domain.application.ApplicationEntity;
+import com.sannong.domain.application.Question;
+import com.sannong.domain.application.Questionnaire;
 import com.sannong.presentation.command.CreateApplicationCommand;
 
-public interface IProjectService {
+public interface IApplicationService {
     ApplicationEntity getApplicationBy(String userName);
 
     Questionnaire getQuestionnaire(Long applicationId, Integer questionnaireNumber);

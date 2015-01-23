@@ -1,4 +1,4 @@
-package com.sannong.service.project;
+package com.sannong.service.application;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.sannong.domain.project.*;
+import com.sannong.domain.application.*;
 import com.sannong.domain.user.User;
 import com.sannong.presentation.command.CreateApplicationCommand;
 import org.apache.log4j.Logger;
@@ -25,15 +25,15 @@ import com.sannong.service.sms.ISmsService;
 
 
 /**
- * project service
+ * application service
  *
  * @author William Zhang
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class ProjectServiceImpl implements IProjectService {
+public class ApplicationServiceImpl implements IApplicationService {
 
-    private static final Logger logger = Logger.getLogger(ProjectServiceImpl.class);
+    private static final Logger logger = Logger.getLogger(ApplicationServiceImpl.class);
 
     @Autowired
     private UserRepository userRepository;

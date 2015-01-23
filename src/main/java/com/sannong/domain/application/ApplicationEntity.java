@@ -1,4 +1,4 @@
-package com.sannong.domain.project;
+package com.sannong.domain.application;
 
 import com.sannong.domain.sms.SMS;
 import com.sannong.domain.user.User;

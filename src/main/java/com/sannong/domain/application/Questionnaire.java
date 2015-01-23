@@ -1,4 +1,4 @@
-package com.sannong.domain.project;
+package com.sannong.domain.application;
 
 
 import org.apache.commons.lang3.StringUtils;

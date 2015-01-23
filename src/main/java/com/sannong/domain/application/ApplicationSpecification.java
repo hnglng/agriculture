@@ -1,4 +1,4 @@
-package com.sannong.domain.project;
+package com.sannong.domain.application;
 
 import com.sannong.domain.common.*;
 import com.sannong.domain.common.Error;

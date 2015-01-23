@@ -1,12 +1,12 @@
 package com.sannong.presentation.controller;
 
 import com.sannong.domain.common.Status;
-import com.sannong.domain.project.ApplicationSpecification;
-import com.sannong.domain.project.Questionnaire;
+import com.sannong.domain.application.ApplicationSpecification;
+import com.sannong.domain.application.Questionnaire;
 import com.sannong.infrastructure.util.PasswordGenerator;
 import com.sannong.presentation.command.CreateApplicationCommand;
 import com.sannong.presentation.dto.Response;
-import com.sannong.service.project.IProjectService;
+import com.sannong.service.application.IApplicationService;
 import com.sannong.service.sms.ISmsService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,12 +27,12 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping(value="/project-application")
-public class ProjectController {
+public class ApplicationController {
     private static final String APPLICATION_PAGE = "project-application";
     private static final String COMPLETION_PAGE = "project-application-completion";
 
     @Autowired
-    private IProjectService projectService;
+    private IApplicationService projectService;
     @Autowired
     private ISmsService smsService;
     @Qualifier("applicationSpecification")
