@@ -8,38 +8,57 @@
 	<version>1.0-SNAPSHOT</version>
 	<packaging>war</packaging>
 
-	<properties>
-		<springframework.version>4.0.1.RELEASE</springframework.version>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
-
-	<build>
-		<finalName>agriculture</finalName>
-		<defaultGoal>clean install</defaultGoal>
-		<resources>
-			<resource>
-				<directory>src/main/java</directory>
-				<includes>
-					<include>**/*.xml</include>
-				</includes>
-			</resource>
-			<resource>
-				<directory>src/main/resources</directory>
-				<includes>
-					<include>*.properties</include>
-				</includes>
-			</resource>
-		</resources>
-		<plugins>
-			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-war-plugin</artifactId> 
-				<configuration> <webXml>src/main/webapp/WEB-INF/web.xml</webXml> </configuration> 
-				</plugin> <plugin> <groupId>org.codehaus.mojo</groupId> <artifactId>tomcat-maven-plugin</artifactId> 
-				<configuration> <url>http://localhost:8080/manager/text</url> <server>tomcat</server> 
-				<path>/agriculture</path> </configuration> </plugin> -->
-		</plugins>
-	</build>
-
+	<!--
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>1.1.9.RELEASE</version>
+		<relativePath/>
+	</parent>
+	-->
 	<dependencies>
+		<!--
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-aop</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.hateoas</groupId>
+			<artifactId>spring-hateoas</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.plugin</groupId>
+			<artifactId>spring-plugin-core</artifactId>
+			<version>1.1.0.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-log4j</artifactId>
+			<scope>test</scope>
+		</dependency>
+		-->
+
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
@@ -49,60 +68,60 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-aop</artifactId>
-			<version>${springframework.version}</version>
+			<version>${spring.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-beans</artifactId>
-			<version>${springframework.version}</version>
+			<version>${spring.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
-			<version>${springframework.version}</version>
+			<version>${spring.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
-			<version>${springframework.version}</version>
+			<version>${spring.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-expression</artifactId>
-			<version>${springframework.version}</version>
+			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-web</artifactId>
-			<version>${springframework.version}</version>
+			<version>${spring.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
-			<version>${springframework.version}</version>
+			<version>${spring.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-tx</artifactId>
-			<version>${springframework.version}</version>
+			<version>${spring.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
-			<version>${springframework.version}</version>
+			<version>${spring.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jdbc</artifactId>
-			<version>${springframework.version}</version>
+			<version>${spring.version}</version>
 		</dependency>
 
 		<dependency>
@@ -114,7 +133,7 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context-support</artifactId>
-			<version>${springframework.version}</version>
+			<version>${spring.version}</version>
 		</dependency>
 
 		<dependency>
@@ -320,5 +339,37 @@
 			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
 		</repository>
 	</repositories>
+
+	<properties>
+		<spring.version>4.0.8.RELEASE</spring.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<build>
+		<finalName>agriculture</finalName>
+		<defaultGoal>clean install</defaultGoal>
+		<resources>
+			<resource>
+				<directory>src/main/java</directory>
+				<includes>
+					<include>**/*.xml</include>
+				</includes>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>*.properties</include>
+				</includes>
+			</resource>
+		</resources>
+		<plugins>
+			<!--
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			-->
+		</plugins>
+	</build>
 
 </project>
