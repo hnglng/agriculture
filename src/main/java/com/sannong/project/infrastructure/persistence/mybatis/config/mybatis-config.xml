@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <settings>
+	    <setting name="cacheEnabled" value="true"/>
+    </settings>
+
+	<typeAliases>
+        <typeAlias type="com.sannong.project.domain.user.User" alias="User" />
+    	<typeAlias type="com.sannong.project.domain.application.ApplicationEntity" alias="Application" />
+        <typeAlias type="com.sannong.project.domain.application.Questionnaire" alias="Questionnaire" />
+        <typeAlias type="com.sannong.project.domain.application.Question" alias="Question" />
+        <typeAlias type="com.sannong.project.domain.sms.SMS" alias="SMS" />
+        <typeAlias type="com.sannong.project.domain.region.Province" alias="Province" />
+        <typeAlias type="com.sannong.project.domain.region.City" alias="City" />
+        <typeAlias type="com.sannong.project.domain.region.District" alias="District" />
+    </typeAliases>
+    
+    <mappers>
+    	<mapper resource="com/sannong/project/infrastructure/persistence/mybatis/repositories/user.map.xml"/>
+    	<mapper resource="com/sannong/project/infrastructure/persistence/mybatis/repositories/application.map.xml"/>
+    	<mapper resource="com/sannong/project/infrastructure/persistence/mybatis/repositories/sms.map.xml"/>
+        <mapper resource="com/sannong/project/infrastructure/persistence/mybatis/repositories/region.map.xml"/>
+    </mappers>
+</configuration>

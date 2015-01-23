@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="com.sannong.project.domain.user.UserRepository">
+	<cache eviction="FIFO" flushInterval="60000" size="512" readOnly="true" />
+	<resultMap type="User" id="userResultMap">
+		<id property="userName" column="username" />
+		<result property="password" column="password" />
+        <result property="realName" column="real_name" />
+        <result property="mailbox" column="mailbox" />
+        <result property="companyName" column="company_name" />
+        <result property="companyProvince" column="company_province" />
+        <result property="companyCity" column="company_city" />
+        <result property="companyDistrict" column="company_district" />
+        <result property="companyAddress" column="company_address" />
+        <result property="jobTitle" column="job_title" />
+		<result property="mobilePhone" column="mobile_phone" />
+        <result property="deskPhone" column="desk_phone" />
+		<result property="creationTime" column="creation_time" />
+        <result property="lastUpdated" column="last_updated" />
+    </resultMap>
+     
+     <select id="getUserByCondition"  parameterType="Map"  resultMap="userResultMap">
+		 select
+		 username,
+		 password,
+		 real_name,
+		 job_title,
+		 company_name,
+		 company_address,
+		 company_province,
+		 company_city,
+		 company_district,
+		 mailbox,
+		 mobile_phone,
+		 desk_phone,
+		 creation_time,
+		 last_updated
+		 from users
+			 <where>
+				 <if test="mobilePhone != null">
+					 mobile_phone = #{mobilePhone}
+				 </if>
+				 <if test="userName != null">
+					 and username = #{userName}
+				 </if>
+				 <if test="realName != null">
+					 and real_name = #{realName}
+				 </if>
+			</where>
+     </select>
+     
+     <select id="getUserByFuzzyMatch"  parameterType="Map"  resultMap="userResultMap">
+       select
+		 username,
+		 real_name,
+		 creation_time,
+		 mobile_phone,
+		 company_name,
+		 job_title,
+		 mailbox,
+		 company_address,
+		 desk_phone,
+		 company_province,
+		 company_city,
+		 company_district,
+		 creation_time
+		 from users
+       	<where>
+			<if test="userName != null and userName != '' and userName != 'null' ">
+				username like CONCAT('%',#{userName},'%')
+			</if>
+	       	<if test="realName != null and realName != '' and realName != 'null' ">
+				and real_name like CONCAT('%',#{realName},'%')
+	        </if>
+	        <if test="mobilePhone != null and mobilePhone != '' and mobilePhone != 'null' ">
+            	and mobile_phone like CONCAT('%',#{mobilePhone},'%')
+            </if>
+            <if test="companyName != null and companyName != '' and companyName != 'null' ">
+            	and company_name like CONCAT('%',#{companyName},'%')
+            </if>
+            <if test="jobTitle != null and jobTitle != '' and jobTitle != 'null' ">  
+            	and job_title like CONCAT('%',#{jobTitle},'%') 
+            </if>
+            <if test="mailbox != null and mailbox != '' and mailbox != 'null' ">  
+            	and mailbox like CONCAT('%',#{mailbox},'%') 
+            </if>
+            <if test="companyAddress != null and companyAddress != '' and companyAddress != 'null' ">  
+            	and company_address like CONCAT('%',#{companyAddress},'%') 
+            </if>
+            <if test="companyProvince != null and companyProvince != '' and companyProvince != 'null' ">  
+            	and company_province = #{companyProvince}
+            </if>
+            <if test="companyCity != null and companyCity != '' and companyCity != 'null' ">  
+            	and company_city = #{companyCity}
+            </if>
+            <if test="companyDistrict != null and companyDistrict != '' and companyDistrict != 'null' ">  
+            	and company_district = #{companyDistrict}
+            </if>
+       	</where>
+       	limit #{pageStart},#{pageSum}
+     </select>
+
+	<select id="getUserTotalCount" parameterType="Map" resultType="int">
+		select count(*) from users
+		<where>
+			<if test="realName != null and realName != '' and realName != 'null' ">
+				user_name like CONCAT('%',#{realName},'%')
+			</if>
+			<if test="userName != null and userName != '' and userName != 'null' ">
+				and username like CONCAT('%',#{userName},'%')
+			</if>
+			<if test="cellphone != null and cellphone != '' and cellphone != 'null' ">
+				and cellphone like CONCAT('%',#{cellphone},'%')
+			</if>
+			<if test="company != null and company != '' and company != 'null' ">
+				and company like CONCAT('%',#{company},'%')
+			</if>
+			<if test="jobTitle != null and jobTitle != '' and jobTitle != 'null' ">
+				and job_title like CONCAT('%',#{jobTitle},'%')
+			</if>
+			<if test="mailbox != null and mailbox != '' and mailbox != 'null' ">
+				and mailbox like CONCAT('%',#{mailbox},'%')
+			</if>
+			<if test="companyAddress != null and companyAddress != '' and companyAddress != 'null' ">
+				and company_address like CONCAT('%',#{companyAddress},'%')
+			</if>
+			<if test="companyProvince != null and companyProvince != '' and companyProvince != 'null' ">
+				and company_province = #{companyProvince}
+			</if>
+			<if test="companyCity != null and companyCity != '' and companyCity != 'null' ">
+				and company_city = #{companyCity}
+			</if>
+			<if test="companyDistrict != null and companyDistrict != '' and companyDistrict != 'null' ">
+				and company_district = #{companyDistrict}
+			</if>
+		</where>
+	</select>
+
+	<select id="getUserNameByMobilePhone" parameterType="String" resultType="String">
+		<![CDATA[select username from users where mobile_phone = #{mobilePhone}]]>
+	</select>
+
+     <insert id="addUser" parameterType="User">
+         <![CDATA[
+        	 insert into users(
+				 username,
+				 real_name,
+				 mobile_phone,
+				 password,mailbox,
+				 company_name,
+				 company_province,
+				 company_city,
+				 company_district,
+				 company_address,
+				 desk_phone,job_title,
+				 creation_time,
+				 last_updated
+				 )
+	         values(
+				 #{userName},
+				 #{realName},
+				 #{mobilePhone},
+				 #{password},
+				 #{mailbox},
+				 #{companyName},
+				 #{companyProvince},
+				 #{companyCity},
+				 #{companyDistrict},
+				 #{companyAddress},
+				 #{deskPhone},
+				 #{jobTitle},
+				 #{creationTime},
+				 #{lastUpdated}
+				 )
+         ]]>
+     </insert>
+
+	<update  id="updateUser" parameterType="User" >
+		<![CDATA[
+		 update users set
+		 	mobile_phone = #{mobilePhone},
+        	real_name = #{realName},
+        	company_name = #{companyName},
+        	company_province = #{companyProvince},
+        	company_city = #{companyCity},
+        	company_district = #{companyDistrict},
+        	company_address = #{companyAddress},
+        	mailbox = #{mailbox},
+        	desk_phone = #{deskPhone},
+        	job_title = #{jobTitle},
+        	creation_time = #{creationTime},
+        	last_updated = #{lastUpdated}
+		 where username = #{userName}
+        ]]>
+	</update>
+
+	<update  id="updatePassword" parameterType="User" >
+		<![CDATA[update users set password = #{password}, last_updated = #{lastUpdated} where username = #{userName}]]>
+	</update>
+
+	<insert id="addUserAuthority" parameterType="Map">
+		<![CDATA[insert into authorities(username,authority) values(#{userName},#{authority})]]>
+	</insert>
+
+
+</mapper>

@@ -75,7 +75,7 @@
         <b:property name="dataSource" ref="dataSource"/>
     </b:bean>
 
-    <b:bean id="loginFilter" class="com.sannong.presentation.filter.LoginFilter">
+    <b:bean id="loginFilter" class="com.sannong.project.presentation.filter.LoginFilter">
         <b:property name="authenticationManager" ref="authenticationManager"/>
         <b:property name="authenticationSuccessHandler">
              <!-- 自定义登录成功后的处理handler -->

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sannong.project.domain.application.ApplicationRepository">
+	<cache eviction="FIFO" flushInterval="60000" size="512" readOnly="true" />
+
+    <resultMap type="Application" id="applicationResultMap">
+        <id property="applicationId" column="application_id" />
+		<result property="comments" column="comments" />
+		<result property="creationTime" column="creation_time" />
+		<association property="questionnaires" resultMap="com.sannong.project.domain.application.ApplicationRepository.questionnaireResultMap" />
+		<association property="user" resultMap="com.sannong.project.domain.user.UserRepository.userResultMap" />
+	</resultMap>
+
+
+	<select id="getApplicationBy" parameterType="String" resultMap="applicationResultMap">
+		<![CDATA[
+			select
+			a.application_id,
+			a.comments,
+			a.creation_time,
+			qn.questionnaire_number,
+			qn.answers,
+			qn.questionnaire_committed,
+			qn.creation_time,
+			qn.last_updated,
+			q.question_id,
+			q.question_content,
+			q.option1,
+			q.option2,
+			q.option3,
+			q.option4,
+			q.option5,
+			q.single_selection_only,
+			u.username,
+			u.real_name
+        	from applications a, questionnaires qn, questions q, users u
+        	where a.username=#{userName}
+        	and a.username = u.username
+        	and a.application_id = qn.application_id
+        	and qn.questionnaire_number = q.questionnaire_number
+        ]]>
+	</select>
+
+
+	<select id="getQuestionnaireBy" parameterType="String" resultMap="applicationResultMap">
+		<![CDATA[
+			select
+			qn.questionnaire_number,
+			qn.answers,
+			qn.questionnaire_committed,
+			qn.creation_time,
+			qn.last_updated,
+			q.question_id,
+			q.question_content,
+			q.option1,
+			q.option2,
+			q.option3,
+			q.option4,
+			q.option5,
+			q.single_selection_only
+        	from questionnaires qn, questions q
+        	where qn.application_id=#{applicationId}
+        	and qn.questionnaire_number = q.questionnaire_number
+        	and qn.questionnaire_number = #{questionnaireNumber}
+        ]]>
+	</select>
+
+
+	<insert id="addProjectApplicationInfo" useGeneratedKeys="true" keyProperty="applicationId" parameterType="Application">
+     	<![CDATA[
+     		insert into applications(username,creation_time) values(#{user.userName},#{creationTime})
+     	]]>
+	</insert>
+
+	<resultMap type="Questionnaire" id="questionnaireResultMap">
+		<id property="applicationId" column="application_id" />
+		<id property="questionnaireNumber" column="questionnaire_number" />
+		<result property="concatenatedAnswers" column="answers" />
+		<result property="questionnaireCommitted" column="questionnaire_committed" />
+		<result property="creationTime" column="creation_time" />
+		<result property="lastUpdated" column="last_updated" />
+		<association property="questions" resultMap="com.sannong.project.domain.application.ApplicationRepository.questionResultMap" />
+	</resultMap>
+
+
+	<insert id="addQuestionnaire" parameterType="Questionnaire">
+		<![CDATA[
+     		insert into questionnaires(application_id,questionnaire_number,answers,questionnaire_committed,creation_time,last_updated)
+     		values(#{applicationId},#{questionnaireNumber},#{concatenatedAnswers},#{questionnaireCommitted},#{creationTime},#{lastUpdated})
+     	  ]]>
+	</insert>
+
+	<select id="findQuestionnaire" parameterType="HashMap" resultType="Questionnaire">
+		<![CDATA[
+                SELECT
+				qn.application_id,
+				qn.questionnaire_number,
+				qn.questionnaire_committed,
+				qn.answers,
+				qn.creation_time,
+				qn.last_updated,
+				q.question_id,
+				q.option1,
+				q.option2,
+				q.option3,
+				q.option4,
+				q.option5,
+				q.question_content,
+				q.single_selection_only
+                FROM questionnaires qn, questions q
+                WHERE qn.application_id = #{applicationId}
+                AND qn.questionnaire_number = #{questionnaireNumber}
+                AND qn.questionnaire_number = q.questionnaire_number
+                ]]>
+	</select>
+
+
+	<resultMap type="Question" id="questionResultMap">
+		<id property="questionId" column="question_id" />
+		<result property="questionContent" column="question_content" />
+		<result property="option1" column="option1" />
+		<result property="option2" column="option2" />
+		<result property="option3" column="option3" />
+		<result property="option4" column="option4" />
+		<result property="option5" column="option5" />
+		<result property="questionnaireNumber" column="questionnaire_number" />
+		<result property="singleSelectionOnly" column="single_selection_only" />
+	</resultMap>
+
+	<select id="findQuestionsByQuestionnaireNumber" parameterType="int" resultMap="questionResultMap">
+		<![CDATA[
+            select question_id, option1, option2, option3, option4, option5, question_content, single_selection_only
+            from questions where questionnaire_number = #{questionnaireNumber}
+        ]]>
+	</select>
+
+	<select id="getTotalQuestions" resultType="int">
+		<![CDATA[select count(*) from questions]]>
+	</select>
+
+
+</mapper>
+
