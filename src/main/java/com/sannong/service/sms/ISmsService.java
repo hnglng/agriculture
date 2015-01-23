@@ -1,4 +1,4 @@
-package com.sannong.service;
+package com.sannong.service.sms;
 
 import com.sannong.domain.sms.SMS;
 

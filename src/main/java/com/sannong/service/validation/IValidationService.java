@@ -1,4 +1,4 @@
-package com.sannong.service;
+package com.sannong.service.validation;
 
 /**
  * Created by Bright Huang on 11/18/14.

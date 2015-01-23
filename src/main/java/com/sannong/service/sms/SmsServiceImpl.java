@@ -1,4 +1,4 @@
-package com.sannong.service.impl;
+package com.sannong.service.sms;
 
 
 import com.sannong.domain.sms.SmsUrlFactory;
@@ -7,7 +7,6 @@ import com.sannong.domain.sms.SmsRepository;
 import com.sannong.infrastructure.sms.SmsSender;
 import com.sannong.infrastructure.util.AppConfig;
 import com.sannong.infrastructure.util.PasswordGenerator;
-import com.sannong.service.ISmsService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

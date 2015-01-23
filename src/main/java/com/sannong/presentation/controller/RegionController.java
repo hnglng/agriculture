@@ -3,7 +3,7 @@ package com.sannong.presentation.controller;
 import com.sannong.domain.region.City;
 import com.sannong.domain.region.District;
 import com.sannong.domain.region.Province;
-import com.sannong.service.IRegionService;
+import com.sannong.service.region.IRegionService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;

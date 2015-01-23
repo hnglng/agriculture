@@ -1,4 +1,4 @@
-package com.sannong.service.impl;
+package com.sannong.service.user;
 
 import java.util.List;
 import java.util.Map;
@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.sannong.domain.user.User;
 import com.sannong.domain.user.UserRepository;
-import com.sannong.service.IUserService;
 
 @Service
 @Transactional(rollbackFor = Exception.class)

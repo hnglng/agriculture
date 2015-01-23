@@ -1,4 +1,4 @@
-package com.sannong.service;
+package com.sannong.service.region;
 
 import com.sannong.domain.region.City;
 import com.sannong.domain.region.District;

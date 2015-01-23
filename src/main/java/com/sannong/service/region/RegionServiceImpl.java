@@ -1,10 +1,10 @@
-package com.sannong.service.impl;
+package com.sannong.service.region;
 
 import com.sannong.domain.region.City;
 import com.sannong.domain.region.District;
 import com.sannong.domain.region.Province;
 import com.sannong.domain.region.RegionRepository;
-import com.sannong.service.IRegionService;
+import com.sannong.service.region.IRegionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

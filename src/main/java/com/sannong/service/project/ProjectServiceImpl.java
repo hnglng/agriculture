@@ -1,4 +1,4 @@
-package com.sannong.service.impl;
+package com.sannong.service.project;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -21,8 +21,7 @@ import com.sannong.domain.user.RoleType;
 import com.sannong.infrastructure.mail.MailAsyncSender;
 import com.sannong.domain.user.UserRepository;
 import com.sannong.infrastructure.util.PasswordGenerator;
-import com.sannong.service.IProjectService;
-import com.sannong.service.ISmsService;
+import com.sannong.service.sms.ISmsService;
 
 
 /**

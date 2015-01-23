@@ -1,4 +1,4 @@
-package com.sannong.service;
+package com.sannong.service.user;
 
 import java.util.List;
 import java.util.Map;

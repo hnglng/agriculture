@@ -1,10 +1,9 @@
-package com.sannong.service.impl;
+package com.sannong.service.validation;
 
 import com.sannong.domain.sms.SMS;
 import com.sannong.domain.user.User;
 import com.sannong.domain.sms.SmsRepository;
 import com.sannong.domain.user.UserRepository;
-import com.sannong.service.IValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
