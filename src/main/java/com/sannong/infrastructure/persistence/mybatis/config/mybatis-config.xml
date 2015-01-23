@@ -17,9 +17,9 @@
     </typeAliases>
     
     <mappers>
-    	<mapper resource="com/sannong/infrastructure/persistence/repositories/mybatis/user.map.xml"/>
-    	<mapper resource="com/sannong/infrastructure/persistence/repositories/mybatis/application.map.xml"/>
-    	<mapper resource="com/sannong/infrastructure/persistence/repositories/mybatis/sms.map.xml"/>
-        <mapper resource="com/sannong/infrastructure/persistence/repositories/mybatis/region.map.xml"/>
+    	<mapper resource="com/sannong/infrastructure/persistence/mybatis/repositories/user.map.xml"/>
+    	<mapper resource="com/sannong/infrastructure/persistence/mybatis/repositories/application.map.xml"/>
+    	<mapper resource="com/sannong/infrastructure/persistence/mybatis/repositories/sms.map.xml"/>
+        <mapper resource="com/sannong/infrastructure/persistence/mybatis/repositories/region.map.xml"/>
     </mappers>
 </configuration>

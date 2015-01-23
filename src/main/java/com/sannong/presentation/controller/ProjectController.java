@@ -47,7 +47,8 @@ public class ProjectController {
 
     @RequestMapping(method = RequestMethod.POST)
     public @ResponseBody
-    ResponseEntity<?> createApplication(@RequestBody CreateApplicationCommand createApplicationCommand)
+    ResponseEntity<?> createApplication(
+            @ModelAttribute("projectAppForm") CreateApplicationCommand createApplicationCommand)
             throws Exception {
         Response response = new Response();
         if (applicationSpec.isSatisfiedBy(createApplicationCommand)) {
