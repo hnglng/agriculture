@@ -1,7 +1,7 @@
 package com.sannong.project.domain.resource;
 
 import com.sannong.project.domain.application.ApplicationEntity;
-import com.sannong.project.presentation.controller.ApplicationController;
+import com.sannong.project.presentation.controller.ApplicationRestController;
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 
 /**
@@ -9,9 +9,8 @@ import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
  */
 public class ApplicationResourceAssembler extends ResourceAssemblerSupport<ApplicationEntity, ApplicationResource> {
 
-
-    public ApplicationResourceAssembler(Class<ApplicationController> controllerClass, Class<ApplicationResource> resourceType) {
-        super(controllerClass, resourceType);
+    public ApplicationResourceAssembler() {
+        super(ApplicationRestController.class, ApplicationResource.class);
     }
 
     @Override
@@ -21,7 +20,9 @@ public class ApplicationResourceAssembler extends ResourceAssemblerSupport<Appli
     }
 
     @Override
-    protected ApplicationResource instantiateResource(ApplicationEntity entity) {
-        return new ApplicationResource(entity);
+    protected ApplicationResource instantiateResource(ApplicationEntity applicationEntity) {
+        return new ApplicationResource(applicationEntity);
     }
+
+
 }

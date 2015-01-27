@@ -1,4 +1,4 @@
-package com.sannong.infrastructure.mail;
+package com.sannong.project.infrastructure.mail;
 
 import org.junit.Test;
 

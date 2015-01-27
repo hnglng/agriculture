@@ -2,15 +2,17 @@ package com.sannong.project.service.application;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.sannong.project.domain.application.ApplicationEntity;
+import com.sannong.project.domain.application.Application;
 import com.sannong.project.domain.application.ApplicationRepository;
 import com.sannong.project.domain.application.Question;
 import com.sannong.project.domain.application.Questionnaire;
 import com.sannong.project.domain.user.User;
+import com.sannong.project.infrastructure.persistence.jpa.repositories.ApplicationJpaRepository;
 import com.sannong.project.presentation.command.CreateApplicationCommand;
 import com.sannong.project.service.sms.ISmsService;
 import org.apache.log4j.Logger;
@@ -25,7 +27,6 @@ import com.sannong.project.domain.user.RoleType;
 import com.sannong.project.infrastructure.mail.MailAsyncSender;
 import com.sannong.project.domain.user.UserRepository;
 import com.sannong.project.infrastructure.util.PasswordGenerator;
-
 
 /**
  * application service
@@ -51,6 +52,10 @@ public class ApplicationServiceImpl implements IApplicationService {
     @Autowired
     private MailAsyncSender mailAsyncSender;
 
+    public List<Application> findByUserName(String userName){
+        return applicationRepository.findByUserName(userName);
+    }
+
     public void createApplication(CreateApplicationCommand createApplicationCommand) {
 
         User user = createApplicationCommand.getUser();
@@ -73,19 +78,19 @@ public class ApplicationServiceImpl implements IApplicationService {
         userRepository.addUserAuthority(authorityMap);
 
         // Add application info
-        ApplicationEntity applicationEntity = new ApplicationEntity();
-        applicationEntity.setUser(user);
-        applicationEntity.setCreationTime(creationTime);
-        applicationRepository.addProjectApplicationInfo(applicationEntity);
+        Application application = new Application();
+        application.setUser(user);
+        application.setCreationTime(creationTime);
+        applicationRepository.addProjectApplicationInfo(application);
 
         // Add questionnaires info
         Questionnaire questionnaire = new Questionnaire();
-        questionnaire.setApplicationId(applicationEntity.getApplicationId());
+        questionnaire.setApplicationId(application.getApplicationId());
         questionnaire.setQuestionnaireNumber(1);
         questionnaire.setQuestionnaireCommitted(true);
         questionnaire.setCreationTime(creationTime);
         questionnaire.setLastUpdated(creationTime);
-        questionnaire.setAnswers(applicationEntity.getQuestionnaires().get(0).getAnswers());
+        questionnaire.setAnswers(application.getQuestionnaires().get(0).getAnswers());
         //questionnaire.setConcatenatedAnswers(questionnaire.getConcatenatedAnswers());
         applicationRepository.addQuestionnaire(questionnaire);
 
@@ -114,9 +119,7 @@ public class ApplicationServiceImpl implements IApplicationService {
         return applicationRepository.getTotalQuestions();
     }
 
-    public ApplicationEntity getApplicationBy(String userName){
-        return applicationRepository.getApplicationBy(userName);
-    }
+
 
     @Override
     public Questionnaire getQuestionnaire(Long applicationId, Integer questionnaireNumber) {

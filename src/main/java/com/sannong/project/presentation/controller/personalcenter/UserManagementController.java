@@ -1,6 +1,6 @@
 package com.sannong.project.presentation.controller.personalcenter;
 
-import com.sannong.project.domain.application.ApplicationEntity;
+import com.sannong.project.domain.application.Application;
 import com.sannong.project.domain.user.User;
 import com.sannong.project.infrastructure.export.CsvExporter;
 import com.sannong.project.presentation.dto.DTO;
@@ -99,11 +99,11 @@ public class UserManagementController {
 
     @RequestMapping(value = "/users/{userName}/application", method = RequestMethod.GET)
     public @ResponseBody
-    ApplicationEntity getApplication(@PathVariable("userName") String userName) throws Exception {
+    Application getApplication(@PathVariable("userName") String userName) throws Exception {
         if (StringUtils.isBlank(userName)){
             userName = getUserName();
         }
-        return projectService.getApplicationBy(userName);
+        return projectService.findByUserName(userName).get(0);
     }
 
     @RequestMapping(value = "/users/{userName}/profile", method = RequestMethod.GET)

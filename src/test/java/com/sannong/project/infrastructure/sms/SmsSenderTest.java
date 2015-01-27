@@ -1,4 +1,4 @@
-package com.sannong.infrastructure.sms;
+package com.sannong.project.infrastructure.sms;
 
 import static org.junit.Assert.*;
 

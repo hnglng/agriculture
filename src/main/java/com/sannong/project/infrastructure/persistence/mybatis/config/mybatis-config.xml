@@ -7,7 +7,7 @@
 
 	<typeAliases>
         <typeAlias type="com.sannong.project.domain.user.User" alias="User" />
-    	<typeAlias type="com.sannong.project.domain.application.ApplicationEntity" alias="Application" />
+    	<typeAlias type="com.sannong.project.domain.application.Application" alias="Application" />
         <typeAlias type="com.sannong.project.domain.application.Questionnaire" alias="Questionnaire" />
         <typeAlias type="com.sannong.project.domain.application.Question" alias="Question" />
         <typeAlias type="com.sannong.project.domain.sms.SMS" alias="SMS" />

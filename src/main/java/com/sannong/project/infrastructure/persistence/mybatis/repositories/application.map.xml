@@ -13,7 +13,7 @@
 	</resultMap>
 
 
-	<select id="getApplicationBy" parameterType="String" resultMap="applicationResultMap">
+	<select id="findByUserName" parameterType="String" resultMap="applicationResultMap">
 		<![CDATA[
 			select
 			a.application_id,

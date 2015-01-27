@@ -13,7 +13,7 @@ import java.util.List;
 @Transactional
 public interface ApplicationRepository {
 
-	ApplicationEntity getApplicationBy(String userName);
+	List<Application> findByUserName(String userName);
 
 	Questionnaire getQuestionnaireBy(Long applicationId, Integer questionnaireNumber);
 
@@ -23,6 +23,6 @@ public interface ApplicationRepository {
 
 	void addQuestionnaire(Questionnaire questionnaire);
 
-	void addProjectApplicationInfo(ApplicationEntity applicationEntity);
+	void addProjectApplicationInfo(Application application);
 	
 }
