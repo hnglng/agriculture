@@ -34,7 +34,7 @@ public class QuestionEntity implements Serializable {
     private Integer questionnaireNumber;
     @Column(name="single_selection_only")
     private Integer singleSelectionOnly;
-    
+
 
     public Long getQuestionId() {
         return questionId;
