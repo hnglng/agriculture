@@ -1,6 +1,7 @@
 package com.sannong.project.presentation.controller;
 
 import com.sannong.project.domain.application.Application;
+import com.sannong.project.domain.application.ApplicationEntity;
 import com.sannong.project.domain.resource.ApplicationResource;
 import com.sannong.project.domain.resource.ApplicationResourceAssembler;
 import com.sannong.project.service.application.ApplicationRestService;
@@ -10,6 +11,7 @@ import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resources;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
@@ -24,15 +26,19 @@ public class ApplicationRestController {
     @Autowired
     private ApplicationRestService applicationRestService;
 
-    //@RequestMapping(produces = {MediaType.APPLICATION_JSON_VALUE, "application/hal+json"}, method = RequestMethod.GET)
     @RequestMapping(method = RequestMethod.GET)
     public Resources<ApplicationResource> readApplications(){
-        String username = "13111111111";
+        Long applicationId = new Long(21);
 
         Link link = linkTo(ApplicationRestController.class).withSelfRel();
 
+        ApplicationEntity application = applicationRestService.findOne(applicationId);
+
+        List<ApplicationEntity> applications = new ArrayList<ApplicationEntity>();
+        applications.add(application);
+
         List<ApplicationResource> applicationResources =
-                new ApplicationResourceAssembler().toResources(applicationRestService.findByUserUserName(username));
+                new ApplicationResourceAssembler().toResources(applications);
 
         Resources<ApplicationResource> resources = new Resources<ApplicationResource>(applicationResources, link);
         return resources;
@@ -42,13 +48,9 @@ public class ApplicationRestController {
     @RequestMapping(value="/{applicationId}", method = RequestMethod.GET)
     public ApplicationResource readApplication(@PathVariable Long applicationId){
         Link link = linkTo(ApplicationRestController.class).withSelfRel();
-
-        ApplicationResource applicationResource =
-                new ApplicationResourceAssembler().toResource(applicationRestService.findOne(applicationId));
-
-        //Resources<ApplicationResource> resources = new Resources<ApplicationResource>(applicationResource, link);
-        return applicationResource;
-
+        ApplicationEntity application = applicationRestService.findOne(applicationId);
+        ApplicationResource resource = new ApplicationResource(application, link);
+        return resource;
     }
 
 }
