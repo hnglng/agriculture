@@ -1,8 +1,5 @@
 package com.sannong.project.domain.application;
 
-import com.sannong.project.domain.common.AbstractEntity;
-import com.sannong.project.domain.sms.SMS;
-import com.sannong.project.domain.user.User;
 import com.sannong.project.domain.user.UserEntity;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.springframework.hateoas.core.Relation;
@@ -25,6 +22,7 @@ public class ApplicationEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="application_id")
     private Long applicationId;
+
     @OneToOne
     @JoinColumn(name="username")
     private UserEntity user;
@@ -33,9 +31,9 @@ public class ApplicationEntity {
     @JoinColumn(name="application_id", referencedColumnName="application_id")
     private List<QuestionnaireEntity> questionnaires;
 
-
     @Column
     private String comments;
+
     @Column(name="creation_time")
     private Timestamp creationTime;
 

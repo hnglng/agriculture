@@ -178,7 +178,7 @@ COLLATE = utf8_general_ci;
 DROP TABLE IF EXISTS `agriculture`.`questions` ;
 
 CREATE TABLE IF NOT EXISTS `agriculture`.`questions` (
-  `question_id` BIGINT(20) NOT NULL AUTO_INCREMENT,
+  `question_id` BIGINT(20) NOT NULL,
   `question_content` VARCHAR(500) NOT NULL,
   `option1` VARCHAR(45) NOT NULL,
   `option2` VARCHAR(45) NOT NULL,
@@ -240,3 +240,27 @@ COLLATE = utf8_general_ci;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+
+ALTER TABLE `agriculture`.`questions`
+ADD INDEX `idx_questions_questionnaire_number` (`questionnaire_number` ASC);
+
+ALTER TABLE `agriculture`.`questionnaires`
+ADD INDEX `fk_questionnaires_questionnaire_number_idx` (`questionnaire_number` ASC);
+ALTER TABLE `agriculture`.`questionnaires`
+ADD CONSTRAINT `fk_questionnaires_questionnaire_number`
+FOREIGN KEY (`questionnaire_number`)
+REFERENCES `agriculture`.`questions` (`questionnaire_number`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+
+
+CREATE TABLE `questionnaires_questions` (
+  `questionnaire_id` bigint(20) NOT NULL,
+  `question_id` bigint(20) NOT NULL,
+  KEY `fk_questionnaires_questions_questionnaire_id_idx` (`questionnaire_id`),
+  KEY `fk_questionnaires_questions_question_id_idx` (`question_id`),
+  CONSTRAINT `fk_questionnaires_questions_question_id` FOREIGN KEY (`question_id`) REFERENCES `questions` (`question_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_questionnaires_questions_questionnaire_id` FOREIGN KEY (`questionnaire_id`) REFERENCES `questionnaires` (`questionnaire_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+

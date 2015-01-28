@@ -19,9 +19,11 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="username")
     private String userName;
+    @Column
     private String password;
     @Column(name="real_name")
     private String realName;
+    @Column
     private String mailbox;
     @Column(name="company_name")
     private String companyName;
@@ -39,6 +41,7 @@ public class UserEntity {
     private String deskPhone;
     @Column(name="job_title")
     private String jobTitle;
+    @Column
     private Integer enabled;
     @Column(name="creation_time")
     private Timestamp creationTime;

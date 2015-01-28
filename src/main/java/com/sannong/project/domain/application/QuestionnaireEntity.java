@@ -1,6 +1,8 @@
 package com.sannong.project.domain.application;
 
-import org.apache.commons.lang3.StringUtils;
+
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.springframework.hateoas.core.Relation;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -11,42 +13,51 @@ import java.util.List;
  * Created by Bright Huang on 1/27/15.
  */
 @Entity
-@Table( name = "questionnaires" )
+@Table(name = "questionnaires")
+@Relation(value = "questionnaire", collectionRelation = "questionnaires")
 public class QuestionnaireEntity implements Serializable {
+    @JsonIgnore
     private static final long serialVersionUID = 1L;
+
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name="questionnaire_id")
+    private Long questionnaireId;
+
     @Column(name="application_id")
     private Long applicationId;
-    @Id
+
     @Column(name="questionnaire_number")
     private Integer questionnaireNumber;
+
+    @Column
     private String answers;
+
     @Column(name="questionnaire_committed")
     private Boolean questionnaireCommitted;
+
     @Column(name="creation_time")
     private Timestamp creationTime;
+
     @Column(name="last_updated")
     private Timestamp lastUpdated;
+
+    @ManyToMany
+    @JoinTable(
+            name="questionnaires_questions",
+            joinColumns={@JoinColumn(name="questionnaire_id", referencedColumnName="questionnaire_id")},
+            inverseJoinColumns={@JoinColumn(name="question_id", referencedColumnName="question_id")})
+    private List<QuestionEntity> questions;
+
     //private String concatenatedAnswers = "";
 
-    /*
-    @OneToMany
-    @JoinColumn(name="questionnaire_number", referencedColumnName="questionnaire_number")
-    private List<QuestionEntity> questions;
-    */
 
-    /*
-    @OneToMany
-    @JoinColumn(name="questionnaire_number", referencedColumnName="questionnaire_number")
-    private List<QuestionEntity> questions;
-    */
-
-    public QuestionnaireEntity() {
+    public Long getQuestionnaireId() {
+        return questionnaireId;
     }
 
-    public QuestionnaireEntity(Long applicationId, Integer questionnaireNumber) {
-        this.applicationId = applicationId;
-        this.questionnaireNumber = questionnaireNumber;
+    public void setQuestionnaireId(Long questionnaireId) {
+        this.questionnaireId = questionnaireId;
     }
 
     public Long getApplicationId() {
@@ -119,7 +130,7 @@ public class QuestionnaireEntity implements Serializable {
     }
 */
 
-    /*
+
     public List<QuestionEntity> getQuestions() {
         return questions;
     }
@@ -127,6 +138,6 @@ public class QuestionnaireEntity implements Serializable {
     public void setQuestions(List<QuestionEntity> questions) {
         this.questions = questions;
     }
-    */
+
 
 }

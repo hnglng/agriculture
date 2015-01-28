@@ -1,24 +1,32 @@
 package com.sannong.project.domain.application;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Created by Bright Huang on 1/27/15.
  */
 @Entity
 @Table( name = "questions" )
-public class QuestionEntity {
+public class QuestionEntity implements Serializable {
 
+    @JsonIgnore
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="question_id")
     private Long questionId;
+    @Column
     private String option1;
+    @Column
     private String option2;
+    @Column
     private String option3;
+    @Column
     private String option4;
+    @Column
     private String option5;
     @Column(name="question_content")
     private String questionContent;
@@ -26,6 +34,7 @@ public class QuestionEntity {
     private Integer questionnaireNumber;
     @Column(name="single_selection_only")
     private Integer singleSelectionOnly;
+    
 
     public Long getQuestionId() {
         return questionId;
