@@ -10,6 +10,12 @@ import java.io.Serializable;
  */
 @Entity
 @Table( name = "questions" )
+/*
+@NamedQueries({
+    @NamedQuery(name = "findByQuestionnaireNumber",
+            query = "select u from QuestionEntity u where u.questionnaireNumber  = :questionnaireNumber")
+})
+*/
 public class QuestionEntity implements Serializable {
 
     @JsonIgnore

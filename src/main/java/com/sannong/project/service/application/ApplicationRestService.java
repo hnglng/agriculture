@@ -22,4 +22,5 @@ public class ApplicationRestService {
     public ApplicationEntity findOne(Long applicationId){
         return applicationJpaRepository.findOne(applicationId);
     }
+
 }
