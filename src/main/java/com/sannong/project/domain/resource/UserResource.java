@@ -12,19 +12,19 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
  * Created by Bright Huang on 1/28/15.
  */
 public class UserResource extends Resource {
-    private UserEntity userEntity;
+    //private UserEntity userEntity;
 
     public UserResource(UserEntity userEntity) {
         super(userEntity);
     }
-    
+
     public UserResource(UserEntity userEntity, Link... links) {
         super(userEntity, links);
-        this.userEntity = userEntity;
-        add(linkTo(methodOn(UserRestController.class).readUsers()).withRel("items"));
+        //this.userEntity = userEntity;
+        add(linkTo(methodOn(UserRestController.class).readUser(userEntity.getUserId())).withSelfRel());
     }
 
-    public UserEntity getUser() {
-        return userEntity;
-    }
+//    public UserEntity getUser() {
+//        return userEntity;
+//    }
 }

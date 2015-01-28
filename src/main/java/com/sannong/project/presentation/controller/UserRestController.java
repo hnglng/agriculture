@@ -39,7 +39,7 @@ public class UserRestController {
 
     @RequestMapping(value="/{userId}", method = RequestMethod.GET)
     public UserResource readUser(@PathVariable Long userId){
-        Link link = linkTo(UserRestController.class).withSelfRel();
+        Link link = linkTo(UserRestController.class).withRel("items");
         UserEntity user = userRestService.findOne(userId);
         UserResource resource = new UserResource(user, link);
         return resource;
