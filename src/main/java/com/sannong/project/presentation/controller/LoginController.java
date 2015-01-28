@@ -34,7 +34,7 @@ public class LoginController {
     private static final String LOGIN_PAGE = "login";
     private static final String FAQ_PAGE = "faq";
     private static final String USER_PERSONAL_CENTER_PAGE = "user-personal-center";
-    private static final String PROJECT_LANDING_PAGE = "project-landing";
+    private static final String PROJECT_LANDING_PAGE = "landing";
 
     @Resource
     private IUserService userService;
@@ -52,10 +52,10 @@ public class LoginController {
         return new ModelAndView(FAQ_PAGE);
     }
 
-    @RequestMapping(value = "project-landing", method = RequestMethod.GET)
+    @RequestMapping(value = "landing", method = RequestMethod.GET)
     public ModelAndView showLandingPage() {
         Map<String, Object> models = new HashMap<String, Object>();
-        models.put("project-landing", new Object());
+        models.put("landing", new Object());
         return new ModelAndView(PROJECT_LANDING_PAGE, models);
     }
 

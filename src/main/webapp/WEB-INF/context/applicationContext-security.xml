@@ -49,16 +49,16 @@
         -->
         <sec:custom-filter before="FORM_LOGIN_FILTER" ref="loginFilter" />
 
-        <sec:form-login login-page="/project-landing"
+        <sec:form-login login-page="/landing"
                     authentication-failure-url="/login-failure"
                     default-target-url="/login-success"/>
 
         <sec:logout invalidate-session="true"
-                    logout-url="/j_spring_security_logout" logout-success-url="/project-landing"/>
+                    logout-url="/j_spring_security_logout" logout-success-url="/landing"/>
 
         <sec:remember-me data-source-ref="dataSource" user-service-ref="userDetailsManager"/>
 
-        <sec:session-management invalid-session-url="/project-landing"/>
+        <sec:session-management invalid-session-url="/landing"/>
 
     </sec:http>
 

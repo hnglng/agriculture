@@ -29,7 +29,7 @@ import java.util.Map;
 @RequestMapping(value="/project-application")
 public class ApplicationController {
     private static final String APPLICATION_PAGE = "project-application";
-    private static final String COMPLETION_PAGE = "project-application-completion";
+    private static final String COMPLETION_PAGE = "completion";
 
     @Autowired
     private IApplicationService projectService;
@@ -64,7 +64,7 @@ public class ApplicationController {
     @RequestMapping(value = "/completion", method = RequestMethod.GET)
     public ModelAndView showCompletion() {
         Map<String, Object> models = new HashMap<String, Object>();
-        models.put("project-application-completion", new Object());
+        models.put("completion", new Object());
         return new ModelAndView(COMPLETION_PAGE, models);
     }
 

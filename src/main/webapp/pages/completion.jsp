@@ -45,20 +45,20 @@
 <section class="contentSection">
   <div class="container">
     <div class="row">
-        	<span class="col-sm-12 textAlignCenter">
-          	我们的工作人员会尽快和您取得联系<br/><br/>
-            你可以登录我们的网站查询查询申报审批的进度和状态。登录的用户名和密码将会以短信的形式发送给您。<br /><br />
-						<em>如果需要修改您的问卷调查答案，请拨打 0800 556 2540 联系我们的工作人员。</em><br /><br />
-						<hr/>
-            <a href="project-landing" class="orange-bt">返回首页</a>
-          </span>
+      <span class="col-sm-12 textAlignCenter">
+        我们的工作人员会尽快和您取得联系<br/><br/>
+        你可以登录我们的网站查询查询申报审批的进度和状态。登录的用户名和密码将会以短信的形式发送给您。<br/><br/>
+        <em>如果需要修改您的问卷调查答案，请拨打 0800 556 2540 联系我们的工作人员。</em><br/><br/>
+        <hr/>
+        <a href="landing" class="orange-bt">返回首页</a>
+      </span>
     </div>
   </div>
 </section>
 <!-- /CONTENT SECTION -->
 
 <jsp:include page='footer.jsp'/>
-<script data-main="js/app/pages/project-landing" src="js/lib/require-2.1.15.min.js"></script>
+<script data-main="js/app/pages/landing" src="js/lib/require-2.1.15.min.js"></script>
 <!--
 <script src="js/app/modules/custom.js"></script>
 -->

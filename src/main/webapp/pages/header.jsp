@@ -43,7 +43,7 @@
     <div class="container">
       <div class="row">
             <span class="col-sm-4 logoCol">
-              <h1><a href="project-landing"><img src="images/logo.png" alt="Benefitting Agriculture"/></a></h1>
+              <h1><a href="landing"><img src="images/logo.png" alt="Benefitting Agriculture"/></a></h1>
             </span>
             <span class="col-sm-4">
             </span>

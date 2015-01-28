@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.ExposesResourceFor;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resources;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,6 +35,16 @@ public class ApplicationRestController {
         Resources<ApplicationResource> resources = new Resources<ApplicationResource>(applicationResources, link);
         return resources;
     }
+
+//    @RequestMapping(method = RequestMethod.POST)
+//    public ResponseEntity<?> createApplication(){
+//        Link link = linkTo(ApplicationRestController.class).withSelfRel();
+//        List<ApplicationEntity> applications = applicationRestService.findAll();
+//        List<ApplicationResource> applicationResources =
+//                new ApplicationResourceAssembler().toResources(applications);
+//        Resources<ApplicationResource> resources = new Resources<ApplicationResource>(applicationResources, link);
+//        return resources;
+//    }
 
     @RequestMapping(value="/{applicationId}", method = RequestMethod.GET)
     public ApplicationResource readApplication(@PathVariable Long applicationId){

@@ -12,7 +12,7 @@
   <title></title>
 </head>
 <body>
-<span class="col-sm-3 sidebar equalCol">
+
     <h3>常见问题</h3>
     <div id="accordion" class="panel-group faqAccordion">
 
@@ -64,6 +64,6 @@
       有更多问题？请看<br/>
       <a href="faq" class="orange-link">常见问题</a>
     </p>
-</span>
+
 </body>
 </html>

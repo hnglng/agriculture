@@ -251,7 +251,7 @@
 <!-- /CONTENT SECTION -->
 
 <jsp:include page='footer.jsp'/>
-<script data-main="js/app/pages/project-landing" src="js/lib/require-2.1.15.min.js"></script>
+<script data-main="js/app/pages/landing" src="js/lib/require-2.1.15.min.js"></script>
 <!--
 <script src="js/app/modules/custom.js"></script>
 -->
