@@ -11,7 +11,6 @@ import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resources;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
@@ -28,21 +27,12 @@ public class ApplicationRestController {
 
     @RequestMapping(method = RequestMethod.GET)
     public Resources<ApplicationResource> readApplications(){
-        Long applicationId = new Long(21);
-
         Link link = linkTo(ApplicationRestController.class).withSelfRel();
-
-        ApplicationEntity application = applicationRestService.findOne(applicationId);
-
-        List<ApplicationEntity> applications = new ArrayList<ApplicationEntity>();
-        applications.add(application);
-
+        List<ApplicationEntity> applications = applicationRestService.findAll();
         List<ApplicationResource> applicationResources =
                 new ApplicationResourceAssembler().toResources(applications);
-
         Resources<ApplicationResource> resources = new Resources<ApplicationResource>(applicationResources, link);
         return resources;
-
     }
 
     @RequestMapping(value="/{applicationId}", method = RequestMethod.GET)

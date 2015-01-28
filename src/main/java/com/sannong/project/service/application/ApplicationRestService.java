@@ -5,7 +5,7 @@ import com.sannong.project.infrastructure.persistence.jpa.repositories.Applicati
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by Bright Huang on 1/26/15.
@@ -15,10 +15,8 @@ public class ApplicationRestService {
     @Autowired
     private ApplicationJpaRepository applicationJpaRepository;
 
-    public Collection<ApplicationEntity> findByUserUserName(String userName) {
-        //return applicationJpaRepository.findByUserUserName(userName);
-        return null;
-
+    public List<ApplicationEntity> findAll() {
+        return applicationJpaRepository.findAll();
     }
 
     public ApplicationEntity findOne(Long applicationId){
