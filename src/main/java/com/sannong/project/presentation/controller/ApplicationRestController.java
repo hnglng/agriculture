@@ -19,7 +19,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
  * Created by Bright Huang on 1/23/15.
  */
 @RestController
-@ExposesResourceFor(Application.class)
+@ExposesResourceFor(ApplicationEntity.class)
 @RequestMapping(value = "/applications", produces = "application/hal+json")
 public class ApplicationRestController {
     @Autowired

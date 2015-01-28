@@ -17,6 +17,8 @@ public class UserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name="user_id")
+    private Long userId;
     @Column(name="username")
     private String userName;
     @Column
@@ -47,6 +49,14 @@ public class UserEntity {
     private Timestamp creationTime;
     @Column(name="last_updated")
     private Timestamp lastUpdated;
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
 
     public String getUserName() {
         return userName;

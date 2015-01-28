@@ -24,7 +24,7 @@ public class ApplicationEntity {
     private Long applicationId;
 
     @OneToOne
-    @JoinColumn(name="username")
+    @JoinColumn(name="user_id")
     private UserEntity user;
 
     @OneToMany
