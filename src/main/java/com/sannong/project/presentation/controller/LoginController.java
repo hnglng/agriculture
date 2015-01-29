@@ -32,9 +32,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class LoginController {
 	private static final Logger logger = Logger.getLogger(LoginController.class);
     private static final String LOGIN_PAGE = "login";
-    private static final String FAQ_PAGE = "faq";
     private static final String USER_PERSONAL_CENTER_PAGE = "user-personal-center";
-    private static final String PROJECT_LANDING_PAGE = "landing";
 
     @Resource
     private IUserService userService;
@@ -42,22 +40,6 @@ public class LoginController {
     private ISmsService smsService;
 
 
-    @RequestMapping(value = "home", method = RequestMethod.GET)
-    public ModelAndView show() {
-        return new ModelAndView(PROJECT_LANDING_PAGE);
-    }
-
-    @RequestMapping(value = "faq", method = RequestMethod.GET)
-    public ModelAndView faq() {
-        return new ModelAndView(FAQ_PAGE);
-    }
-
-    @RequestMapping(value = "landing", method = RequestMethod.GET)
-    public ModelAndView showLandingPage() {
-        Map<String, Object> models = new HashMap<String, Object>();
-        models.put("landing", new Object());
-        return new ModelAndView(PROJECT_LANDING_PAGE, models);
-    }
 
     @RequestMapping(value = "login", method = RequestMethod.GET)
     public ModelAndView showLoginPage() {

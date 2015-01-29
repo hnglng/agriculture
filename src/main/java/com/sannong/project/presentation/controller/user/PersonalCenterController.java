@@ -1,4 +1,4 @@
-package com.sannong.project.presentation.controller.personalcenter;
+package com.sannong.project.presentation.controller.user;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

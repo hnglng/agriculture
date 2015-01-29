@@ -45,11 +45,11 @@ define(['jquery', 'sannong', 'handlebars'], function($, sannong, handlebars) {
                 })
             }
         },
-        renderQuestionnaireView: function(questionnaire){
+        renderQuestions: function(questions){
             //fill out questionnaire
             var checkboxCompiler = handlebars.compile($("#question-template-checkbox").html()),
                 radioCompiler = handlebars.compile($("#question-template-radio").html()),
-                questions = questionnaire.questions,
+                //questions = questionnaire.questions,
                 question = null,
                 html = null;
 

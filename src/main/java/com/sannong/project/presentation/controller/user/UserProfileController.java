@@ -1,4 +1,4 @@
-package com.sannong.project.presentation.controller.personalcenter;
+package com.sannong.project.presentation.controller.user;
 
 import com.sannong.project.domain.region.City;
 import com.sannong.project.domain.region.District;

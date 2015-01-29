@@ -1,10 +1,10 @@
-package com.sannong.project.presentation.controller.personalcenter;
+package com.sannong.project.presentation.controller.user;
 
 import com.sannong.project.domain.application.Application;
 import com.sannong.project.domain.user.User;
 import com.sannong.project.infrastructure.export.CsvExporter;
 import com.sannong.project.presentation.dto.DTO;
-import com.sannong.project.service.application.IApplicationService;
+import com.sannong.project.service.application.ApplicationService;
 import com.sannong.project.service.user.IUserService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.annotations.Param;
@@ -37,7 +37,7 @@ public class UserManagementController {
     @Resource
     private IUserService userService;
     @Resource
-    private IApplicationService projectService;
+    private ApplicationService applicationService;
 
 
     private Map buildUserQueryCondition(HttpServletRequest request){
@@ -103,7 +103,7 @@ public class UserManagementController {
         if (StringUtils.isBlank(userName)){
             userName = getUserName();
         }
-        return projectService.findByUserName(userName).get(0);
+        return applicationService.findByUserName(userName).get(0);
     }
 
     @RequestMapping(value = "/users/{userName}/profile", method = RequestMethod.GET)
@@ -144,7 +144,7 @@ public class UserManagementController {
         map.put("pageSum", pageSum);
 
         List<User> applicants = userService.getUserByFuzzyMatch(map);
-        int questionSum = projectService.getTotalQuestions();
+        int questionSum = applicationService.getTotalQuestions();
         String filePath = CsvExporter.export(applicants, questionSum);
 
         String[] filePathSplit = filePath.split("/");

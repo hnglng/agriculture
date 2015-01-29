@@ -2,7 +2,6 @@ package com.sannong.project.service.application;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,7 +11,6 @@ import com.sannong.project.domain.application.ApplicationRepository;
 import com.sannong.project.domain.application.Question;
 import com.sannong.project.domain.application.Questionnaire;
 import com.sannong.project.domain.user.User;
-import com.sannong.project.infrastructure.persistence.jpa.repositories.ApplicationJpaRepository;
 import com.sannong.project.presentation.command.CreateApplicationCommand;
 import com.sannong.project.service.sms.ISmsService;
 import org.apache.log4j.Logger;
@@ -35,9 +33,9 @@ import com.sannong.project.infrastructure.util.PasswordGenerator;
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class ApplicationServiceImpl implements IApplicationService {
+public class ApplicationService {
 
-    private static final Logger logger = Logger.getLogger(ApplicationServiceImpl.class);
+    private static final Logger logger = Logger.getLogger(ApplicationService.class);
 
     @Autowired
     private UserRepository userRepository;
@@ -119,9 +117,6 @@ public class ApplicationServiceImpl implements IApplicationService {
         return applicationRepository.getTotalQuestions();
     }
 
-
-
-    @Override
     public Questionnaire getQuestionnaire(Long applicationId, Integer questionnaireNumber) {
         return applicationRepository.getQuestionnaireBy(applicationId, questionnaireNumber);
     }

@@ -23,4 +23,8 @@ public class ApplicationRestService {
         return applicationJpaRepository.findOne(applicationId);
     }
 
+    public ApplicationEntity save(ApplicationEntity application){
+        return applicationJpaRepository.save(application);
+    }
+
 }

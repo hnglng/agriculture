@@ -5,69 +5,69 @@
 require(['../main'], function () {
     require(['jquery', 'bootstrap', 'handlebars', 'sannong', 'login', 'validate', 'ajaxHandler',
             'questionnaire', 'jqueryForm', 'formValidator', 'selector', 'additionalMethods', 'custom'],
-        function($, bootstrap, handlebars, sannong, login, validate, ajaxHandler,
-                 questionnaire, jqueryForm, formValidator, selector, additionalMethods, custom) {
+        function ($, bootstrap, handlebars, sannong, login, validate, ajaxHandler,
+                  questionnaire, jqueryForm, formValidator, selector, additionalMethods, custom) {
 
             "use strict";
 
-            var projectApplication = {};
+            var application = {};
 
-            projectApplication.Model = {};
+            application.Model = {};
 
-            projectApplication.View = {
+            application.View = {
                 cellphone: $("#projectAppForm_cellphone"),
                 cellphoneError: $("#cellphone-error"),
                 validationCode: $("#projectAppForm_validationCode"),
-                projectApplicationFormSubmit: $("#projectAppForm_submit"),
-                showUniqueCellphoneError: function(message) {
+                applicationFormSubmit: $("#projectAppForm_submit"),
+                showUniqueCellphoneError: function (message) {
                     var errorLabel = '<label id="projectAppForm_cellphone-error" class="error" for="cellphone" style="display: inline-block;">' + message + '</label>';
-                    projectApplication.View.cellphoneError.remove();
-                    projectApplication.View.cellphone.removeClass("error");
-                    projectApplication.View.cellphone.after(errorLabel);
-                    projectApplication.View.cellphone.addClass("error");
+                    application.View.cellphoneError.remove();
+                    application.View.cellphone.removeClass("error");
+                    application.View.cellphone.after(errorLabel);
+                    application.View.cellphone.addClass("error");
                 },
-                showValidationCodeError: function(message) {
+                showValidationCodeError: function (message) {
                     var errorLabel = '<label id="projectAppForm_validationCode-error" class="error" for="projectAppForm_validationCode">' + message + '</label>';
-                    projectApplication.View.validationCode.removeClass("error");
-                    projectApplication.View.validationCode.removeAttr("aria-invalid");
+                    application.View.validationCode.removeClass("error");
+                    application.View.validationCode.removeAttr("aria-invalid");
 
-                    if ( $("#projectAppForm_validationCode-error") !== undefined){
+                    if ($("#projectAppForm_validationCode-error") !== undefined) {
                         $("#projectAppForm_validationCode-error").text(message);
-                    }else{
-                        projectApplication.View.validationCode.after(errorLabel);
+                    } else {
+                        application.View.validationCode.after(errorLabel);
                     }
-                    projectApplication.View.validationCode.addClass("error");
-                    projectApplication.View.validationCode.attr("aria-invalid", "true");
-                    projectApplication.View.validationCode.attr("style", "display: inline-block");
+                    application.View.validationCode.addClass("error");
+                    application.View.validationCode.attr("aria-invalid", "true");
+                    application.View.validationCode.attr("style", "display: inline-block");
 
                 },
-                showValidationCodeMessage: function(message) {
-                    projectApplication.View.showValidationCodeError(message);
+                showValidationCodeMessage: function (message) {
+                    application.View.showValidationCodeError(message);
                 },
-                enableSubmitButton: function() {
-                    projectApplication.View.projectApplicationFormSubmit.removeClass("disabled");
+                enableSubmitButton: function () {
+                    application.View.applicationFormSubmit.removeClass("disabled");
                 },
-                disableSubmitButton: function() {
-                    projectApplication.View.projectApplicationFormSubmit.addClass("disabled");
+                disableSubmitButton: function () {
+                    application.View.applicationFormSubmit.addClass("disabled");
                 }
 
             };
 
-            projectApplication.Controller = {
-                showProjectQuestionnaire: function(){
+            application.Controller = {
+                showQuestions: function () {
                     $.ajax({
                         type: "GET",
                         dataType: "json",
-                        url: 'project-application/questionnaires/1',
-                        success: function(data) {
-                            questionnaire.View.renderQuestionnaireView(data);
+                        url: '/questions/questionnaireNumbers/1',
+                        success: function (data) {
+                            questionnaire.View.renderQuestions(data._embedded.questionEntityList);
                         }
                     });
                 },
-                handleValidationCodeClick: function(){
-                    //projectApplication.View.enableSubmitButton();
+                handleValidationCodeClick: function () {
+                    //application.View.enableSubmitButton();
 
-                    if ($("#projectAppForm_validationBtn").hasClass("disabled")){
+                    if ($("#projectAppForm_validationBtn").hasClass("disabled")) {
                         return;
                     }
 
@@ -79,73 +79,75 @@ require(['../main'], function () {
                             success: function (response) {
                                 if (response.statusCode < 2000) {
                                     additionalMethods.updateTimeLabel("#projectAppForm_validationBtn", "验证码");
-                                    projectApplication.View.enableSubmitButton();
+                                    application.View.enableSubmitButton();
                                     $("#projectAppForm_validationBtn").addClass("disabled");
                                     $("#projectAppForm_validationCode").removeAttr("disabled");
-                                    projectApplication.View.showValidationCodeMessage(response.statusMessage);
+                                    application.View.showValidationCodeMessage(response.statusMessage);
                                 } else {
                                     $("#projectAppForm_validationBtn").removeClass("disabled");
                                     $("#projectAppForm_validationCode").attr({disabled: "disabled"});
-                                    projectApplication.View.disableSubmitButton();
-                                    if (response.statusCode == 2012){
-                                        projectApplication.View.showUniqueCellphoneError(response.statusMessage);
-                                    }else{
-                                        projectApplication.View.showValidationCodeError(response.statusMessage);
+                                    application.View.disableSubmitButton();
+                                    if (response.statusCode == 2012) {
+                                        application.View.showUniqueCellphoneError(response.statusMessage);
+                                    } else {
+                                        application.View.showValidationCodeError(response.statusMessage);
                                     }
                                 }
                             },
                             fail: function (response) {
                                 $("#projectAppForm_validationBtn").removeClass("disabled");
                                 $("#projectAppForm_validationCode").removeAttr("disabled");
-                                projectApplication.View.disableSubmitButton();
-                                projectApplication.View.showValidationCodeError("验证码发送失败");
+                                application.View.disableSubmitButton();
+                                application.View.showValidationCodeError("验证码发送失败");
                             }
 
                         });
                     }
                 },
-                handleFormSubmit: function(){
+                handleFormSubmit: function () {
                     //$("#projectAppModelTrigger").click();
-                    if ($("#projectAppForm_submit").hasClass("disabled") == true) { return;}
+                    if ($("#projectAppForm_submit").hasClass("disabled") == true) {
+                        return;
+                    }
 
-                    if (formValidator.getValidator("#projectAppForm").form() == true){
+                    if (formValidator.getValidator("#projectAppForm").form() == true) {
                         $("#projectAppModelTrigger").click();
                     }
                 },
-                handleConfirmedSubmit: function(){
-                    $("#projectAppForm").ajaxSubmit(function(response) {
+                handleConfirmedSubmit: function () {
+                    $("#projectAppForm").ajaxSubmit(function (response) {
                         if (response.statusCode < 2000) {
                             window.location.href = response.uri;
-                        } else{
+                        } else {
                             $("#closeModal").click();
-                            projectApplication.View.showValidationCodeError(response.statusMessage);
+                            application.View.showValidationCodeError(response.statusMessage);
                         }
                     });
                 }
             };
 
             function registerEventListener() {
-                $("#projectAppForm_validationBtn").click(function(){
-                    projectApplication.Controller.handleValidationCodeClick();
+                $("#projectAppForm_validationBtn").click(function () {
+                    application.Controller.handleValidationCodeClick();
                 });
 
                 $("#projectAppForm_submit").click(function () {
-                    projectApplication.Controller.handleFormSubmit();
+                    application.Controller.handleFormSubmit();
                 });
 
                 $("#confirmedSubmit").click(function () {
-                    projectApplication.Controller.handleConfirmedSubmit();
+                    application.Controller.handleConfirmedSubmit();
                 });
             }
 
-            $(function() {
+            $(function () {
                 selector.initSelect('select');
-                projectApplication.Controller.showProjectQuestionnaire();
+                application.Controller.showQuestions();
                 registerEventListener();
             });
 
-    sannong.ProjectApplication = projectApplication;
-    return projectApplication;
+            sannong.ProjectApplication = application;
+            return application;
 
-    });
+        });
 });

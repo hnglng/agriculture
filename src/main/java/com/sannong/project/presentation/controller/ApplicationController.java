@@ -1,12 +1,12 @@
 package com.sannong.project.presentation.controller;
 
-import com.sannong.project.domain.common.Status;
 import com.sannong.project.domain.application.ApplicationSpecification;
 import com.sannong.project.domain.application.Questionnaire;
+import com.sannong.project.domain.common.Status;
 import com.sannong.project.infrastructure.util.PasswordGenerator;
 import com.sannong.project.presentation.command.CreateApplicationCommand;
 import com.sannong.project.presentation.dto.Response;
-import com.sannong.project.service.application.IApplicationService;
+import com.sannong.project.service.application.ApplicationService;
 import com.sannong.project.service.sms.ISmsService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.Map;
 
 
 /**
@@ -29,12 +27,13 @@ import java.util.Map;
 @RequestMapping(value="/project-application")
 public class ApplicationController {
     private static final String APPLICATION_PAGE = "project-application";
-    private static final String COMPLETION_PAGE = "completion";
 
     @Autowired
-    private IApplicationService projectService;
+    private ApplicationService applicationService;
+
     @Autowired
     private ISmsService smsService;
+
     @Qualifier("applicationSpecification")
     @Autowired
     private ApplicationSpecification applicationSpec;
@@ -52,7 +51,7 @@ public class ApplicationController {
             throws Exception {
         Response response = new Response();
         if (applicationSpec.isSatisfiedBy(createApplicationCommand)) {
-            projectService.createApplication(createApplicationCommand);
+            applicationService.createApplication(createApplicationCommand);
             return new ResponseEntity<Response>(response, HttpStatus.OK);
         }else{
             response.setStatusCode(Status.FAILURE.getCode());
@@ -61,18 +60,12 @@ public class ApplicationController {
         }
     }
 
-    @RequestMapping(value = "/completion", method = RequestMethod.GET)
-    public ModelAndView showCompletion() {
-        Map<String, Object> models = new HashMap<String, Object>();
-        models.put("completion", new Object());
-        return new ModelAndView(COMPLETION_PAGE, models);
-    }
 
     @RequestMapping(value = "/questionnaires/{number}", method = RequestMethod.GET)
     public @ResponseBody
     Questionnaire getQuestionnaire(@PathVariable("number") Integer number) throws Exception{
         Questionnaire questionnaire = new Questionnaire();
-        questionnaire.setQuestions(projectService.getQuestionsByQuestionnaireNumber(number));
+        questionnaire.setQuestions(applicationService.getQuestionsByQuestionnaireNumber(number));
         return questionnaire;
     }
 

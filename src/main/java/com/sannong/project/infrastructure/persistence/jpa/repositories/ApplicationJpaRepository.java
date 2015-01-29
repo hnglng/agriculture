@@ -17,4 +17,6 @@ public interface ApplicationJpaRepository extends CrudRepository<ApplicationEnti
 
     List<ApplicationEntity> findAll();
 
+    ApplicationEntity save(ApplicationEntity application);
+
 }
