@@ -1,17 +1,26 @@
 package com.sannong.project.domain.region;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.io.Serializable;
 
 /**
  * Created by Bright Huang on 10/24/14.
  */
+@Entity
 public class City implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @Id
+    @Column(name="city_id")
     private Long cityId;
+    @Column(name="city_name")
     private String cityName;
+    @Column(name="city_code")
     private String cityCode;
+    @Column(name="province_id")
     private Long provinceId;
 
 

@@ -2,6 +2,7 @@ package com.sannong.project.service.application;
 
 import com.sannong.project.domain.application.Application;
 import com.sannong.project.infrastructure.persistence.jpa.repositories.ApplicationRepository;
+import com.sannong.project.presentation.command.CreateApplicationCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +27,9 @@ public class ApplicationRestService {
         return applicationRepository.findOne(applicationId);
     }
 
-    public Application save(Application application){
+    public Application createApplication(CreateApplicationCommand createApplicationCommand){
+        Application application = new Application();
+
         return applicationRepository.save(application);
     }
 

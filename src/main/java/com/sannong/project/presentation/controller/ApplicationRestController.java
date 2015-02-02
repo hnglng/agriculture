@@ -3,8 +3,13 @@ package com.sannong.project.presentation.controller;
 import com.sannong.project.domain.application.Application;
 import com.sannong.project.domain.application.ApplicationResource;
 import com.sannong.project.domain.application.ApplicationResourceAssembler;
+import com.sannong.project.domain.application.ApplicationSpecification;
+import com.sannong.project.domain.common.Status;
+import com.sannong.project.infrastructure.util.PasswordGenerator;
 import com.sannong.project.presentation.command.CreateApplicationCommand;
+import com.sannong.project.presentation.dto.Response;
 import com.sannong.project.service.application.ApplicationRestService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.ExposesResourceFor;
 import org.springframework.hateoas.Link;
@@ -14,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
@@ -25,7 +31,6 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 @ExposesResourceFor(Application.class)
 @RequestMapping(value = "/applications", produces = "application/hal+json")
 public class ApplicationRestController {
-
     @Autowired
     private ApplicationRestService applicationRestService;
 
@@ -78,5 +83,6 @@ public class ApplicationRestController {
         return resource;
     }
     */
+
 
 }

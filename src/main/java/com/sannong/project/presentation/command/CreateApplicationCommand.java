@@ -1,6 +1,5 @@
 package com.sannong.project.presentation.command;
 
-import com.sannong.project.domain.application.Questionnaire;
 import com.sannong.project.domain.sms.SMS;
 import com.sannong.project.domain.user.User;
 
@@ -11,7 +10,7 @@ import java.util.List;
  */
 public class CreateApplicationCommand {
     private User user;
-    private List<Questionnaire> questionnaires;
+    private List<String> answers;
     private SMS sms;
 
     public User getUser() {
@@ -22,12 +21,12 @@ public class CreateApplicationCommand {
         this.user = user;
     }
 
-    public List<Questionnaire> getQuestionnaires() {
-        return questionnaires;
+    public List<String> getAnswers() {
+        return answers;
     }
 
-    public void setQuestionnaires(List<Questionnaire> questionnaires) {
-        this.questionnaires = questionnaires;
+    public void setAnswers(List<String> answers) {
+        this.answers = answers;
     }
 
     public SMS getSms() {

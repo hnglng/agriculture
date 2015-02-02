@@ -1,18 +1,30 @@
 package com.sannong.project.service.sms;
 
 
+import com.sannong.project.domain.sms.SMS;
+import com.sannong.project.domain.sms.SmsUrlFactory;
+import com.sannong.project.infrastructure.persistence.jpa.repositories.SmsRepository;
+import com.sannong.project.infrastructure.sms.SmsSender;
+import com.sannong.project.infrastructure.util.AppConfigReader;
+import com.sannong.project.infrastructure.util.PasswordGenerator;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.servlet.http.HttpServletRequest;
+import java.sql.Timestamp;
+import java.util.*;
 
 /**
  * Created by Bright Huang on 10/22/14.
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
-//public class SmsServiceImpl implements ISmsService {
 public class SmsService {
-    /*
-    private static final Logger logger = Logger.getLogger(SmsServiceImpl.class);
+
+    private static final Logger logger = Logger.getLogger(SmsService.class);
 
     @Autowired
     private SmsRepository smsRepository;
@@ -34,13 +46,8 @@ public class SmsService {
         sms.setSmsId(smsId);
         sms.setSentTime(time);
         sms.setSmsStatus(1);
-        smsRepository.updateSMS(sms);
+        smsRepository.save(sms);
         return true;
-    }
-
-    public List<SMS> getNewSMS() {
-
-        return smsRepository.getNewSMS();
     }
 
     public int validateSMSCode(HttpServletRequest request) {
@@ -80,12 +87,8 @@ public class SmsService {
         return 0;
     }
 
-    @Override
-    public List<SMS> getSmsByCellphoneAndValidationCode(String cellphone, String validationCode) {
-        SMS sms = new SMS();
-        sms.setMobilePhone(cellphone);
-        sms.setSmsValidationCode(validationCode);
-        return smsRepository.getSmsByCellphoneAndValidationCode(sms);
+    public SMS getSmsByMobilePhoneAndValidationCode(String mobilePhone, String validationCode) {
+        return smsRepository.findByMobilePhoneAndSmsValidationCode(mobilePhone, validationCode);
     }
 
     public boolean generateCode(HttpServletRequest request) {
@@ -128,14 +131,14 @@ public class SmsService {
 
             sms.setSmsContent(content);
             sms.setSentTime(new Timestamp(System.currentTimeMillis()));
-            smsRepository.addNewSMS(sms);
+            smsRepository.save(sms);
 
             return true;
         }
     }
 
 
-    @Override
+
     public String sendValidationCode(String cellphone, String validationCode) {
         String result = "";
         try {
@@ -149,7 +152,7 @@ public class SmsService {
         return result;
     }
 
-    @Override
+
     public String sendLoginMessage(String cellphone, String password) {
         String result = "";
         try {
@@ -163,7 +166,7 @@ public class SmsService {
         return result;
     }
 
-    @Override
+
     public String sendNewPasswordMessage(String cellphone, String password) {
         String result = "";
         try {
@@ -186,8 +189,8 @@ public class SmsService {
             sms.setSmsContent(result);
             sms.setSentTime(timestamp);
             sms.setSmsStatus(0);
-            smsRepository.addNewSMS(sms);
+            smsRepository.save(sms);
         }
     }
-    */
+
 }

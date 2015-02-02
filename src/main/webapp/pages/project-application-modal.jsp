@@ -28,7 +28,7 @@
           请确认是否提交?
         </div>
         <div class="buttonsRow">
-          <button type="submit" class="orange-bt" id="confirmedSubmit">提交</button>
+          <button type="submit" class="orange-bt" id="confirmed-submit">提交</button>
           <button type="button" class="white-bt" data-dismiss="modal" id="closeModal">取消</button>
         </div>
       </div>

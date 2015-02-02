@@ -17,15 +17,15 @@
         <li class="J_group_choice">
           {{fromOne}}. {{questionContent}}
           <div class="radioRow">
-                      <span class="radioCustom"><input type="radio" name="questionnaires[0].answers[{{fromZero}}]"
+                      <span class="radioCustom"><input type="radio" name="answers[{{fromZero}}]"
                                                        value="{{questionId}}:a"><label>{{option1}}</label></span>
-                      <span class="radioCustom"><input type="radio" name="questionnaires[0].answers[{{fromZero}}]"
+                      <span class="radioCustom"><input type="radio" name="answers[{{fromZero}}]"
                                                        value="{{questionId}}:b"><label>{{option2}}</label></span>
-                      <span class="radioCustom"><input type="radio" name="questionnaires[0].answers[{{fromZero}}]"
+                      <span class="radioCustom"><input type="radio" name="answers[{{fromZero}}]"
                                                        value="{{questionId}}:c"><label>{{option3}}</label></span>
-                      <span class="radioCustom"><input type="radio" name="questionnaires[0].answers[{{fromZero}}]"
+                      <span class="radioCustom"><input type="radio" name="answers[{{fromZero}}]"
                                                        value="{{questionId}}:d"><label>{{option4}}</label></span>
-                      <span class="radioCustom"><input type="radio" name="questionnaires[0].answers[{{fromZero}}]"
+                      <span class="radioCustom"><input type="radio" name="answers[{{fromZero}}]"
                                                        value="{{questionId}}:e"><label>{{option5}}</label></span>
           </div>
         </li>
@@ -35,19 +35,19 @@
           {{fromOne}}. {{questionContent}}
           <div class="checkboxRow">
                       <span class="checkboxCustom"><input type="checkbox"
-                                                          name="questionnaires[0].answers[{{fromZero}}]"
+                                                          name="answers[{{fromZero}}]"
                                                           value="{{questionId}}:a"><label>{{option1}}</label></span>
                       <span class="checkboxCustom"><input type="checkbox"
-                                                          name="questionnaires[0].answers[{{fromZero}}]"
+                                                          name="answers[{{fromZero}}]"
                                                           value="{{questionId}}:b"><label>{{option2}}</label></span>
                       <span class="checkboxCustom"><input type="checkbox"
-                                                          name="questionnaires[0].answers[{{fromZero}}]"
+                                                          name="answers[{{fromZero}}]"
                                                           value="{{questionId}}:c"><label>{{option3}}</label></span>
                       <span class="checkboxCustom"><input type="checkbox"
-                                                          name="questionnaires[0].answers[{{fromZero}}]"
+                                                          name="answers[{{fromZero}}]"
                                                           value="{{questionId}}:d"><label>{{option4}}</label></span>
                       <span class="checkboxCustom"><input type="checkbox"
-                                                          name="questionnaires[0].answers[{{fromZero}}]"
+                                                          name="answers[{{fromZero}}]"
                                                           value="{{questionId}}:e"><label>{{option5}}</label></span>
           </div>
         </li>

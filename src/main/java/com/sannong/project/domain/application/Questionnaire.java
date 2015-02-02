@@ -23,25 +23,18 @@ public class Questionnaire implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="questionnaire_id")
     private Long questionnaireId;
-
     @Column(name="application_id")
     private Long applicationId;
-
     @Column(name="questionnaire_number")
     private Integer questionnaireNumber;
-
     @Column
     private String answers;
-
     @Column(name="questionnaire_committed")
     private Boolean questionnaireCommitted;
-
     @Column(name="creation_time")
     private Timestamp creationTime;
-
     @Column(name="last_updated")
     private Timestamp lastUpdated;
-
     @ManyToMany
     @JoinTable(
             name="questionnaires_questions",

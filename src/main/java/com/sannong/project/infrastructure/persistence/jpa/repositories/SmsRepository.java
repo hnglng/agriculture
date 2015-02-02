@@ -1,13 +1,15 @@
 package com.sannong.project.infrastructure.persistence.jpa.repositories;
-import java.util.List;
 
 import com.sannong.project.domain.sms.SMS;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
-//@Repository
-public interface SmsRepository {
-	
+@Repository("smsRepository")
+public interface SmsRepository  extends CrudRepository<SMS, Long> {
+
+    SMS findByMobilePhoneAndSmsValidationCode(String mobilePhone, String smsValidationCode);
+
+	/*
 	List<SMS> getNewSMS();
 	
 	void addNewSMS(SMS sms);
@@ -17,4 +19,5 @@ public interface SmsRepository {
     void updateSmsByCellphone(SMS sms);
     
     List<SMS> getSmsByCellphoneAndValidationCode(SMS sms);
+    */
 }

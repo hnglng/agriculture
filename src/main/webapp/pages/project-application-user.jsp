@@ -15,19 +15,19 @@
   <div class="row">
     <aside class="userFormCol-1">姓名</aside>
     <aside class="userFormCol-right"><input type="text" class="width-172"
-                                            id="projectAppForm_userRealName"
+                                            id="real-name"
                                             name="user.realName"></aside>
   </div>
   <div class="row">
     <aside class="userFormCol-1">职位</aside>
     <aside class="userFormCol-right"><input type="text" class="width-172"
-                                            id="projectAppForm_jobTitle" name="user.jobTitle">
+                                            id="job-title" name="user.jobTitle">
     </aside>
   </div>
   <div class="row">
     <aside class="userFormCol-1">工作单位</aside>
     <aside class="userFormCol-right"><input type="text" class="width-281"
-                                            id="projectAppForm_company" name="user.companyName">
+                                            id="company-name" name="user.companyName">
     </aside>
   </div>
   <div class="row">
@@ -97,40 +97,40 @@
           <option value='16'>平谷区</option>
         </select>
       </div>
-      <input type="text" class="width-281" id="projectAppForm_jobAddress"
+      <input type="text" class="width-281" id="company-address"
              name="user.companyAddress">
     </aside>
   </div>
   <div class="row">
     <aside class="userFormCol-1">工作电话</aside>
     <aside class="userFormCol-right"><input type="text" class="width-281"
-                                            id="projectAppForm_deskPhone" name="user.deskPhone">
+                                            id="desk-phone" name="user.deskPhone">
     </aside>
   </div>
   <div class="row">
     <aside class="userFormCol-1">电子邮件</aside>
     <aside class="userFormCol-right"><input type="text" class="width-281"
-                                            id="projectAppForm_mailbox" name="user.mailbox">
+                                            id="mailbox" name="user.mailbox">
     </aside>
   </div>
   <div class="row">
     <aside class="userFormCol-1">手机号码</aside>
     <aside class="userFormCol-right">
-      <input type="text" class="width-281" id="projectAppForm_cellphone"
+      <input type="text" class="width-281" id="mobile-phone"
              name="user.mobilePhone">
       <a href="javascript:void(0)" class="white-bt" role="button"
-         id="projectAppForm_validationBtn" name="validationBtn">获取验证码</a>
+         id="validation-button" name="validationBtn">获取验证码</a>
     </aside>
   </div>
   <div class="row">
     <aside class="userFormCol-1">验证码</aside>
     <aside class="userFormCol-right">
-      <input type="text" class="width-87" id="projectAppForm_validationCode"
+      <input type="text" class="width-87" id="validation-code"
              name="sms.smsValidationCode"/>
     </aside>
   </div>
   <div class="row">
-    <input type="button" class="disabled" id="projectAppForm_submit" value="提交"/>
+    <input type="button" class="disabled" id="submit-button" value="提交"/>
   </div>
 </body>
 </html>

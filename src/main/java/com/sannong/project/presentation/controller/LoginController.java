@@ -13,8 +13,6 @@ import com.sannong.project.domain.user.User;
 import com.sannong.project.domain.common.Status;
 import com.sannong.project.infrastructure.util.PasswordGenerator;
 import com.sannong.project.presentation.dto.Response;
-import com.sannong.project.service.sms.ISmsService;
-import com.sannong.project.service.user.IUserService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.security.core.context.SecurityContextHolder;

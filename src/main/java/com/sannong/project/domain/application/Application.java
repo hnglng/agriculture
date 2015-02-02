@@ -23,11 +23,11 @@ public class Application {
     @Column(name="application_id")
     private Long applicationId;
 
-    @OneToOne
+    @OneToOne(cascade={CascadeType.PERSIST,CascadeType.MERGE})
     @JoinColumn(name="user_id")
     private User user;
 
-    @OneToMany
+    @OneToMany(cascade={CascadeType.PERSIST,CascadeType.MERGE})
     @JoinColumn(name="application_id", referencedColumnName="application_id")
     private List<Questionnaire> questionnaires;
 

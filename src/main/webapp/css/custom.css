@@ -657,7 +657,7 @@ h3.borderBottom {
     overflow-y: auto;
 }
 
-.projectAppForm input[id="projectAppForm_jobAddress"] {
+.projectAppForm input[id="company-address"] {
 	margin-top: 15px;
 }
 
