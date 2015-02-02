@@ -3,7 +3,15 @@ define('sannong', ['jquery'], function($) {
     "use strict";
 
     var sannong = {};
+
     sannong.Model = {};
+
+    sannong.getBaseUrl =  function(){
+        var pathArray = window.location.pathname.split( '/'),
+        secondLevelLocation = pathArray[1],
+        newURL = window.location.protocol + "//" + window.location.host + "/" + secondLevelLocation;
+        return newURL;
+    }
 
     function showWelcome(){
         $.ajax({

@@ -6,7 +6,7 @@ import java.util.Properties;
 
 @Service
 public class AppConfigReader {
-    private static final String APP_CONFIG_FILE_NAME = "app.properties";
+    private static final String APP_CONFIG_FILE_NAME = "application.properties";
     private static final String SESSION_SMS_CODES = "session_sms_codes";
     private static final Properties properties = new Properties();
 

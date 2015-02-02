@@ -1,15 +1,11 @@
 package com.sannong.project.presentation.controller;
 
 import com.sannong.project.domain.application.Application;
-import com.sannong.project.domain.application.ApplicationEntity;
-import com.sannong.project.domain.application.QuestionnaireEntity;
-import com.sannong.project.domain.resource.ApplicationResource;
-import com.sannong.project.domain.resource.ApplicationResourceAssembler;
+import com.sannong.project.domain.application.ApplicationResource;
+import com.sannong.project.domain.application.ApplicationResourceAssembler;
 import com.sannong.project.presentation.command.CreateApplicationCommand;
 import com.sannong.project.service.application.ApplicationRestService;
-import com.sannong.project.service.application.QuestionnaireRestService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.EntityLinks;
 import org.springframework.hateoas.ExposesResourceFor;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resources;
@@ -18,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
 import java.util.List;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
@@ -27,16 +22,17 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
  * Created by Bright Huang on 1/23/15.
  */
 @RestController
-@ExposesResourceFor(ApplicationEntity.class)
+@ExposesResourceFor(Application.class)
 @RequestMapping(value = "/applications", produces = "application/hal+json")
 public class ApplicationRestController {
+
     @Autowired
     private ApplicationRestService applicationRestService;
 
     @RequestMapping(method = RequestMethod.GET)
     public Resources<ApplicationResource> readApplications(){
         Link link = linkTo(ApplicationRestController.class).withSelfRel();
-        List<ApplicationEntity> applications = applicationRestService.findAll();
+        List<Application> applications = applicationRestService.findAll();
         List<ApplicationResource> applicationResources =
                 new ApplicationResourceAssembler().toResources(applications);
         Resources<ApplicationResource> resources = new Resources<ApplicationResource>(applicationResources, link);
@@ -59,7 +55,7 @@ public class ApplicationRestController {
     public ApplicationResource readApplication(@PathVariable Long applicationId){
         Link link = linkTo(ApplicationRestController.class).withSelfRel();
 
-        ApplicationEntity application = applicationRestService.findOne(applicationId);
+        Application application = applicationRestService.findOne(applicationId);
 
         ApplicationResource resource = new ApplicationResource(application, link);
         return resource;
@@ -68,7 +64,7 @@ public class ApplicationRestController {
     @RequestMapping(value="/{applicationId}/questionnaires", method = RequestMethod.GET)
     public ApplicationResource readQuestionnaire(@PathVariable Long applicationId){
         Link link = linkTo(ApplicationRestController.class).withSelfRel();
-        ApplicationEntity application = applicationRestService.findOne(applicationId);
+        Application application = applicationRestService.findOne(applicationId);
         ApplicationResource resource = new ApplicationResource(application, link);
         return resource;
     }

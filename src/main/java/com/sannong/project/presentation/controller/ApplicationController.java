@@ -26,8 +26,9 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 @RequestMapping(value="/project-application")
 public class ApplicationController {
-    private static final String APPLICATION_PAGE = "project-application";
 
+    private static final String APPLICATION_PAGE = "project-application";
+    /*
     @Autowired
     private ApplicationService applicationService;
 
@@ -37,13 +38,14 @@ public class ApplicationController {
     @Qualifier("applicationSpecification")
     @Autowired
     private ApplicationSpecification applicationSpec;
-
+    */
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView showApplication() {
         return new ModelAndView(APPLICATION_PAGE);
     }
 
+    /*
     @RequestMapping(method = RequestMethod.POST)
     public @ResponseBody
     ResponseEntity<?> createApplication(
@@ -95,5 +97,6 @@ public class ApplicationController {
         }
         return response;
     }
+*/
 
 }

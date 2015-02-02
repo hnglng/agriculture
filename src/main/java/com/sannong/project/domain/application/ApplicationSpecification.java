@@ -4,12 +4,7 @@ import com.sannong.project.domain.common.Error;
 import com.sannong.project.domain.common.ISpecification;
 import com.sannong.project.domain.common.Status;
 import com.sannong.project.domain.sms.SMS;
-import com.sannong.project.domain.sms.SmsRepository;
-import com.sannong.project.domain.user.User;
-import com.sannong.project.domain.user.UserRepository;
 import com.sannong.project.presentation.command.CreateApplicationCommand;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -22,12 +17,12 @@ import java.util.Map;
  */
 @Component
 public class ApplicationSpecification implements ISpecification<CreateApplicationCommand> {
-    @Qualifier("userRepository")
-    @Autowired
-    private UserRepository userRepository;
-    @Qualifier("smsRepository")
-    @Autowired
-    private SmsRepository smsRepository;
+    //@Qualifier("userRepository")
+    //@Autowired
+    //private UserRepository userRepository;
+    //@Qualifier("smsRepository")
+    //@Autowired
+    //private SmsRepository smsRepository;
 
     private List<Error> errors = new ArrayList<Error>();
 
@@ -35,16 +30,18 @@ public class ApplicationSpecification implements ISpecification<CreateApplicatio
     private boolean isMobilePhoneExisted(String mobilePhone) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("mobilePhone", mobilePhone);
-        List<User> users = userRepository.getUserByCondition(map);
-        return !users.isEmpty();
+        //List<User> users = userRepository.getUserByCondition(map);
+        //return !users.isEmpty();
+        return true;
     }
 
     private boolean isValidCaptcha(String mobilePhone, String smsValidationCode){
         SMS sms = new SMS();
         sms.setMobilePhone(mobilePhone);
         sms.setSmsValidationCode(smsValidationCode);
-        List<SMS> smsList = smsRepository.getSmsByCellphoneAndValidationCode(sms);
-        return !smsList.isEmpty();
+//        List<SMS> smsList = smsRepository.getSmsByCellphoneAndValidationCode(sms);
+//        return !smsList.isEmpty();
+        return true;
     }
 
     private void addError(int code, String message, String field){

@@ -34,10 +34,42 @@ public class LoginController {
     private static final String LOGIN_PAGE = "login";
     private static final String USER_PERSONAL_CENTER_PAGE = "user-personal-center";
 
-    @Resource
-    private IUserService userService;
-    @Resource
-    private ISmsService smsService;
+//    @Resource
+//    private IUserService userService;
+//    @Resource
+//    private ISmsService smsService;
+
+    private static final String PROJECT_LANDING_PAGE = "landing";
+    private static final String FAQ_PAGE = "faq";
+
+
+    /*
+
+    @RequestMapping(value = "home", method = RequestMethod.GET)
+    public ModelAndView show() {
+        return new ModelAndView(PROJECT_LANDING_PAGE);
+    }
+
+    @RequestMapping(value = "faq", method = RequestMethod.GET)
+    public ModelAndView faq() {
+        return new ModelAndView(FAQ_PAGE);
+    }
+
+    @RequestMapping(value = "landing", method = RequestMethod.GET)
+    public ModelAndView showLandingPage() {
+        Map<String, Object> models = new HashMap<String, Object>();
+        models.put("landing", new Object());
+        return new ModelAndView(PROJECT_LANDING_PAGE, models);
+    }
+
+    */
+
+    @RequestMapping(value = "/error", method = RequestMethod.GET)
+    public ModelAndView showError() {
+        Map<String, Object> models = new HashMap<String, Object>();
+        models.put("error", new Object());
+        return new ModelAndView("error", models);
+    }
 
 
 
@@ -94,6 +126,7 @@ public class LoginController {
      * @return
      * @throws Exception
      */
+    /*
     @RequestMapping(value = "forgot-password/sendNewPasswordMessage", method = RequestMethod.POST)
     public @ResponseBody
     Response sendNewPasswordMessage(HttpServletRequest request) throws Exception{
@@ -130,7 +163,9 @@ public class LoginController {
         }
         return response;
     }
+    */
 
+    /*
     @RequestMapping(value = "login/realName", method = RequestMethod.POST)
     public @ResponseBody Response getRealName(){
         Map<String, Object> models = new HashMap<String, Object>();
@@ -160,7 +195,7 @@ public class LoginController {
         }
         return response;
     }
-
+    */
 }
 
 

@@ -1,30 +1,8 @@
 package com.sannong.project.service.application;
 
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import com.sannong.project.domain.application.Application;
-import com.sannong.project.domain.application.ApplicationRepository;
-import com.sannong.project.domain.application.Question;
-import com.sannong.project.domain.application.Questionnaire;
-import com.sannong.project.domain.user.User;
-import com.sannong.project.presentation.command.CreateApplicationCommand;
-import com.sannong.project.service.sms.ISmsService;
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.sannong.project.domain.mail.MailContentFactory;
-import com.sannong.project.domain.region.RegionFactory;
-import com.sannong.project.domain.region.Region;
-import com.sannong.project.domain.user.RoleType;
-import com.sannong.project.infrastructure.mail.MailAsyncSender;
-import com.sannong.project.domain.user.UserRepository;
-import com.sannong.project.infrastructure.util.PasswordGenerator;
 
 /**
  * application service
@@ -35,6 +13,7 @@ import com.sannong.project.infrastructure.util.PasswordGenerator;
 @Transactional(rollbackFor = Exception.class)
 public class ApplicationService {
 
+    /*
     private static final Logger logger = Logger.getLogger(ApplicationService.class);
 
     @Autowired
@@ -120,6 +99,7 @@ public class ApplicationService {
     public Questionnaire getQuestionnaire(Long applicationId, Integer questionnaireNumber) {
         return applicationRepository.getQuestionnaireBy(applicationId, questionnaireNumber);
     }
+    */
 
 
 }

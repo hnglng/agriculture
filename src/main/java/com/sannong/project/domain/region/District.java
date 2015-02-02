@@ -9,7 +9,6 @@ public class District implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-
     private Long districtId;
     private String districtName;
     private String districtCode;

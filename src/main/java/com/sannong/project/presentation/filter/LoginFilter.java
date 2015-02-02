@@ -1,6 +1,7 @@
 package com.sannong.project.presentation.filter;
 
-import com.sannong.project.service.user.IUserService;
+
+import com.sannong.project.service.user.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     private static final Logger logger = Logger.getLogger(LoginFilter.class);
 
     @Autowired
-    IUserService userService;
+    UserService userService;
 
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
             throws AuthenticationException {
@@ -28,8 +29,8 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         String usernameParamValue = request.getParameter(usernameParamName);
         HttpRequestWrapper httpRequestWrapper = new HttpRequestWrapper(request);
         try{
-            String userName = userService.getUserNameByMobilePhone(usernameParamValue);
-
+            //String userName = userService.getUserNameByMobilePhone(usernameParamValue);
+            String userName = null;
             if (StringUtils.isNotBlank(userName)){
                 httpRequestWrapper.addParameter(usernameParamName, userName);
             }

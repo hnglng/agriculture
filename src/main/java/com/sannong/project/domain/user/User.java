@@ -3,151 +3,180 @@ package com.sannong.project.domain.user;
 import com.sannong.project.infrastructure.util.CustomDateSerializer;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
-import java.io.Serializable;
+import javax.persistence.*;
 import java.sql.Timestamp;
 
 /**
- * @author Bright Huang
+ * Created by Bright Huang on 1/27/15.
  */
-public class User implements Serializable{
-	
-	private static final long serialVersionUID = 4891642085331481252L;
-	
-	private String userName;
-	private String password;
-	private String realName;
-	private String mailbox;
-	private String companyName;
+@Entity
+@Table( name = "users" )
+public class User {
+
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name="user_id")
+    private Long userId;
+    @Column(name="username")
+    private String userName;
+    @Column
+    private String password;
+    @Column(name="real_name")
+    private String realName;
+    @Column
+    private String mailbox;
+    @Column(name="company_name")
+    private String companyName;
+    @Column(name="company_province")
     private Long companyProvince;
+    @Column(name="company_city")
     private Long companyCity;
+    @Column(name="company_district")
     private Long companyDistrict;
-	private String companyAddress;
-	private String mobilePhone;
-	private String deskPhone;
-	private String jobTitle;
-	private Integer enabled;
-	private Timestamp creationTime;
-	private Timestamp lastUpdated;
+    @Column(name="company_address")
+    private String companyAddress;
+    @Column(name="mobile_phone")
+    private String mobilePhone;
+    @Column(name="desk_phone")
+    private String deskPhone;
+    @Column(name="job_title")
+    private String jobTitle;
+    @Column
+    private Integer enabled;
+    @Column(name="creation_time")
+    private Timestamp creationTime;
+    @Column(name="last_updated")
+    private Timestamp lastUpdated;
 
-	public String getUserName() {
-		return userName;
-	}
+    public Long getUserId() {
+        return userId;
+    }
 
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public String getUserName() {
+        return userName;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
-	public String getRealName() {
-		return realName;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public void setRealName(String realName) {
-		this.realName = realName;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	public String getMailbox() {
-		return mailbox;
-	}
+    public String getRealName() {
+        return realName;
+    }
 
-	public void setMailbox(String mailbox) {
-		this.mailbox = mailbox;
-	}
+    public void setRealName(String realName) {
+        this.realName = realName;
+    }
 
-	public String getCompanyName() {
-		return companyName;
-	}
+    public String getMailbox() {
+        return mailbox;
+    }
 
-	public void setCompanyName(String companyName) {
-		this.companyName = companyName;
-	}
+    public void setMailbox(String mailbox) {
+        this.mailbox = mailbox;
+    }
 
-	public Long getCompanyProvince() {
-		return companyProvince;
-	}
+    public String getCompanyName() {
+        return companyName;
+    }
 
-	public void setCompanyProvince(Long companyProvince) {
-		this.companyProvince = companyProvince;
-	}
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
 
-	public Long getCompanyCity() {
-		return companyCity;
-	}
+    public Long getCompanyProvince() {
+        return companyProvince;
+    }
 
-	public void setCompanyCity(Long companyCity) {
-		this.companyCity = companyCity;
-	}
+    public void setCompanyProvince(Long companyProvince) {
+        this.companyProvince = companyProvince;
+    }
 
-	public Long getCompanyDistrict() {
-		return companyDistrict;
-	}
+    public Long getCompanyCity() {
+        return companyCity;
+    }
 
-	public void setCompanyDistrict(Long companyDistrict) {
-		this.companyDistrict = companyDistrict;
-	}
+    public void setCompanyCity(Long companyCity) {
+        this.companyCity = companyCity;
+    }
 
-	public String getCompanyAddress() {
-		return companyAddress;
-	}
+    public Long getCompanyDistrict() {
+        return companyDistrict;
+    }
 
-	public void setCompanyAddress(String companyAddress) {
-		this.companyAddress = companyAddress;
-	}
+    public void setCompanyDistrict(Long companyDistrict) {
+        this.companyDistrict = companyDistrict;
+    }
 
-	public String getMobilePhone() {
-		return mobilePhone;
-	}
+    public String getCompanyAddress() {
+        return companyAddress;
+    }
 
-	public void setMobilePhone(String mobilePhone) {
-		this.mobilePhone = mobilePhone;
-	}
+    public void setCompanyAddress(String companyAddress) {
+        this.companyAddress = companyAddress;
+    }
 
-	public String getDeskPhone() {
-		return deskPhone;
-	}
+    public String getMobilePhone() {
+        return mobilePhone;
+    }
 
-	public void setDeskPhone(String deskPhone) {
-		this.deskPhone = deskPhone;
-	}
+    public void setMobilePhone(String mobilePhone) {
+        this.mobilePhone = mobilePhone;
+    }
 
-	public String getJobTitle() {
-		return jobTitle;
-	}
+    public String getDeskPhone() {
+        return deskPhone;
+    }
 
-	public void setJobTitle(String jobTitle) {
-		this.jobTitle = jobTitle;
-	}
+    public void setDeskPhone(String deskPhone) {
+        this.deskPhone = deskPhone;
+    }
 
-	public Integer getEnabled() {
-		return enabled;
-	}
+    public String getJobTitle() {
+        return jobTitle;
+    }
 
-	public void setEnabled(Integer enabled) {
-		this.enabled = enabled;
-	}
+    public void setJobTitle(String jobTitle) {
+        this.jobTitle = jobTitle;
+    }
 
-	@JsonSerialize(using = CustomDateSerializer.class)
-	public Timestamp getCreationTime() {
-		return creationTime;
-	}
+    public Integer getEnabled() {
+        return enabled;
+    }
 
-	public void setCreationTime(Timestamp creationTime) {
-		this.creationTime = creationTime;
-	}
+    public void setEnabled(Integer enabled) {
+        this.enabled = enabled;
+    }
 
-	@JsonSerialize(using = CustomDateSerializer.class)
-	public Timestamp getLastUpdated() {
-		return lastUpdated;
-	}
+    @JsonSerialize(using = CustomDateSerializer.class)
+    public Timestamp getCreationTime() {
+        return creationTime;
+    }
 
-	public void setLastUpdated(Timestamp lastUpdated) {
-		this.lastUpdated = lastUpdated;
-	}
+    public void setCreationTime(Timestamp creationTime) {
+        this.creationTime = creationTime;
+    }
+
+    @JsonSerialize(using = CustomDateSerializer.class)
+    public Timestamp getLastUpdated() {
+        return lastUpdated;
+    }
+
+    public void setLastUpdated(Timestamp lastUpdated) {
+        this.lastUpdated = lastUpdated;
+    }
 }

@@ -18,6 +18,7 @@ import java.util.Map;
  */
 @Controller
 public class RegionController {
+    /*
     @Resource
     private IRegionService regionService;
 
@@ -52,5 +53,6 @@ public class RegionController {
 
         return models;
     }
+    */
 
 }

@@ -1,110 +1,143 @@
 package com.sannong.project.domain.application;
 
 
-import org.apache.commons.lang3.StringUtils;
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.springframework.hateoas.core.Relation;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 
 /**
- * @author william zhang
- * create questionnaire class
+ * Created by Bright Huang on 1/27/15.
  */
+@Entity
+@Table(name = "questionnaires")
+@Relation(value = "questionnaire", collectionRelation = "questionnaires")
 public class Questionnaire implements Serializable {
+    @JsonIgnore
+    private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 4596287948226478700L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name="questionnaire_id")
+    private Long questionnaireId;
 
-	private Long applicationId;
-	private Integer questionnaireNumber;
-	private List<String> answers;
-	private Boolean questionnaireCommitted;
-	private Timestamp creationTime;
-	private Timestamp lastUpdated;
-	private String concatenatedAnswers = "";
-	private List<Question> questions;
+    @Column(name="application_id")
+    private Long applicationId;
 
-	public Questionnaire() {
-	}
+    @Column(name="questionnaire_number")
+    private Integer questionnaireNumber;
 
-	public Questionnaire(Long applicationId, Integer questionnaireNumber) {
-		this.applicationId = applicationId;
-		this.questionnaireNumber = questionnaireNumber;
-	}
+    @Column
+    private String answers;
 
-	public Long getApplicationId() {
-		return applicationId;
-	}
+    @Column(name="questionnaire_committed")
+    private Boolean questionnaireCommitted;
 
-	public void setApplicationId(Long applicationId) {
-		this.applicationId = applicationId;
-	}
+    @Column(name="creation_time")
+    private Timestamp creationTime;
 
-	public Integer getQuestionnaireNumber() {
-		return questionnaireNumber;
-	}
+    @Column(name="last_updated")
+    private Timestamp lastUpdated;
 
-	public void setQuestionnaireNumber(Integer questionnaireNumber) {
-		this.questionnaireNumber = questionnaireNumber;
-	}
+    @ManyToMany
+    @JoinTable(
+            name="questionnaires_questions",
+            joinColumns={@JoinColumn(name="questionnaire_id", referencedColumnName="questionnaire_id")},
+            inverseJoinColumns={@JoinColumn(name="question_id", referencedColumnName="question_id")})
+    private List<Question> questions;
 
-	public List<String> getAnswers() {
-		return answers;
-	}
+    //private String concatenatedAnswers = "";
 
-	public void setAnswers(List<String> answers) {
-		this.answers = answers;
-	}
 
-	public Boolean getQuestionnaireCommitted() {
-		return questionnaireCommitted;
-	}
+    public Long getQuestionnaireId() {
+        return questionnaireId;
+    }
 
-	public void setQuestionnaireCommitted(Boolean questionnaireCommitted) {
-		this.questionnaireCommitted = questionnaireCommitted;
-	}
+    public void setQuestionnaireId(Long questionnaireId) {
+        this.questionnaireId = questionnaireId;
+    }
 
-	public Timestamp getCreationTime() {
-		return creationTime;
-	}
+    public Long getApplicationId() {
+        return applicationId;
+    }
 
-	public void setCreationTime(Timestamp creationTime) {
-		this.creationTime = creationTime;
-	}
+    public void setApplicationId(Long applicationId) {
+        this.applicationId = applicationId;
+    }
 
-	public Timestamp getLastUpdated() {
-		return lastUpdated;
-	}
+    public Integer getQuestionnaireNumber() {
+        return questionnaireNumber;
+    }
 
-	public void setLastUpdated(Timestamp lastUpdated) {
-		this.lastUpdated = lastUpdated;
-	}
+    public void setQuestionnaireNumber(Integer questionnaireNumber) {
+        this.questionnaireNumber = questionnaireNumber;
+    }
 
-	public String getConcatenatedAnswers() {
+    public String getAnswers() {
+        return answers;
+    }
 
-		if (StringUtils.isNotBlank(concatenatedAnswers)){
-			return concatenatedAnswers;
-		} else if (answers == null){
-			return "";
-		} else if (answers.size() > 0){
-			for (String answer : answers) {
-				concatenatedAnswers = concatenatedAnswers + answer + ";";
-			}
-			return concatenatedAnswers.substring(0, concatenatedAnswers.lastIndexOf(";"));
-		} else{
-			return "";
-		}
-	}
+    public void setAnswers(String answers) {
+        this.answers = answers;
+    }
 
-	public void setConcatenatedAnswers(String concatenatedAnswers) {
-		this.concatenatedAnswers = concatenatedAnswers;
-	}
+    public Boolean getQuestionnaireCommitted() {
+        return questionnaireCommitted;
+    }
 
-	public List<Question> getQuestions() {
-		return questions;
-	}
+    public void setQuestionnaireCommitted(Boolean questionnaireCommitted) {
+        this.questionnaireCommitted = questionnaireCommitted;
+    }
 
-	public void setQuestions(List<Question> questions) {
-		this.questions = questions;
-	}
+    public Timestamp getCreationTime() {
+        return creationTime;
+    }
+
+    public void setCreationTime(Timestamp creationTime) {
+        this.creationTime = creationTime;
+    }
+
+    public Timestamp getLastUpdated() {
+        return lastUpdated;
+    }
+
+    public void setLastUpdated(Timestamp lastUpdated) {
+        this.lastUpdated = lastUpdated;
+    }
+
+    /*
+    public String getConcatenatedAnswers() {
+
+        if (StringUtils.isNotBlank(concatenatedAnswers)){
+            return concatenatedAnswers;
+        } else if (answers == null){
+            return "";
+        } else if (answers.size() > 0){
+            for (String answer : answers) {
+                concatenatedAnswers = concatenatedAnswers + answer + ";";
+            }
+            return concatenatedAnswers.substring(0, concatenatedAnswers.lastIndexOf(";"));
+        } else{
+            return "";
+        }
+    }
+
+    public void setConcatenatedAnswers(String concatenatedAnswers) {
+        this.concatenatedAnswers = concatenatedAnswers;
+    }
+*/
+
+
+    public List<Question> getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(List<Question> questions) {
+        this.questions = questions;
+    }
+
+
 }

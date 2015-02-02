@@ -6,6 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 </head>
 <body>
-  <c:redirect url="home" />
+  <h2>Hello World!</h2>
+  <c:redirect url="/home"></c:redirect>
 </body>
 </html>

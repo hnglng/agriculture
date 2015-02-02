@@ -1,23 +1,15 @@
 package com.sannong.project.service.validation;
 
-import com.sannong.project.domain.sms.SMS;
-import com.sannong.project.domain.user.User;
-import com.sannong.project.domain.sms.SmsRepository;
-import com.sannong.project.domain.user.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Bright Huang on 11/18/14.
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class ValidationService implements IValidationService {
+public class ValidationService {
+    /*
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -47,4 +39,5 @@ public class ValidationService implements IValidationService {
             return true;
         }
     }
+    */
 }

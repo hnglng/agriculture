@@ -1,79 +1,81 @@
 package com.sannong.project.domain.application;
 
-import com.sannong.project.domain.common.AbstractEntity;
-import com.sannong.project.domain.sms.SMS;
 import com.sannong.project.domain.user.User;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.springframework.hateoas.core.Relation;
 
-import javax.persistence.Entity;
-import javax.xml.bind.annotation.XmlRootElement;
-import java.io.Serializable;
+import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.List;
 
 /**
- * @author william zhang
- * create application class
+ * Created by Bright Huang on 1/26/15.
  */
+@Entity
+@Table( name = "applications" )
+@Relation(value = "application", collectionRelation = "applications")
+public class Application {
+    @JsonIgnore
+    private static final long serialVersionUID = 1L;
 
-public class Application implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name="application_id")
+    private Long applicationId;
 
-	@JsonIgnore
-	private static final long serialVersionUID = 4282850771969955235L;
-	
-	private Long applicationId;
-	private User user;
-	private List<Questionnaire> questionnaires;
-	private String comments;
-	private Timestamp creationTime;
-	private SMS sms;
+    @OneToOne
+    @JoinColumn(name="user_id")
+    private User user;
 
-	public Long getApplicationId() {
-		return applicationId;
-	}
+    @OneToMany
+    @JoinColumn(name="application_id", referencedColumnName="application_id")
+    private List<Questionnaire> questionnaires;
 
-	public void setApplicationId(Long applicationId) {
-		this.applicationId = applicationId;
-	}
+    @Column
+    private String comments;
 
-	public User getUser() {
-		return user;
-	}
+    @Column(name="creation_time")
+    private Timestamp creationTime;
 
-	public void setUser(User user) {
-		this.user = user;
-	}
 
-	public List<Questionnaire> getQuestionnaires() {
-		return questionnaires;
-	}
+    public Long getApplicationId() {
+        return applicationId;
+    }
 
-	public void setQuestionnaires(List<Questionnaire> questionnaires) {
-		this.questionnaires = questionnaires;
-	}
+    public void setApplicationId(Long applicationId) {
+        this.applicationId = applicationId;
+    }
 
-	public String getComments() {
-		return comments;
-	}
+    public User getUser() {
+        return user;
+    }
 
-	public void setComments(String comments) {
-		this.comments = comments;
-	}
+    public void setUser(User user) {
+        this.user = user;
+    }
 
-	public Timestamp getCreationTime() {
-		return creationTime;
-	}
+    public List<Questionnaire> getQuestionnaires() {
+        return questionnaires;
+    }
 
-	public void setCreationTime(Timestamp creationTime) {
-		this.creationTime = creationTime;
-	}
+    public void setQuestionnaires(List<Questionnaire> questionnaires) {
+        this.questionnaires = questionnaires;
+    }
 
-	public SMS getSms() {
-		return sms;
-	}
+    public String getComments() {
+        return comments;
+    }
 
-	public void setSms(SMS sms) {
-		this.sms = sms;
-	}
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
+
+    public Timestamp getCreationTime() {
+        return creationTime;
+    }
+
+    public void setCreationTime(Timestamp creationTime) {
+        this.creationTime = creationTime;
+    }
+
 }

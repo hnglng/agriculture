@@ -60,7 +60,7 @@ require(['../main'], function () {
                         dataType: "json",
                         url: '/questions/questionnaireNumbers/1',
                         success: function (data) {
-                            questionnaire.View.renderQuestions(data._embedded.questionEntityList);
+                            questionnaire.View.renderQuestions(data._embedded.questionList);
                         }
                     });
                 },
