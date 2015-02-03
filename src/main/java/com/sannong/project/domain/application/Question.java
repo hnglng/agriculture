@@ -4,6 +4,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by Bright Huang on 1/27/15.
@@ -22,6 +23,7 @@ public class Question implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="question_id")
     private Long questionId;
     @Column
@@ -41,6 +43,8 @@ public class Question implements Serializable {
     @Column(name="single_selection_only")
     private Integer singleSelectionOnly;
 
+//    @ManyToMany(mappedBy = "questions")
+//    public List<Questionnaire> questionnaires;
 
     public Long getQuestionId() {
         return questionId;
@@ -114,4 +118,11 @@ public class Question implements Serializable {
         this.singleSelectionOnly = singleSelectionOnly;
     }
 
+//    public List<Questionnaire> getQuestionnaires() {
+//        return questionnaires;
+//    }
+//
+//    public void setQuestionnaires(List<Questionnaire> questionnaires) {
+//        this.questionnaires = questionnaires;
+//    }
 }

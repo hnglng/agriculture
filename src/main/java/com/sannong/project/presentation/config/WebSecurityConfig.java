@@ -1,7 +1,6 @@
 package com.sannong.project.presentation.config;
 
 import com.sannong.project.domain.user.User;
-import com.sannong.project.domain.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

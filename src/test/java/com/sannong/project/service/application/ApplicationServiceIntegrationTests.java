@@ -1,5 +1,7 @@
 package com.sannong.project.service.application;
 
+import com.sannong.project.infrastructure.persistence.jpa.repositories.ApplicationRepository;
+import com.sannong.project.presentation.command.CreateApplicationCommand;
 import com.sannong.project.presentation.config.Application;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,10 +23,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration
-public class ApplicationServiceTests {
+public class ApplicationServiceIntegrationTests {
 
     @Autowired
     private WebApplicationContext context;
+    @Autowired
+    ApplicationService applicationService;
+    @Autowired
+    ApplicationRepository applicationRepository;
 
     private MockMvc mvc;
 
@@ -39,6 +45,20 @@ public class ApplicationServiceTests {
         this.mvc.perform(get("/")).andExpect(status().isOk())
                 .andExpect(xpath("//tbody/tr").nodeCount(4));
                 */
+    }
+
+    @Test
+    public void createApplicationCorrectly() {
+        CreateApplicationCommand createApplicationCommand = new CreateApplicationCommand();
+        /*
+        createApplicationCommand.setUser();
+        createApplicationCommand.setAnswers();
+        createApplicationCommand.setSms();
+
+        applicationService.createApplication(createApplicationCommand);
+
+        applicationRepository.findOne()
+        */
     }
 
 }

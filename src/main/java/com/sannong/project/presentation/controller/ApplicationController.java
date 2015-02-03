@@ -24,8 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping(value="/project-application")
 public class ApplicationController {
     private static final String APPLICATION_PAGE = "project-application";
-    @Autowired
-    private ApplicationRestService applicationRestService;
+
     @Autowired
     private ApplicationService applicationService;
     @Autowired
@@ -35,6 +34,7 @@ public class ApplicationController {
     public ModelAndView showApplication() {
         return new ModelAndView(APPLICATION_PAGE);
     }
+
 
     @RequestMapping(method = RequestMethod.POST)
     public @ResponseBody
@@ -50,5 +50,4 @@ public class ApplicationController {
             return new ResponseEntity<Response>(response, HttpStatus.SERVICE_UNAVAILABLE);
         }
     }
-
 }

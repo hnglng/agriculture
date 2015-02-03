@@ -109,14 +109,21 @@ require(['../main'], function () {
                     }
                 },
                 handleConfirmedSubmit: function () {
-                    $("#projectAppForm").ajaxSubmit(function (response) {
-                        if (response.statusCode < 2000) {
-                            window.location.href = response.uri;
-                        } else {
-                            $("#closeModal").click();
-                            application.View.showValidationCodeError(response.statusMessage);
+                    var option = {
+                        type: 'POST',
+                        contentType: 'application/json',
+                        url: "/project-application",
+                        dataType: "json",
+                        data: $("#projectAppForm").serialize(),
+                        success: function(data, textStatus, jqXHR){
+                            console.log(textStatus)
+                        },
+                        error: function(jqXHR, textStatus, errorThrown){
+                            console.log(textStatus)
                         }
-                    });
+                    }
+
+                    ajaxHandler.sendRequest(option);
                 }
             };
 

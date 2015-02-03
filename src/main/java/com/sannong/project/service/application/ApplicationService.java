@@ -1,6 +1,7 @@
 package com.sannong.project.service.application;
 
 import com.sannong.project.domain.application.Application;
+import com.sannong.project.domain.application.Question;
 import com.sannong.project.domain.application.Questionnaire;
 import com.sannong.project.domain.mail.MailContentFactory;
 import com.sannong.project.domain.region.Region;
@@ -54,64 +55,55 @@ public class ApplicationService {
     @Autowired
     private MailAsyncSender mailAsyncSender;
 
+    private List<Question> buildQuestions(List<String> answers){
+        List<Question> questions = new ArrayList<Question>();
+        for (String answer : answers){
+            String[] pair  = answer.split(":");
+            Question question = new Question();
+            question.setQuestionId(Long.parseLong(pair[0]));
+            questions.add(question);
+        }
+        return questions;
+    }
+
     public void createApplication(CreateApplicationCommand createApplicationCommand) {
 
-        User user = createApplicationCommand.getUser();
+        Timestamp creationTime = new Timestamp(System.currentTimeMillis());
 
-        // Add user
+        User user = createApplicationCommand.getUser();
         String password = PasswordGenerator.generatePassword(6);
         String mobilePhone = user.getMobilePhone();
         String encryptedPassword = PasswordGenerator.encryptPassword(password, mobilePhone);
         user.setPassword(encryptedPassword);
         user.setUserName(mobilePhone);
-        Timestamp creationTime = new Timestamp(System.currentTimeMillis());
+        user.setEnabled(1);
         user.setCreationTime(creationTime);
         user.setLastUpdated(creationTime);
-        userRepository.save(user);
 
-        // Add authorities
-        Authority authority = new Authority();
-        authority.setUserName(mobilePhone);
-        authority.setAuthority(RoleType.ROLE_USER.toString());
-        authorityRepository.save(authority);
-
-        // Add application
         Application application = new Application();
         application.setCreationTime(creationTime);
         application.setUser(user);
 
-        // Add questionnaire
         Questionnaire questionnaire = new Questionnaire();
         questionnaire.setAnswers(StringUtils.join(createApplicationCommand.getAnswers(), ','));
         questionnaire.setQuestionnaireNumber(1);
         questionnaire.setQuestionnaireCommitted(true);
+        //questionnaire.setQuestions(buildQuestions(createApplicationCommand.getAnswers()));
+
+        // important: for JPA, application instance has to be set into its child (questionnaire),
+        //  otherwise, will throw error: application_id can not be null.
+        questionnaire.setApplication(application);
+
         List<Questionnaire> questionnaires = new ArrayList<Questionnaire>();
         questionnaires.add(questionnaire);
-
         application.setQuestionnaires(questionnaires);
+
         applicationRepository.save(application);
 
-
-
-        /*
-
-        // Add application info
-        Application application = new Application();
-        application.setUser(user);
-        application.setCreationTime(creationTime);
-        applicationRepository.addProjectApplicationInfo(application);
-
-        // Add questionnaires info
-        Questionnaire questionnaire = new Questionnaire();
-        questionnaire.setApplicationId(application.getApplicationId());
-        questionnaire.setQuestionnaireNumber(1);
-        questionnaire.setQuestionnaireCommitted(true);
-        questionnaire.setCreationTime(creationTime);
-        questionnaire.setLastUpdated(creationTime);
-        questionnaire.setAnswers(application.getQuestionnaires().get(0).getAnswers());
-        //questionnaire.setConcatenatedAnswers(questionnaire.getConcatenatedAnswers());
-        applicationRepository.addQuestionnaire(questionnaire);
-        */
+        Authority authority = new Authority();
+        authority.setUserName(mobilePhone);
+        authority.setAuthority(RoleType.ROLE_USER.toString());
+        authorityRepository.save(authority);
 
         // Send email to admin
         Region region = regionFactory.build(user.getCompanyProvince(), user.getCompanyCity(), user.getCompanyDistrict());

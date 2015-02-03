@@ -7,6 +7,7 @@ import java.io.Serializable;
  * Created by Bright Huang on 10/24/14.
  */
 @Entity
+@Table(name = "provinces")
 public class Province implements Serializable {
 
     private static final long serialVersionUID = 1L;

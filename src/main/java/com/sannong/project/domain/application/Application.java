@@ -19,16 +19,15 @@ public class Application {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.AUTO)
     @Column(name="application_id")
     private Long applicationId;
 
-    @OneToOne(cascade={CascadeType.PERSIST,CascadeType.MERGE})
+    @OneToOne(cascade={CascadeType.ALL})
     @JoinColumn(name="user_id")
     private User user;
 
-    @OneToMany(cascade={CascadeType.PERSIST,CascadeType.MERGE})
-    @JoinColumn(name="application_id", referencedColumnName="application_id")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "application")
     private List<Questionnaire> questionnaires;
 
     @Column

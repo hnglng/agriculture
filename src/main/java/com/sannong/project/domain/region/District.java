@@ -3,12 +3,14 @@ package com.sannong.project.domain.region;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 
 /**
  * Created by Bright Huang on 10/24/14.
  */
 @Entity
+@Table(name = "districts")
 public class District implements Serializable {
 
     private static final long serialVersionUID = 1L;

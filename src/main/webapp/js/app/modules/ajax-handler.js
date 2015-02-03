@@ -16,10 +16,11 @@ define(['jquery', 'sannong'], function($, sannong) {
             type: options.type,
             url: options.url
         }).success(function (data, status, xhr) {
-            options.success(data);
-        }).fail(function (xhr, status, error) {
-            options.fail(error);
+            options.success(data, status, xhr);
+        }).error(function (xhr, status, error) {
+            options.error(xhr, status, error);
         }).always(function (xhr, status, error) {
+            //options.always(xhr, status, error);
         });
     };
 

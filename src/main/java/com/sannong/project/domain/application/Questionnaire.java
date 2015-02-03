@@ -2,6 +2,7 @@ package com.sannong.project.domain.application;
 
 
 import org.codehaus.jackson.annotate.JsonIgnore;
+import org.hibernate.annotations.Cascade;
 import org.springframework.hateoas.core.Relation;
 
 import javax.persistence.*;
@@ -23,8 +24,6 @@ public class Questionnaire implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="questionnaire_id")
     private Long questionnaireId;
-    @Column(name="application_id")
-    private Long applicationId;
     @Column(name="questionnaire_number")
     private Integer questionnaireNumber;
     @Column
@@ -35,12 +34,19 @@ public class Questionnaire implements Serializable {
     private Timestamp creationTime;
     @Column(name="last_updated")
     private Timestamp lastUpdated;
-    @ManyToMany
+
+    @ManyToOne
+    @JoinColumn(name = "application_id")
+    private Application application;
+
+    /*
+    @ManyToMany(cascade={CascadeType.ALL})
     @JoinTable(
             name="questionnaires_questions",
             joinColumns={@JoinColumn(name="questionnaire_id", referencedColumnName="questionnaire_id")},
             inverseJoinColumns={@JoinColumn(name="question_id", referencedColumnName="question_id")})
     private List<Question> questions;
+    */
 
     //private String concatenatedAnswers = "";
 
@@ -53,12 +59,12 @@ public class Questionnaire implements Serializable {
         this.questionnaireId = questionnaireId;
     }
 
-    public Long getApplicationId() {
-        return applicationId;
+    public Application getApplication() {
+        return application;
     }
 
-    public void setApplicationId(Long applicationId) {
-        this.applicationId = applicationId;
+    public void setApplication(Application application) {
+        this.application = application;
     }
 
     public Integer getQuestionnaireNumber() {
@@ -123,7 +129,7 @@ public class Questionnaire implements Serializable {
     }
 */
 
-
+    /*
     public List<Question> getQuestions() {
         return questions;
     }
@@ -131,6 +137,6 @@ public class Questionnaire implements Serializable {
     public void setQuestions(List<Question> questions) {
         this.questions = questions;
     }
-
+    */
 
 }
