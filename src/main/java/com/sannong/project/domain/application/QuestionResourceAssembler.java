@@ -1,6 +1,6 @@
 package com.sannong.project.domain.application;
 
-import com.sannong.project.presentation.controller.QuestionRestController;
+import com.sannong.project.presentation.controller.api.QuestionRestController;
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 
 /**

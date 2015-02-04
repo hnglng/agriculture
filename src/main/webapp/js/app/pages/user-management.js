@@ -13,12 +13,12 @@ require(['../main'], function () {
 
             "use strict";
 
-            var userPersonalCenter = {};
-            userPersonalCenter.Model = {};
-            userPersonalCenter.View = {
+            var userManagement = {};
+            userManagement.Model = {};
+            userManagement.View = {
             };
 
-            userPersonalCenter.init = function(){
+            userManagement.init = function(){
 
                 $("#userManagementTab").click(function(){
                     var currentEditUser = userManagement.Model.currentEditUser;
@@ -35,14 +35,14 @@ require(['../main'], function () {
 
             $(function() {
                 eventHandler.registerEventListener();
-                userPersonalCenter.init();
+                userManagement.init();
                  if ($("#userAppFormTab").length > 0){
                      userApplication.Controller.showMyApplication(1);
 
                 }
             })
 
-            sannong.UserPersonalCenter = userPersonalCenter;
-            return userPersonalCenter;
+            sannong.UserManagement = userManagement;
+            return userManagement;
         });
 });

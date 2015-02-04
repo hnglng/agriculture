@@ -1,4 +1,4 @@
-package com.sannong.project.service.rest;
+package com.sannong.project.service.rest.jersey;
 
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.spring.scope.RequestContextFilter;

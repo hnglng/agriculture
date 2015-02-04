@@ -4,7 +4,6 @@ import com.sannong.project.domain.application.ApplicationSpecification;
 import com.sannong.project.domain.common.Status;
 import com.sannong.project.presentation.command.CreateApplicationCommand;
 import com.sannong.project.presentation.dto.Response;
-import com.sannong.project.service.application.ApplicationRestService;
 import com.sannong.project.service.application.ApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,20 +20,20 @@ import org.springframework.web.servlet.ModelAndView;
  * Created by Bright Huang on 10/14/14.
  */
 @Controller
-@RequestMapping(value="/project-application")
-public class ApplicationController {
-    private static final String APPLICATION_PAGE = "project-application";
+@RequestMapping(value="/application-form")
+public class ApplicationFormController {
+    private static final String APPLICATION_FORM_PAGE = "application-form";
 
     @Autowired
     private ApplicationService applicationService;
     @Autowired
     private ApplicationSpecification applicationSpec;
 
+
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView showApplication() {
-        return new ModelAndView(APPLICATION_PAGE);
+        return new ModelAndView(APPLICATION_FORM_PAGE);
     }
-
 
     @RequestMapping(method = RequestMethod.POST)
     public @ResponseBody
@@ -50,4 +49,5 @@ public class ApplicationController {
             return new ResponseEntity<Response>(response, HttpStatus.SERVICE_UNAVAILABLE);
         }
     }
+
 }

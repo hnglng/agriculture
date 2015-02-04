@@ -1,4 +1,4 @@
-package com.sannong.project.service.rest;
+package com.sannong.project.service.rest.jersey;
 
 /**
  * Created by Bright Huang on 1/2/15.

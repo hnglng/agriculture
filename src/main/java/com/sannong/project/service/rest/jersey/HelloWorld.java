@@ -1,4 +1,4 @@
-package com.sannong.project.service.rest;
+package com.sannong.project.service.rest.jersey;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

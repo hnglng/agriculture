@@ -4,7 +4,9 @@ import org.apache.log4j.Logger;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,14 +14,20 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by Bright Huang on 1/22/15.
- */
 @Controller
 @RequestMapping(value = "/user-management")
 public class UserManagementController {
     private static final Logger logger = Logger.getLogger(UserManagementController.class);
+    private static final String USER_MANAGEMENT_PAGE = "user-management";
     private static final long PAGE_ROW_NUMBER = 10;
+
+
+    @RequestMapping(method = RequestMethod.GET)
+    public ModelAndView showUserPersonalCenter() {
+        Map<String, Object> models = new HashMap<String, Object>();
+        models.put("user-personal-center", new Object());
+        return new ModelAndView(USER_MANAGEMENT_PAGE, models);
+    }
 
     /*
     @Resource
@@ -189,5 +197,156 @@ public class UserManagementController {
             }
         }
     }
+
+        /*
+    private static final Logger logger = Logger.getLogger(UserProfileController.class);
+
+    @Resource
+    private IUserService userService;
+    @Resource
+    private ISmsService smsService;
+    @Autowired
+    private IValidationService validationService;
+    @Autowired
+    private IRegionService regionService;
+
+
+    private String getUserName(){
+        String userName;
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof UserDetails) {
+            userName = ((UserDetails) principal).getUsername();
+        } else {
+            userName = principal.toString();
+        }
+        return userName;
+    }
+
+    @RequestMapping(method = RequestMethod.GET)
+    public @ResponseBody
+    Response getProfile(HttpServletRequest request) {
+        String userName = request.getParameter("userName");
+        if (StringUtils.isBlank(userName)){
+            userName = getUserName();
+        }
+
+        Response response = new Response();
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("userName", userName);
+        List<User> users = userService.getUserByCondition(map);
+        if (!users.isEmpty()){
+            User user = users.get(0);
+            List<City> cities = regionService.getCities(user.getCompanyProvince());
+            List<District> districts = regionService.getDistricts(user.getCompanyCity());
+            Map<String, Object> models = new HashMap<String, Object>();
+            models.put("userProfile", users.get(0));
+            models.put("cities", cities);
+            models.put("districts", districts);
+
+            response.setStatusCode(Status.OK.getCode());
+            response.setStatusMessage(Status.OK.getMessage());
+            response.setData(models);
+        }else{
+            response.setStatusCode(Status.USER_NOT_FOUND.getCode());
+            response.setStatusMessage(Status.USER_NOT_FOUND.getMessage());
+        }
+        return response;
+    }
+
+    @RequestMapping(method = RequestMethod.POST)
+    public @ResponseBody Map<String, Object> updateProfile(HttpServletRequest request,
+                                                               @ModelAttribute("userProfile") User user) {
+        String newCellphone = request.getParameter("newCellphone");
+        String validationCode = request.getParameter("validationCode");
+
+        Map<String, Object> models = new HashMap<String, Object>();
+        if (StringUtils.isNotBlank(newCellphone) && StringUtils.isNotBlank(validationCode)){
+            List<SMS> smsList = smsService.getSmsByCellphoneAndValidationCode(newCellphone, validationCode);
+            if (smsList.isEmpty()){
+                models.put("status", "error");
+                models.put("userProfile", user);
+                return models;
+            }else{
+                user.setMobilePhone(newCellphone);
+            }
+        }
+
+        Timestamp ts = new Timestamp(System.currentTimeMillis());
+        user.setLastUpdated(ts);
+        try {
+            userService.updateUser(user);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            models.put("status", "error");
+        }
+        models.put("userProfile", user);
+        models.put("status", "saved");
+        return models;
+    }
+
+    @RequestMapping(value = "/validateUniqueCellphone",method = RequestMethod.GET)
+    public @ResponseBody boolean validateUniqueCellphone(HttpServletRequest request){
+        String cellphone = request.getParameter("cellphone");
+        return validationService.validateUniqueCellphone(cellphone);
+    }
+
+    @RequestMapping(value = "/sendValidationCode", method = RequestMethod.POST)
+    public @ResponseBody String sendValidationCode(HttpServletRequest request) throws Exception {
+        String cellphone = request.getParameter("cellphone");
+        String newCellphone = request.getParameter("newCellphone");
+        String validationCode = PasswordGenerator.generateValidationCode(4);
+
+        if (StringUtils.isNotBlank(newCellphone)){
+            return smsService.sendValidationCode(newCellphone, validationCode);
+        } else{
+            return smsService.sendValidationCode(cellphone, validationCode);
+        }
+    }
+
+
+    @RequestMapping(value = "/updatePassword", method = RequestMethod.POST)
+    public @ResponseBody
+    Response updatePassword(HttpServletRequest request) throws Exception {
+        String oldPassword = request.getParameter("oldPassword");
+        String newPassword = request.getParameter("newPassword");
+        String confirmedPassword = request.getParameter("confirmedPassword");
+        String userName = request.getParameter("userName");
+
+        if (StringUtils.isBlank(userName)){
+            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            if (principal instanceof UserDetails) {
+                userName = ((UserDetails) principal).getUsername();
+            } else {
+                userName = principal.toString();
+            }
+        }
+
+        Response response = new Response();
+        Map<String,Object> map = new HashMap<String,Object>();
+        map.put("userName", userName);
+        List<User> users = userService.getUserByCondition(map);
+        if ( ! (users.isEmpty()) ){
+            User user = users.get(0);
+            String encryptOldPassword = PasswordGenerator.encryptPassword(oldPassword, userName);
+            if ( ! (user.getPassword().equals(encryptOldPassword))){
+                response.setStatusCode(Status.OLD_PASSWORD_MISMATCH.getCode());
+                response.setStatusMessage(Status.OLD_PASSWORD_MISMATCH.getMessage());
+            }else if ( ! (newPassword.equals(confirmedPassword)) ){
+                response.setStatusCode(Status.CONFIRMED_PASSWORD_MISMATCH.getCode());
+                response.setStatusMessage(Status.CONFIRMED_PASSWORD_MISMATCH.getMessage());
+            }
+            String encryptedNewPassword = PasswordGenerator.encryptPassword(newPassword, userName);
+            user.setPassword(encryptedNewPassword);
+            userService.updatePassword(user);
+            response.setStatusCode(Status.PASSWORD_UPDATED.getCode());
+            response.setStatusMessage(Status.PASSWORD_UPDATED.getMessage());
+        }else{
+            response.setStatusCode(Status.USER_NOT_FOUND.getCode());
+            response.setStatusMessage(Status.USER_NOT_FOUND.getMessage());
+        }
+
+        return response;
+    }
+*/
 
 }

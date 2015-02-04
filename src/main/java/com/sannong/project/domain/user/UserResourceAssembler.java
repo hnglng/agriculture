@@ -1,6 +1,6 @@
 package com.sannong.project.domain.user;
 
-import com.sannong.project.presentation.controller.UserRestController;
+import com.sannong.project.presentation.controller.api.UserRestController;
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 
 /**

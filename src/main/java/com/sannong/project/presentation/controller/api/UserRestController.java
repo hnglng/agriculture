@@ -1,4 +1,4 @@
-package com.sannong.project.presentation.controller;
+package com.sannong.project.presentation.controller.api;
 
 import com.sannong.project.domain.user.User;
 import org.springframework.hateoas.ExposesResourceFor;
@@ -12,7 +12,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
  */
 @RestController
 @ExposesResourceFor(User.class)
-@RequestMapping(value = "/users", produces = "application/hal+json")
+@RequestMapping(value = "/api/users", produces = "application/hal+json")
 public class UserRestController {
     /*
     @Autowired

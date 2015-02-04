@@ -9,48 +9,48 @@ define(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler
 
             "use strict";
             var searchParams = "";
-            var userManagement = {};
+            var useList = {};
 
 
-            userManagement.Model = {
+            useList.Model = {
                 currentEditUser: ""
             };
 
             /***********************************************
              *  View
              ***********************************************/
-            userManagement.View = {
+            useList.View = {
                 userProfileEditView: $("#userProfileEditView"),
                 questionnaireTable: $("#questionnaireTable"),
                 searchBar: $("#searchBar"),
-                userManagementTitle: $("#user-management-title"),
+                useListTitle: $("#user-management-title"),
                 userTextShow: $("#userTextShow"),
-                userManagementTable: $("#userManagementTable"),
+                useListTable: $("#useListTable"),
                 userProfileCancel: $("#userProfileCancel"),
                 emptyUserProfileEditView: function(){
                     $("#userProfileEditView").empty();
                 },
                 showUserProfileEditView: function(){
-                    userManagement.View.questionnaireTable.hide();
-                    userManagement.View.userManagementTitle.hide();
-                    userManagement.View.userTextShow.hide();
-                    userManagement.View.searchBar.hide();
-                    userManagement.View.userManagementTable.hide();
-                    userManagement.View.userProfileEditView.show();
+                    useList.View.questionnaireTable.hide();
+                    useList.View.useListTitle.hide();
+                    useList.View.userTextShow.hide();
+                    useList.View.searchBar.hide();
+                    useList.View.useListTable.hide();
+                    useList.View.userProfileEditView.show();
                 },
                 resetView: function(){
-                    userManagement.View.userManagementTitle.show();
-                    userManagement.View.userManagementTable.show();
-                    userManagement.View.searchBar.show();
-                    userManagement.View.questionnaireTable.hide();
-                    userManagement.View.userTextShow.hide();
-                    userManagement.View.userProfileEditView.hide();
+                    useList.View.useListTitle.show();
+                    useList.View.useListTable.show();
+                    useList.View.searchBar.show();
+                    useList.View.questionnaireTable.hide();
+                    useList.View.userTextShow.hide();
+                    useList.View.userProfileEditView.hide();
                 },
                 showQuestionnaire: function(questionnaireNo){
                     $("#questionnaireNo").val(questionnaireNo);
                     $("#userTextShow").show();
                     $("#user-management-title").hide();
-                    $("#userManagementTable").hide();
+                    $("#useListTable").hide();
                     $("#questionnaireTable").show();
                     $("#questionnaireStatus").show();
                     $("#update-success").remove();
@@ -113,7 +113,7 @@ define(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler
              *  Controller
              **********************************************************/
 
-            userManagement.Controller = {
+            useList.Controller = {
                 retrieve: function() {
                     var searchKey = $("#searchKey").val();
                     var searchValue = $("#searchValue").val();
@@ -152,9 +152,9 @@ define(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler
                     });
                 },
                 cancel: function () {
-                    userManagement.View.userTextShow.hide();
+                    useList.View.userTextShow.hide();
                     $("#questionnaireTable").hide();
-                    $("#userManagementTable").show();
+                    $("#useListTable").show();
                     $("#searchBar").show();
                     $("#user-management-title").show();
                     $("#questionnaireTab li").removeClass("active")
@@ -258,19 +258,19 @@ define(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler
                     });
                 },
                 q1: function(){
-                    userManagement.Controller.showQuestionnaire(1,"");
+                    useList.Controller.showQuestionnaire(1,"");
                 },
                 q2: function(){
-                    userManagement.Controller.showQuestionnaire(2,"");
+                    useList.Controller.showQuestionnaire(2,"");
                 },
                 q3: function(){
-                    userManagement.Controller.showQuestionnaire(3,"");
+                    useList.Controller.showQuestionnaire(3,"");
                 },
                 q4: function(){
-                    userManagement.Controller.showQuestionnaire(4,"");
+                    useList.Controller.showQuestionnaire(4,"");
                 },
                 q5: function(){
-                    userManagement.Controller.showQuestionnaire(5,"");
+                    useList.Controller.showQuestionnaire(5,"");
                 },
                 renderUserProfileEditView: function(userName, viewName){
                     ajaxHandler.sendRequest({
@@ -308,8 +308,8 @@ define(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler
                                 if (viewName == "#userProfileEditView"){
                                     $("#userProfileCancel").removeClass("hidden");
                                     $("#userProfileCancel").click(function () {
-                                        userManagement.Model.currentEditUser = "";
-                                        userManagement.View.resetView();
+                                        useList.Model.currentEditUser = "";
+                                        useList.View.resetView();
                                     });
                                 }
                             }
@@ -319,12 +319,12 @@ define(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler
                     });
                 },
                 editUserProfile: function(userName){
-                    userManagement.Model.currentEditUser = userName;
-                    userManagement.View.showUserProfileEditView();
-                    userManagement.Controller.renderUserProfileEditView(userName, "#userProfileEditView");
+                    useList.Model.currentEditUser = userName;
+                    useList.View.showUserProfileEditView();
+                    useList.Controller.renderUserProfileEditView(userName, "#userProfileEditView");
                 },
                 showQuestionnaire: function (questionnaireNumber, userName) {
-                    userManagement.View.showQuestionnaire(questionnaireNumber);
+                    useList.View.showQuestionnaire(questionnaireNumber);
 
                     if (userName != "") {
                         $("#cellphone").val(userName);
@@ -338,7 +338,7 @@ define(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler
                         dataType : "json",
                         url : '/user-management/users/' + userName + '/application',
                         success : function(data) {
-                            userManagement.View.renderQuestionnaireView(questionnaireNumber, data);
+                            useList.View.renderQuestionnaireView(questionnaireNumber, data);
                         },
                         fail: function(data){
 
@@ -383,18 +383,18 @@ define(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler
 
 
             function subscribeEvent(){
-                eventHandler.subscribe("userManagement:cancel", userManagement.Controller.cancel);
-                eventHandler.subscribe("userManagement:update", userManagement.Controller.update);
-                eventHandler.subscribe("userManagement:submit", userManagement.Controller.submit);
-                eventHandler.subscribe("userManagement:retrieve", userManagement.Controller.retrieve);
-                eventHandler.subscribe("userManagement:previous", userManagement.Controller.previous);
-                eventHandler.subscribe("userManagement:next", userManagement.Controller.next);
-                eventHandler.subscribe("userManagement:exportCSV", userManagement.Controller.exportCSV);
-                eventHandler.subscribe("userManagement:q1", userManagement.Controller.q1);
-                eventHandler.subscribe("userManagement:q2", userManagement.Controller.q2);
-                eventHandler.subscribe("userManagement:q3", userManagement.Controller.q3);
-                eventHandler.subscribe("userManagement:q4", userManagement.Controller.q4);
-                eventHandler.subscribe("userManagement:q5", userManagement.Controller.q5);
+                eventHandler.subscribe("useList:cancel", useList.Controller.cancel);
+                eventHandler.subscribe("useList:update", useList.Controller.update);
+                eventHandler.subscribe("useList:submit", useList.Controller.submit);
+                eventHandler.subscribe("useList:retrieve", useList.Controller.retrieve);
+                eventHandler.subscribe("useList:previous", useList.Controller.previous);
+                eventHandler.subscribe("useList:next", useList.Controller.next);
+                eventHandler.subscribe("useList:exportCSV", useList.Controller.exportCSV);
+                eventHandler.subscribe("useList:q1", useList.Controller.q1);
+                eventHandler.subscribe("useList:q2", useList.Controller.q2);
+                eventHandler.subscribe("useList:q3", useList.Controller.q3);
+                eventHandler.subscribe("useList:q4", useList.Controller.q4);
+                eventHandler.subscribe("useList:q5", useList.Controller.q5);
             }
 
 
@@ -407,6 +407,6 @@ define(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler
                 showUserPagination(1);
             })
 
-            sannong.UserManagement = userManagement;
-            return userManagement;
+            sannong.UserList = useList;
+            return useList;
 });

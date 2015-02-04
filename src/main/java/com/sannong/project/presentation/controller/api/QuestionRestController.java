@@ -1,4 +1,4 @@
-package com.sannong.project.presentation.controller;
+package com.sannong.project.presentation.controller.api;
 
 import com.sannong.project.domain.application.Question;
 import com.sannong.project.domain.application.QuestionResource;
@@ -22,7 +22,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
  */
 @RestController
 @ExposesResourceFor(Question.class)
-@RequestMapping(value = "/questions", produces = "application/hal+json")
+@RequestMapping(value = "/api/questions", produces = "application/hal+json")
 public class QuestionRestController {
 
     @Autowired

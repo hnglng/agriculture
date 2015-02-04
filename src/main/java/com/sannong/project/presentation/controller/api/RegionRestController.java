@@ -1,41 +1,45 @@
-package com.sannong.project.presentation.controller;
+package com.sannong.project.presentation.controller.api;
 
 import com.sannong.project.domain.region.City;
 import com.sannong.project.domain.region.District;
 import com.sannong.project.domain.region.Province;
-import org.springframework.stereotype.Controller;
+import com.sannong.project.domain.region.Region;
+import com.sannong.project.service.region.RegionService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.ExposesResourceFor;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Bright Huang on 11/9/14.
  */
-@Controller
-public class RegionController {
-    /*
-    @Resource
-    private IRegionService regionService;
+@RestController
+@ExposesResourceFor(Region.class)
+@RequestMapping(value = "/api/regions", produces = "application/hal+json")
+public class RegionRestController {
+    @Autowired
+    private RegionService regionService;
 
-    @RequestMapping(value = "getProvinces")
+    @RequestMapping(value = "/provinces")
     public @ResponseBody List<Province> getProvinces() {
         return regionService.getProvinces();
     }
 
-    @RequestMapping(value = "getCities")
-    public @ResponseBody List<City> getCities(Long provinceIndex) {
-        return regionService.getCities(provinceIndex);
+    @RequestMapping(value = "/provinces/{provinceId}/cities")
+    public @ResponseBody List<City> getCities(@PathVariable Long provinceId) {
+        return regionService.getCities(provinceId);
     }
 
-    @RequestMapping(value = "getDistricts")
-    public @ResponseBody List<District> getDistricts(Long cityIndex) {
-        return regionService.getDistricts(cityIndex);
+    @RequestMapping(value = "/cities/{cityId}/districts")
+    public @ResponseBody List<District> getDistricts(@PathVariable Long cityId) {
+        return regionService.getDistricts(cityId);
     }
 
+    /*
     @RequestMapping(value = "getCitiesWithDistricts")
     public @ResponseBody
     Map<String, Object> getCitiesWithDistrict(Long provinceIndex) {
