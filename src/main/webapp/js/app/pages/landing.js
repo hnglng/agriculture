@@ -11,9 +11,9 @@ require(['../main'], function () {
 
             "use strict";
 
-            var projectLanding = {};
+            var landing = {};
 
-            sannong.ProjectLanding = projectLanding;
-            return projectLanding;
+            sannong.Landing = landing;
+            return landing;
         });
 });

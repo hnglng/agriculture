@@ -38,7 +38,7 @@
 
 <body>
 
-<jsp:include page='header.jsp'/>
+<jsp:include page='common/header.jsp'/>
 
 <!-- CONTENT SECTION -->
 <section class="contentSection fullBgImage">
@@ -64,7 +64,7 @@
 </section>
 <!-- /CONTENT SECTION -->
 
-<jsp:include page='footer.jsp'/>
+<jsp:include page='common/footer.jsp'/>
 <script data-main="js/app/pages/landing" src="js/lib/require-2.1.15.min.js"></script>
 <!--
 <script src="js/app/modules/custom.js"></script>

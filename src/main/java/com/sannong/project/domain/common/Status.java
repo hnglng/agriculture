@@ -27,19 +27,19 @@ public enum Status {
     CELLPHONE_IS_NULL(2014, "手机号码为空"),
     USERNAME_OR_PASSWORD_ERROR(2015, "用户名或密码错误");
 
-    private int code;
+    private Integer code;
     private String message;
 
-    private Status(int code, String message) {
+    private Status(Integer code, String message) {
         this.code = code;
         this.message = message;
     }
 
-    public int getCode() {
+    public Integer getCode() {
         return code;
     }
 
-    public void setCode(int code) {
+    public void setCode(Integer code) {
         this.code = code;
     }
 

@@ -27,90 +27,48 @@ import org.springframework.web.servlet.ModelAndView;
  * Created by Bright Huang on 10/14/14.
  */
 @Controller
+@RequestMapping(value = "/login")
 public class LoginController {
 	private static final Logger logger = Logger.getLogger(LoginController.class);
     private static final String LOGIN_PAGE = "login";
-    private static final String USER_PERSONAL_CENTER_PAGE = "user-personal-center";
+    private static final String USER_MANAGEMENT_PAGE = "user-management";
 
 //    @Resource
 //    private IUserService userService;
-//    @Resource
-//    private ISmsService smsService;
 
-    private static final String PROJECT_LANDING_PAGE = "landing";
-    private static final String FAQ_PAGE = "faq";
-
-
-    /*
-
-    @RequestMapping(value = "home", method = RequestMethod.GET)
-    public ModelAndView show() {
-        return new ModelAndView(PROJECT_LANDING_PAGE);
-    }
-
-    @RequestMapping(value = "faq", method = RequestMethod.GET)
-    public ModelAndView faq() {
-        return new ModelAndView(FAQ_PAGE);
-    }
-
-    @RequestMapping(value = "landing", method = RequestMethod.GET)
-    public ModelAndView showLandingPage() {
-        Map<String, Object> models = new HashMap<String, Object>();
-        models.put("landing", new Object());
-        return new ModelAndView(PROJECT_LANDING_PAGE, models);
-    }
-
-    */
-
-    @RequestMapping(value = "/error", method = RequestMethod.GET)
-    public ModelAndView showError() {
-        Map<String, Object> models = new HashMap<String, Object>();
-        models.put("error", new Object());
-        return new ModelAndView("error", models);
-    }
-
-
-
-    @RequestMapping(value = "login", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public ModelAndView showLoginPage() {
         return new ModelAndView(LOGIN_PAGE);
     }
 
-    @RequestMapping(value = "login", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     public ModelAndView login() {
         return showLoginPage();
     }
 
-    @RequestMapping(value = "access-denied", method = RequestMethod.GET)
-    public ModelAndView handleAccessDenied() {
-        Map<String, Object> models = new HashMap<String, Object>();
-        models.put("access-denied", "access-denied");
-        return new ModelAndView(LOGIN_PAGE, models);
-    }
-
-    @RequestMapping(value = "login-success", method = RequestMethod.POST)
+    @RequestMapping(value = "/success", method = RequestMethod.POST)
     public @ResponseBody
     Response handleLoginSuccessOnPost() {
         return handleLoginSuccess();
     }
 
-    @RequestMapping(value = "login-success", method = RequestMethod.GET)
+    @RequestMapping(value = "/success", method = RequestMethod.GET)
     public @ResponseBody
     Response handleLoginSuccess() {
         Response response = new Response();
         response.setStatusCode(Status.LOGIN_SUCCESS.getCode());
         response.setStatusMessage(Status.LOGIN_SUCCESS.getMessage());
-        response.setURI(USER_PERSONAL_CENTER_PAGE);
+        response.setURI(USER_MANAGEMENT_PAGE);
         return response;
     }
 
-    @RequestMapping(value = "login-failure", method = RequestMethod.POST)
+    @RequestMapping(value = "/failure", method = RequestMethod.POST)
     public @ResponseBody
     Response handleLoginFailureOnPost() {
         return handleLoginFailure();
     }
 
-    @RequestMapping(value = "login-failure", method = RequestMethod.GET)
+    @RequestMapping(value = "/failure", method = RequestMethod.GET)
     public @ResponseBody
     Response handleLoginFailure() {
         return new Response(
@@ -118,50 +76,14 @@ public class LoginController {
                 Status.USERNAME_OR_PASSWORD_ERROR.getMessage());
     }
 
-    /**
-     * From forgot-password page, user try to get a new password to login.
-     * @param request
-     * @return
-     * @throws Exception
-     */
-    /*
-    @RequestMapping(value = "forgot-password/sendNewPasswordMessage", method = RequestMethod.POST)
-    public @ResponseBody
-    Response sendNewPasswordMessage(HttpServletRequest request) throws Exception{
-        String cellphone = request.getParameter("cellphone");
-        String realName = request.getParameter("realName");
-
-        Map<String, Object> paramMap = new HashMap<String, Object>();
-        paramMap.put("cellphone", cellphone);
-        paramMap.put("realName", realName);
-
-        Response response = new Response();
-        List<User> users = userService.getUserByCondition(paramMap);
-        if (users.isEmpty()) {
-            response.setStatusCode(Status.NAME_OR_CELLPHONE_NOT_FOUND.getCode());
-            response.setStatusMessage(Status.NAME_OR_CELLPHONE_NOT_FOUND.getMessage());
-        } else {
-            User user = users.get(0);
-            if (!(user.getMobilePhone().equals(cellphone) && user.getRealName().equals(realName))) {
-                response.setStatusCode(Status.NAME_OR_CELLPHONE_MISMATCH.getCode());
-                response.setStatusMessage(Status.NAME_OR_CELLPHONE_MISMATCH.getMessage());
-            }
-            String password = PasswordGenerator.generatePassword(6);
-            String smsResponse = smsService.sendNewPasswordMessage(cellphone, password);
-            if (StringUtils.isNotBlank(smsResponse)){
-                user.setPassword(PasswordGenerator.encryptPassword(password, user.getUserName()));
-                user.setLastUpdated(new Timestamp(System.currentTimeMillis()));
-                userService.updatePassword(user);
-                response.setStatusCode(Status.PASSWORD_SENT.getCode());
-                response.setStatusMessage(Status.PASSWORD_SENT.getMessage());
-            } else {
-                response.setStatusCode(Status.PASSWORD_UNSENT.getCode());
-                response.setStatusMessage(Status.PASSWORD_UNSENT.getMessage());
-            }
-        }
-        return response;
+    @RequestMapping(value = "/access-denied", method = RequestMethod.GET)
+    public ModelAndView handleAccessDenied() {
+        Map<String, Object> models = new HashMap<String, Object>();
+        models.put("access-denied", "access-denied");
+        return new ModelAndView(LOGIN_PAGE, models);
     }
-    */
+
+
 
     /*
     @RequestMapping(value = "login/realName", method = RequestMethod.POST)

@@ -10,8 +10,8 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
  * Created by Bright Huang on 1/28/15.
  */
 public class UserResource extends Resource {
-
     private User user;
+    private Integer totalPages;
 
     public UserResource(User user) {
         super(user);
@@ -26,5 +26,4 @@ public class UserResource extends Resource {
     public User getUser() {
         return user;
     }
-
 }

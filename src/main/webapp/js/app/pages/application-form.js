@@ -116,6 +116,7 @@ require(['../main'], function () {
                         dataType: "json",
                         data: $("#projectAppForm").serialize(),
                         success: function(data, textStatus, jqXHR){
+                            window.location.href = "/completion";
                             console.log(textStatus)
                         },
                         error: function(jqXHR, textStatus, errorThrown){

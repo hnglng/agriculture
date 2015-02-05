@@ -15,7 +15,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Created by Bright Huang on 10/22/14.
@@ -136,7 +139,6 @@ public class SmsService {
             return true;
         }
     }
-
 
 
     public String sendValidationCode(String cellphone, String validationCode) {

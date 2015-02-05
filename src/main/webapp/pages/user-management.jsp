@@ -36,7 +36,7 @@
 </head>
 
 <body>
-<jsp:include page='header.jsp'/>
+<jsp:include page='common/header.jsp'/>
 
 <!-- PAGE TITLE -->
 <div class="page-title withOutTitle">
@@ -51,25 +51,42 @@
                 <span class="col-sm-2 sidebar equalCol">
                     <h3>菜单</h3>
                     <ul class="nav nav-tabs-justified" role="tablist">
+                      <li class="active"><a id="user-list-tab" href="#user-list-tab-pane"  role="tab" data-toggle="tab">用户管理<span></span></a></li>
+                      <li><a id="user-profile-tab" href="#user-profile-tab-pane" role="tab" data-toggle="tab">个人信息<span></span></a></li>
+                      <li><a id="userPasswordTab" href="#user-password-tab-pane" role="tab" data-toggle="tab">更新密码<span></span></a></li>
+                        <%--
                         <sec:authorize access="hasRole('ROLE_ADMIN') and isAuthenticated()">
-                            <li class="active"><a id="userManagementTab" href="#userManagementTabPane"  role="tab" data-toggle="tab">用户管理<span></span></a></li>
+                            <li class="active"><a id="user-list-tab" href="#user-list-tab-pane"  role="tab" data-toggle="tab">用户管理<span></span></a></li>
                         </sec:authorize>
                         <sec:authorize access="hasRole('ROLE_USER') and isAuthenticated()">
                             <li class="active"><a id="userAppFormTab" href="#userAppFormTabPane" role="tab" data-toggle="tab">项目申请<span></span></a></li>
                         </sec:authorize>
                         <sec:authorize access="(hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')) and isAuthenticated()">
-                            <li><a id="userProfileTab" href="#userProfileTabPane" role="tab" data-toggle="tab">个人信息<span></span></a></li>
+                            <li><a id="user-profile-tab" href="#user-profile-tab-pane" role="tab" data-toggle="tab">个人信息<span></span></a></li>
                             <li class="hidden"><a id="userProfileEditTab" href="#userProfileTabPane" role="tab" data-toggle="tab">编辑个人信息<span></span></a></li>
-                            <li><a id="userPasswordTab" href="#userPasswordTabPane" role="tab" data-toggle="tab">更新密码<span></span></a></li>
+                            <li><a id="userPasswordTab" href="#user-password-tab-pane" role="tab" data-toggle="tab">更新密码<span></span></a></li>
                         </sec:authorize>
+                        --%>
                     </ul>
                 </span>
 
                 <span class="col-sm-10 leftBorder equalCol umList">
                     <div class="tab-content">
+                      <div id="user-list-tab-pane" role="tabpane" class="tab-pane active">
+                        <jsp:include page='user-management/user-list.jsp'/>
+                      </div>
+                      <div id="user-profile-tab-pane" role="tabpane" class="tab-pane">
+                        <div id="userProfileView">
+                        </div>
+                        <jsp:include page='user-management/user-profile.jsp'/>
+                      </div>
+                      <div id="user-password-tab-pane" role="tabpane" class="tab-pane">
+                        <jsp:include page='user-management/user-password.jsp'/>
+                      </div>
+                      <%--
                         <sec:authorize access="hasRole('ROLE_ADMIN') and isAuthenticated()">
-                            <div id="userManagementTabPane" role="tabpane" class="tab-pane active">
-                                <jsp:include page='user-management.jsp'/>
+                            <div id="user-list-tab-pane" role="tabpane" class="tab-pane active">
+                                <jsp:include page='user-list.jsp'/>
                             </div>
                         </sec:authorize>
                         <sec:authorize access="hasRole('ROLE_USER') and isAuthenticated()">
@@ -78,15 +95,16 @@
                             </div>
                         </sec:authorize>
                         <sec:authorize access="(hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')) and isAuthenticated()">
-                            <div id="userProfileTabPane" role="tabpane" class="tab-pane">
+                            <div id="user-profile-tab-pane" role="tabpane" class="tab-pane">
                                 <div id="userProfileView">
                                 </div>
                                 <jsp:include page='user-profile.jsp'/>
                             </div>
-                            <div id="userPasswordTabPane" role="tabpane" class="tab-pane">
+                            <div id="user-password-tab-pane" role="tabpane" class="tab-pane">
                                 <jsp:include page='user-password.jsp'/>
                             </div>
                         </sec:authorize>
+                        --%>
                     </div>
                 </span>
             </div>
@@ -95,9 +113,9 @@
 </div>
 <!-- /CONTENT SECTION -->
 
-<jsp:include page='footer.jsp'/>
+<jsp:include page='common/footer.jsp'/>
 
-<script data-main="js/app/pages/user-personal-center" src="js/lib/require-2.1.15.min.js"></script>
+<script data-main="js/app/pages/user-management" src="js/lib/require-2.1.15.min.js"></script>
 <!--
 <script src="js/app/modules/custom.js"></script>
 -->

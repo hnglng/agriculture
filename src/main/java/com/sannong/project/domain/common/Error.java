@@ -5,8 +5,21 @@ package com.sannong.project.domain.common;
  */
 public class Error {
     private Integer code;
-    private String field;
     private String message;
+    private String field;
+
+    public Error(){}
+
+    public Error(Integer code, String message){
+        this.code = code;
+        this.message = message;
+    }
+
+    public Error(Integer code, String message, String field){
+        this.code = code;
+        this.message = message;
+        this.field = field;
+    }
 
     public Integer getCode() {
         return code;

@@ -4,31 +4,30 @@
 require(['../main'], function () {
     require(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler',
             'formValidator', 'additionalMethods', 'pagination', 'selector', 'jqueryForm',
-            'questionnaire', 'login', 'eventHandler', 'userManagement', 'userApplication',
+            'questionnaire', 'login', 'eventHandler', 'userList', 'userApplication',
             'userProfile', 'userPassword', 'custom'],
         function($, bootstrap, handlebars, sannong, validate, ajaxHandler,
                  formValidator, additionalMethods, pagination, selector, jqueryForm,
-                 questionnaire, login, eventHandler, userManagement, userApplication,
+                 questionnaire, login, eventHandler, userList, userApplication,
                  userProfile, userPassword, custom) {
 
             "use strict";
 
             var userManagement = {};
             userManagement.Model = {};
-            userManagement.View = {
-            };
+            userManagement.View = {};
+
 
             userManagement.init = function(){
-
-                $("#userManagementTab").click(function(){
-                    var currentEditUser = userManagement.Model.currentEditUser;
-                    if ( currentEditUser != ""){
+                $("#user-list-tab").click(function(){
+                    var currentEditUser = userList.Model.currentEditUser;
+                    if (currentEditUser != ""){
                         userProfile.View.emptyUserProfileView();
-                        userManagement.Controller.editUserProfile(currentEditUser);
+                        userList.Controller.editUserProfile(currentEditUser);
                     }
                 });
-                $("#userProfileTab").click(function(){
-                    userManagement.View.emptyUserProfileEditView();
+                $("#user-profile-tab").click(function(){
+                    userList.View.emptyUserProfileEditView();
                     userProfile.Controller.showUserProfileView("", "#userProfileView");
                 });
             }
@@ -38,7 +37,6 @@ require(['../main'], function () {
                 userManagement.init();
                  if ($("#userAppFormTab").length > 0){
                      userApplication.Controller.showMyApplication(1);
-
                 }
             })
 

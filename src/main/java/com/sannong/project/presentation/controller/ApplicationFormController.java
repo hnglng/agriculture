@@ -38,7 +38,7 @@ public class ApplicationFormController {
     @RequestMapping(method = RequestMethod.POST)
     public @ResponseBody
     ResponseEntity<?> createApplication(
-            @ModelAttribute("projectAppForm") CreateApplicationCommand createApplicationCommand) throws Exception {
+            @ModelAttribute("projectAppForm") CreateApplicationCommand createApplicationCommand){
         Response response = new Response();
         if (applicationSpec.isSatisfiedBy(createApplicationCommand)) {
             applicationService.createApplication(createApplicationCommand);

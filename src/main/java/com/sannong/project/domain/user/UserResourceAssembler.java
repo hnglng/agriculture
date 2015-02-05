@@ -1,7 +1,10 @@
 package com.sannong.project.domain.user;
 
 import com.sannong.project.presentation.controller.api.UserRestController;
+import org.springframework.data.domain.Page;
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
+
+import java.util.List;
 
 /**
  * Created by Bright Huang on 1/28/15.

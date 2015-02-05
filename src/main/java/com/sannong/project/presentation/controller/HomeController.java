@@ -31,4 +31,10 @@ public class HomeController {
     public ModelAndView showCompletion() {
         return new ModelAndView(COMPLETION_PAGE);
     }
+
+    @RequestMapping(value = "/error", method = RequestMethod.GET)
+    public ModelAndView showError() {
+        return new ModelAndView("error");
+    }
+
 }
