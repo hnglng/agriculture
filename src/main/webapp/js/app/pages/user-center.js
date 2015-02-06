@@ -4,43 +4,43 @@
 require(['../main'], function () {
     require(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler',
             'formValidator', 'additionalMethods', 'pagination', 'selector', 'jqueryForm',
-            'questionnaire', 'login', 'eventHandler', 'userList', 'userApplication',
+            'questionnaire', 'login', 'eventHandler', 'userManagement', 'userApplication',
             'userProfile', 'userPassword', 'custom'],
         function($, bootstrap, handlebars, sannong, validate, ajaxHandler,
                  formValidator, additionalMethods, pagination, selector, jqueryForm,
-                 questionnaire, login, eventHandler, userList, userApplication,
+                 questionnaire, login, eventHandler, userManagement, userApplication,
                  userProfile, userPassword, custom) {
 
             "use strict";
 
-            var userManagement = {};
-            userManagement.Model = {};
-            userManagement.View = {};
+            var userCenter = {};
+            userCenter.Model = {};
+            userCenter.View = {};
 
 
-            userManagement.init = function(){
+            userCenter.init = function(){
                 $("#user-list-tab").click(function(){
-                    var currentEditUser = userList.Model.currentEditUser;
+                    var currentEditUser = userManagement.Model.currentEditUser;
                     if (currentEditUser != ""){
                         userProfile.View.emptyUserProfileView();
-                        userList.Controller.editUserProfile(currentEditUser);
+                        userManagement.Controller.editUserProfile(currentEditUser);
                     }
                 });
                 $("#user-profile-tab").click(function(){
-                    userList.View.emptyUserProfileEditView();
+                    userManagement.View.emptyUserProfileEditView();
                     userProfile.Controller.showUserProfileView("", "#userProfileView");
                 });
             }
 
             $(function() {
                 eventHandler.registerEventListener();
-                userManagement.init();
+                userCenter.init();
                  if ($("#userAppFormTab").length > 0){
                      userApplication.Controller.showMyApplication(1);
                 }
             })
 
-            sannong.UserManagement = userManagement;
-            return userManagement;
+            sannong.UserCenter = userCenter;
+            return userCenter;
         });
 });

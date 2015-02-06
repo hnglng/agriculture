@@ -23,9 +23,9 @@
     <div class="col-small">
       <span class="bts">
         <a href="javascript:void(0);" class="edit"
-           onclick="Sannong.UserList.Controller.editUserProfile('{{userName}}')">Edit</a>
+           onclick="Sannong.UserManagement.Controller.editUserProfile('{{userId}}')">Edit</a>
         <a href="javascript:void(0);" class="help"
-           onclick="Sannong.UserList.Controller.showQuestionnaire(1,'{{userName}}')">Help</a>
+           onclick="Sannong.UserManagement.Controller.editQuestionnaire(1,'{{userId}}')">Help</a>
       </span>
     </div>
   </li>

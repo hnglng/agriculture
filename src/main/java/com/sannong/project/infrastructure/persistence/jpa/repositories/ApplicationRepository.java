@@ -20,4 +20,6 @@ public interface ApplicationRepository extends CrudRepository<Application, Long>
 
     Application save(Application application);
 
+    List<Application> findByUserUserId(Long userId);
+
 }

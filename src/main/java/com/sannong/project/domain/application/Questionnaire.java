@@ -39,6 +39,9 @@ public class Questionnaire implements Serializable {
     @JoinColumn(name = "application_id")
     private Application application;
 
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "questionnaireNumber")
+//    private List<Question> questions;
+
     /*
     @ManyToMany(cascade={CascadeType.ALL})
     @JoinTable(
@@ -47,6 +50,8 @@ public class Questionnaire implements Serializable {
             inverseJoinColumns={@JoinColumn(name="question_id", referencedColumnName="question_id")})
     private List<Question> questions;
     */
+
+    private List<Question> questions;
 
     //private String concatenatedAnswers = "";
 
@@ -129,7 +134,6 @@ public class Questionnaire implements Serializable {
     }
 */
 
-    /*
     public List<Question> getQuestions() {
         return questions;
     }
@@ -137,6 +141,5 @@ public class Questionnaire implements Serializable {
     public void setQuestions(List<Question> questions) {
         this.questions = questions;
     }
-    */
 
 }

@@ -11,7 +11,7 @@
   <title></title>
 </head>
 <body>
-<div id="questionnaire-table" style="display:none">
+<div id="questionnaire-edit-view" style="display:none">
   <div id="userTextShow" style="display:none; float:right; text-align:right">
     <div style="float:left;color:#F75000" id="userRealName"></div>
     <div style="float:left">的调查问卷答案</div>

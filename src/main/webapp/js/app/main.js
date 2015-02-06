@@ -20,7 +20,7 @@ requirejs.config({
         "additionalMethods": "app/modules/additional-methods",
         "login": "app/modules/login",
         "eventHandler": "app/modules/event-handler",
-        "userList": "app/modules/user-list",
+        "userManagement": "app/modules/user-management",
         "userApplication": "app/modules/user-application",
         "userPassword": "app/modules/user-password",
         "userProfile": "app/modules/user-profile",
@@ -90,9 +90,9 @@ requirejs.config({
             deps :['jquery'],
             exports : "eventHandler"
         },
-        "userList": {
+        "userManagement": {
             deps :['jquery'],
-            exports : "userList"
+            exports : "userManagement"
         },
         "userApplication": {
             deps :['jquery'],

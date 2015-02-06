@@ -21,16 +21,16 @@
       <div class="row">
         <span class="col-sm-12">
           <ul>
-            <li><a href="/user-management">我的项目</a></li>
+            <li><a href="/user-center">用户管理</a></li>
             <sec:authorize ifNotGranted="ROLE_USER,ROLE_ADMIN">
               <li><a href="#" data-toggle="modal" data-target="#login-modal">登录</a></li>
             </sec:authorize>
             <sec:authorize access="hasRole('ROLE_USER') and isAuthenticated()">
                 <li><span id="welcome"></span></li>
-                <li><a href="/user-management">我的项目</a></li>
+                <li><a href="/user-center">我的项目</a></li>
             </sec:authorize>
             <sec:authorize access="hasRole('ROLE_ADMIN') and isAuthenticated()">
-                <li><a href="/user-management">用户管理</a></li>
+                <li><a href="/user-center">用户管理</a></li>
             </sec:authorize>
             <sec:authorize access="(hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')) and isAuthenticated()">
                 <li><a href="j_spring_security_logout">退出</a></li>

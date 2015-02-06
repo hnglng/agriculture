@@ -1,5 +1,6 @@
 package com.sannong.project.service.user;
 
+import com.sannong.project.domain.application.Application;
 import com.sannong.project.domain.user.User;
 import com.sannong.project.infrastructure.persistence.jpa.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,5 +38,4 @@ public class UserRestService {
     public void save(User user){
         userRepository.save(user);
     }
-
 }

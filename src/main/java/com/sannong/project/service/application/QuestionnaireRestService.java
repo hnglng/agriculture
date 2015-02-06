@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * Created by Bright Huang on 1/28/15.
  */
@@ -18,5 +20,9 @@ public class QuestionnaireRestService {
 
     public Questionnaire findOne(Long questionnaireId){
         return questionnaireRepository.findOne(questionnaireId);
+    }
+
+    public List<Questionnaire> findByApplicationId(Long applicationId){
+        return questionnaireRepository.findByApplicationApplicationId(applicationId);
     }
 }

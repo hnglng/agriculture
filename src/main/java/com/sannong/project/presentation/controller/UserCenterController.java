@@ -15,18 +15,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Controller
-@RequestMapping(value = "/user-management")
-public class UserManagementController {
-    private static final Logger logger = Logger.getLogger(UserManagementController.class);
-    private static final String USER_MANAGEMENT_PAGE = "user-management";
-    private static final long PAGE_ROW_NUMBER = 10;
+@RequestMapping(value = "/user-center")
+public class UserCenterController {
+    private static final Logger logger = Logger.getLogger(UserCenterController.class);
+    private static final String USER_CENTER_PAGE = "user-center";
 
 
     @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView showUserPersonalCenter() {
+    public ModelAndView showUserCenter() {
         Map<String, Object> models = new HashMap<String, Object>();
-        models.put("user-personal-center", new Object());
-        return new ModelAndView(USER_MANAGEMENT_PAGE, models);
+        models.put("user-center", new Object());
+        return new ModelAndView(USER_CENTER_PAGE, models);
     }
 
     /*
@@ -67,8 +66,6 @@ public class UserManagementController {
     /**
      * Get users with pagination.
      *  URL example: https://api.github.com/user/repos?page=3&per_page=100>
-     * @param pageNumber
-     * @param perPage
      * @param request
      * @return
      * @throws Exception
