@@ -6,60 +6,166 @@ define(['jquery', 'sannong', 'ajaxHandler'], function($, sannong, ajaxHandler) {
 
     "use strict";
 
-    var selector = {};
-    selector.Model = {companyProvince: "", companyCity: "", companyDistrict: ""};
+    var selector = {},
+        callbacks = {};
+
+    selector.Model = {
+        companyProvince: "", companyCity: "", companyDistrict: "",
+        provinceSelects: {
+            companyProvinceSelect: "companyProvinceSelect",
+            provinceSelect: "provinceSelect",
+            provinceQuerySelect: "provinceQuerySelect"
+        },
+        citySelects: {
+            companyCitySelect: "companyCitySelect",
+            citySelect: "citySelect",
+            cityQuerySelect: "cityQuerySelect"
+        }
+    };
     selector.View = {
-        addCityOptions: function(select, options){
-            var citySelect = $(select);
-            $(select + ' option').remove();
-            for (var i in options){
-                var optionValue = options[i].cityIndex;
-                var optionText = options[i].cityName;
-                var option = "<option value=" + optionValue + ">" + optionText + "</option>";
-                citySelect.append(option);
-            }
-        },
-        addDistrictOptions: function(select, options){
-            var districtSelect = $(select);
-            $(select + ' option').remove();
-            for (var i in options){
-                var optionValue = options[i].districtIndex;
-                var optionText = options[i].districtName;
-                var option = "<option value=" + optionValue + ">" + optionText + "</option>";
-                districtSelect.append(option);
-            }
-        },
-        selectOption: function(select, optionVal){
+        setSelectedOption: function(select, optionVal){
             $(select).val(optionVal);
+        },
+        addCityOptions: function(selectId, options){
+            var select = $(selectId);
+            $(selectId + ' option').remove();
+            for (var i in options){
+                var optionValue = options[i].cityId,
+                    optionText = options[i].cityName,
+                    option = "<option value=" + optionValue + ">" + optionText + "</option>";
+                select.append(option);
+            }
+        },
+        addDistrictOptions: function(selectId, options){
+            var select = $(selectId);
+            $(selectId + ' option').remove();
+            for (var i in options){
+                var optionValue = options[i].districtId,
+                    optionText = options[i].districtName,
+                    option = "<option value=" + optionValue + ">" + optionText + "</option>";
+                select.append(option);
+            }
+        },
+        addStyleWrapper: function(selectId){
+            $("#wrap_" + selectId).remove();
+            $("#" + selectId + "Div").html('<select id="' + selectId + '" name="' + selectId + '" class="select-hidden"></select>');
+        },
+        initCitySelect: function(selectId, cities){
+            selector.View.addStyleWrapper(selectId);
+            selector.View.addCityOptions("#" + selectId, cities);
+            selector.initSelect('select[id=' + selectId + ']');
+        },
+        initDistrictSelect: function(selectId, districts){
+            selector.View.addStyleWrapper(selectId);
+            selector.View.addDistrictOptions("#" + selectId, districts);
+            selector.initSelect('select[id=' + selectId + ']');
         }
     };
 
     selector.Controller = {
+        initAddressSelect: function(viewName, address){
+            var provinceId = address.provinceId,
+                cityId = address.cityId,
+                districtId = address.districtId,
+                cities = address.cities,
+                districts = address.districts;
 
-    }
+            selector.View.addCityOptions(viewName + " #citySelect", cities);
+            selector.View.addDistrictOptions(viewName + " #districtSelect", districts);
 
-    selector.initSelect = function(select, initOptions){
+            selector.View.setSelectedOption(viewName + " #provinceSelect", provinceId);
+            selector.View.setSelectedOption(viewName + " #citySelect", cityId);
+            selector.View.setSelectedOption(viewName + " #districtSelect", districtId);
+
+            selector.initSelect('select', {
+                provinceOption: {
+                    value: provinceId,
+                    text: $("#provinceSelect option:selected").text()
+                },
+                cityOption: {
+                    value: cityId,
+                    text: $("#citySelect option:selected").text()
+                },
+                districtOption: {
+                    value: districtId,
+                    text: $("#districtSelect option:selected").text()
+                }
+            });
+        },
+        handleProvinceSelected: function(provinceId, selectId){
+            ajaxHandler.sendRequest({
+                url: '/api/regions/provinces/' + provinceId + "/cities",
+                type: 'GET',
+                success: function(data){
+                    selector.Controller.processProvinceSelect(selectId, data);
+                },
+                error: function(data){
+                    console.log(data);
+                }
+            });
+        },
+        handleCitySelected: function(cityId, selectId){
+            ajaxHandler.sendRequest({
+                url: '/api/regions/cities/' + cityId + "/districts",
+                type: 'GET',
+                success: function(data){
+                    selector.Controller.processCitySelect(selectId, data);
+                },
+                error: function(data){
+                    console.log(data);
+                }
+            });
+        },
+        processProvinceSelect: function(selectId, cities){
+            if (selectId === "companyProvinceSelect"){
+                selector.View.initCitySelect("companyCitySelect", cities);
+                selector.View.initDistrictSelect("companyDistrictSelect", cities[0].districts);
+            }else if(selectId === "provinceSelect"){
+                selector.View.initCitySelect("citySelect", cities);
+                selector.View.initDistrictSelect("districtSelect", cities[0].districts);
+            }else if(selectId === "provinceQuerySelect") {
+                selector.View.initCitySelect("cityQuerySelect", cities);
+                $("#cityQuerySelect").prepend('<option value="">市</option>');
+                selector.View.initDistrictSelect("districtQuerySelect", cities[0].districts);
+                $("#districtQuerySelect").prepend('<option value="">县/市辖区</option>');
+            }
+
+        },
+        processCitySelect: function(selectId, districts){
+            if(selectId === "companyCitySelect"){
+                selector.View.initDistrictSelect("companyDistrictSelect", districts);
+            }else if(selectId === "citySelect"){
+                selector.View.initDistrictSelect("districtSelect", districts);
+            }else if(selectId === "cityQuerySelect"){
+                selector.View.initDistrictSelect("districtQuerySelect", districts);
+                $("#districtQuerySelect").prepend('<option value="">县/市辖区</option>');
+            }
+        }
+    };
+
+    selector.initSelect = function(select, options){
         $(select).each(function(){
-            var selectName = $(this).attr("name");
-            var selectId =  $(this).attr("id");
-            var $this = $(this), numberOfOptions = $(this).children('option').length;
+            var selectName = $(this).attr("name"),
+                selectId =  $(this).attr("id"),
+                $this = $(this),
+                numberOfOptions = $(this).children('option').length;
 
             $this.addClass('select-hidden');
             $this.wrap('<div class="select" id="wrap_' + selectId + '"></div>');
             $this.after('<div class="select-styled selected_'+selectName+'"></div>');
 
-            var $styledSelect = $this.next('div.select-styled');
-            var styledSelectRel = $this.children('option').eq(0).val();
+            var $styledSelect = $this.next('div.select-styled'),
+                styledSelectRel = $this.children('option').eq(0).val();
 
-            if (selectId == "provinceSelect" && initOptions != undefined){
-                $styledSelect.text(initOptions.provinceOption.text);
-                $styledSelect.attr("rel", initOptions.provinceOption.value);
-            }else if (selectId == "citySelect" && initOptions != undefined){
-                $styledSelect.text(initOptions.cityOption.text);
-                $styledSelect.attr("rel", initOptions.cityOption.value);
-            }else if (selectId == "districtSelect" && initOptions != undefined){
-                $styledSelect.text(initOptions.districtOption.text);
-                $styledSelect.attr("rel", initOptions.districtOption.value);
+            if (selectId === "provinceSelect" && options != undefined){
+                $styledSelect.text(options.provinceOption.text);
+                $styledSelect.attr("rel", options.provinceOption.value);
+            }else if (selectId === "citySelect" && options != undefined){
+                $styledSelect.text(options.cityOption.text);
+                $styledSelect.attr("rel", options.cityOption.value);
+            }else if (selectId === "districtSelect" && options != undefined){
+                $styledSelect.text(options.districtOption.text);
+                $styledSelect.attr("rel", options.districtOption.value);
             }else{
                 $styledSelect.text($this.children('option').eq(0).text());
                 $styledSelect.attr("rel", styledSelectRel);
@@ -87,134 +193,25 @@ define(['jquery', 'sannong', 'ajaxHandler'], function($, sannong, ajaxHandler) {
             $listItems.click(function(e) {
                 e.stopPropagation();
                 $styledSelect.text($(this).text()).removeClass('active');
-                var selectedRel = $(this).attr('rel');
+
+                var selectedRel = $(this).attr('rel'),
+                    selectId = $this.attr("id");
+
                 $styledSelect.attr("rel", selectedRel);
                 $this.val($(this).attr('rel'));
-                //alert($(this).text());
+
                 $list.hide();
-                //console.log($this.val());
 
-                if ($this.attr("id") == "companyProvinceSelect"){
-                    $("#companyProvinceSelect").val(parseInt(selectedRel, 10));
-                    ajaxHandler.sendRequest({
-                        url: 'getCitiesWithDistricts',
-                        type: 'POST',
-                        data: {'provinceIndex': $("#companyProvinceSelect").val()},
-                        success: function(data){
-                            $("#wrap_citySelect").remove();
-                            $("#citySelectDiv").html('<select id="companyCitySelect" name="applicant.companyCity" class="select-hidden"></select>');
-                            selector.View.addCityOptions("#companyCitySelect", data.cities);
-                            selector.initSelect('select[id=companyCitySelect]');
-
-                            $("#wrap_districtSelect").remove();
-                            $("#districtSelectDiv").html('<select id="companyDistrictSelect" name="applicant.companyDistrict" class="select-hidden"></select>');
-                            selector.View.addDistrictOptions("#companyDistrictSelect", data.districts);
-                            selector.initSelect('select[id=companyDistrictSelect]');
-
-                        },
-                        fail: function(data){
-                        }
-                    });
-
-                }else if ($this.attr("id") == "companyCitySelect"){
-                    $("#companyCitySelect").val(parseInt(selectedRel, 10));
-                    ajaxHandler.sendRequest({
-                        url: 'getDistricts',
-                        type: 'POST',
-                        data: {'cityIndex': $("#companyCitySelect").val()},
-                        success: function(data){
-                            $("#wrap_districtSelect").remove();
-                            $("#districtSelectDiv").html('<select id="companyDistrictSelect" name="applicant.companyDistrict" class="select-hidden"></select>');
-                            selector.View.addDistrictOptions("#companyDistrictSelect", data);
-                            selector.initSelect('select[id=companyDistrictSelect]');
-                        },
-                        fail: function(data){
-                        }
-                    });
-                }else if($this.attr("id") == "companyDistrictSelect"){
-                    $("#companyDistrictSelect").val(parseInt(selectedRel, 10));
-                }else if ($this.attr("id") == "provinceSelect"){
-                    $("#provinceSelect").val(parseInt(selectedRel, 10));
-                    ajaxHandler.sendRequest({
-                        url: 'getCitiesWithDistricts',
-                        type: 'POST',
-                        data: {'provinceIndex': parseInt(selectedRel, 10)},
-                        success: function(data){
-                            $("#wrap_citySelect").remove();
-                            $("#citySelectDiv").html('<select id="citySelect" name="companyCity" class="select-hidden"></select>');
-                            selector.View.addCityOptions("#citySelect", data.cities);
-                            selector.initSelect('select[id=citySelect]');
-
-                            $("#wrap_districtSelect").remove();
-                            $("#districtSelectDiv").html('<select id="districtSelect" name="companyDistrict" class="select-hidden"></select>');
-                            selector.View.addDistrictOptions("#districtSelect", data.districts);
-                            selector.initSelect('select[id=districtSelect]');
-
-                        },
-                        fail: function(data){
-                        }
-                    });
-
-                }else if ($this.attr("id") == "citySelect"){
-                    $("#citySelect").val(parseInt(selectedRel, 10));
-                    ajaxHandler.sendRequest({
-                        url: 'getDistricts',
-                        type: 'POST',
-                        data: {'cityIndex': parseInt(selectedRel, 10)},
-                        success: function(data){
-                            $("#wrap_districtSelect").remove();
-                            $("#districtSelectDiv").html('<select id="districtSelect" name="companyDistrict" class="select-hidden"></select>');
-                            selector.View.addDistrictOptions("#districtSelect", data);
-                            selector.initSelect('select[id=districtSelect]');
-                        },
-                        fail: function(data){
-                        }
-                    });
-                }else if($this.attr("id") == "districtSelect"){
-                    $("#districtSelect").val(parseInt(selectedRel, 10));
-                }else if($this.attr("id") == "provinceQuerySelect"){
-                    $("#provinceQuerySelect").val(parseInt(selectedRel, 10));
-                    ajaxHandler.sendRequest({
-                        url: 'getCitiesWithDistricts',
-                        type: 'POST',
-                        data: {'provinceIndex': parseInt(selectedRel, 10)},
-                        success: function(data){
-                            $("#wrap_cityQuerySelect").remove();
-                            $("#cityQuerySelectDiv").html('<select id="cityQuerySelect" name="cityQuerySelect" class="select-hidden"></select>');
-                            selector.View.addCityOptions("#cityQuerySelect", data.cities);
-                            $("#cityQuerySelect").prepend('<option value="">市</option>');
-                            selector.initSelect('select[id=cityQuerySelect]');
-
-                            $("#wrap_districtQuerySelect").remove();
-                            $("#districtQuerySelectDiv").html('<select id="districtQuerySelect" name="districtQuerySelect" class="select-hidden"></select>');
-                            selector.View.addDistrictOptions("#districtQuerySelect", data.districts);
-                            $("#districtQuerySelect").prepend('<option value="">县/市辖区</option>');
-                            selector.initSelect('select[id=districtQuerySelect]');
-
-                        },
-                        fail: function(data){
-                        }
-                    });
-                }else if($this.attr("id") == "cityQuerySelect"){
-                    $("#cityQuerySelect").val(parseInt(selectedRel, 10));
-                    ajaxHandler.sendRequest({
-                        url: 'getDistricts',
-                        type: 'POST',
-                        data: {'cityIndex': parseInt(selectedRel, 10)},
-                        success: function(data){
-                            $("#wrap_districtQuerySelect").remove();
-                            $("#districtQuerySelectDiv").html('<select id="districtQuerySelect" name="districtQuerySelect" class="select-hidden"></select>');
-                            selector.View.addDistrictOptions("#districtQuerySelect", data);
-                            $("#districtQuerySelect").prepend('<option value="">县/市辖区</option>');
-                            selector.initSelect('select[id=districtQuerySelect]');
-                        },
-                        fail: function(data){
-                        }
-                    });
-                }else if($this.attr("id") == "districtQuerySelect"){
-                    $("#districtQuerySelect").val(parseInt(selectedRel, 10));
-                }else if($this.attr("id") == "searchKey"){
-                    $("#searchKey").val(selectedRel);
+                if(selectId === "searchKey"){
+                    $("#" + selectId).val(selectedRel);
+                }else {
+                    var selectValue = parseInt(selectedRel, 10);
+                    $("#" + selectId).val(selectValue);
+                    if (selectId.toLowerCase().indexOf("province") >= 0){
+                        selector.Controller.handleProvinceSelected(selectValue, selectId);
+                    }else if (selectId.toLowerCase().indexOf("city") >= 0){
+                        selector.Controller.handleCitySelected(selectValue, selectId);
+                    }
                 }
             });
 

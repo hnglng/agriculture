@@ -66,6 +66,10 @@ public class ApplicationService {
         return questions;
     }
 
+    public Application findByUserId(Long userId){
+        return applicationRepository.findByUserUserId(userId);
+    }
+
     public void createApplication(CreateApplicationCommand createApplicationCommand) {
 
         Timestamp creationTime = new Timestamp(System.currentTimeMillis());
@@ -92,7 +96,7 @@ public class ApplicationService {
 
         // important: for JPA, application instance has to be set into its child (questionnaire),
         //  otherwise, will throw error: application_id can not be null.
-        questionnaire.setApplication(application);
+        //questionnaire.setApplication(application);
 
         List<Questionnaire> questionnaires = new ArrayList<Questionnaire>();
         questionnaires.add(questionnaire);
@@ -106,9 +110,11 @@ public class ApplicationService {
         authorityRepository.save(authority);
 
         // Send email to admin
+        /*
         Region region = regionFactory.build(user.getCompanyProvince(), user.getCompanyCity(), user.getCompanyDistrict());
         String timeOfSubmission = new SimpleDateFormat("yyyy年MM月dd日 HH时mm分ss秒").format(creationTime);
         sendMailToAdmin(region, user.getRealName(), timeOfSubmission, mobilePhone);
+        */
 
         // Send sms message to user
         smsService.sendLoginMessage(mobilePhone, password);

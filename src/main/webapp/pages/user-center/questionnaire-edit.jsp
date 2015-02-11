@@ -19,16 +19,16 @@
 
   <ul class="nav nav-tabs" role="tablist" id="questionnaireTab">
     <li role="presentation" class="active"><a id="q1" href="javascript:void(0)" role="tab" data-toggle="tab"
-                                              class="meta-event-source" meta-event-handler="userList:q1">问卷题集一</a>
+                                              class="meta-event-source" meta-event-handler="userManagement:q1">问卷题集一</a>
     </li>
     <li role="presentation"><a id="q2" href="javascript:void(0)" role="tab" data-toggle="tab" class="meta-event-source"
-                               meta-event-handler="userList:q2">问卷题集二</a></li>
+                               meta-event-handler="userManagement:q2">问卷题集二</a></li>
     <li role="presentation"><a id="q3" href="javascript:void(0)" role="tab" data-toggle="tab" class="meta-event-source"
-                               meta-event-handler="userList:q3">问卷题集三</a></li>
+                               meta-event-handler="userManagement:q3">问卷题集三</a></li>
     <li role="presentation"><a id="q4" href="javascript:void(0)" role="tab" data-toggle="tab" class="meta-event-source"
-                               meta-event-handler="userList:q4">问卷题集四</a></li>
+                               meta-event-handler="userManagement:q4">问卷题集四</a></li>
     <li role="presentation"><a id="q5" href="javascript:void(0)" role="tab" data-toggle="tab" class="meta-event-source"
-                               meta-event-handler="userList:q5">问卷题集五</a></li>
+                               meta-event-handler="userManagement:q5">问卷题集五</a></li>
   </ul>
   <div class="tab-content">
     <ul class="steps">
@@ -45,24 +45,34 @@
     </ul>
     <ul class="step-1-listing">
       <div id="submitStatus" class="brown-bg">项目状态：<span id="questionnaireStatus"></span></div>
-
-      <form id="answerForm" role="form" action="updateAnswersAndComment" method="post">
-        <div id="questionnaire">
-          <!-- Fill in template here -->
-        </div>
-        <div id="questionnaireComment">更改状态:
-          <textarea class="form-control" name="comment.content" rows="3" id="commentContent" autofocus></textarea>
-        </div>
-        <input type="hidden" name="questionnaireNo" id="questionnaireNo">
-        <input type="hidden" name="applicant.userName" id="userName">
-        <input type="hidden" name="application.applicationId" id="applicationId">
-      </form>
+      <li id="questionnaire1">
+        <jsp:include page='questionnaire1.jsp'/>
+      </li>
+      <li class="hidden" id="questionnaire2">
+        <jsp:include page='questionnaire2.jsp'/>
+      </li>
+      <li class="hidden" id="questionnaire3">
+        <jsp:include page='questionnaire3.jsp'/>
+      </li>
+      <li class="hidden" id="questionnaire4">
+        <jsp:include page='questionnaire4.jsp'/>
+      </li>
+      <li class="hidden" id="questionnaire5">
+        <jsp:include page='questionnaire5.jsp'/>
+      </li>
+      <li>
+        <form id="application-comment" role="form" action="updateApplicationComment" method="POST">
+          <div id="questionnaireComment">更改状态:
+            <textarea class="form-control" name="comment.content" rows="3" id="commentContent" autofocus=""></textarea>
+          </div>
+        </form>
+      </li>
     </ul>
+
   </div>
 
-  <br>
-  <a href="#" class="white-bt meta-event-source" meta-event-handler="userList:cancel" id="cancel">取消</a>
-  <button class="orange-bt-small meta-event-source" meta-event-handler="userList:update" id="update">更新</button>
+  <button class="orange-bt-small meta-event-source" meta-event-handler="userManagement:update" id="update">更新</button>
+  <a href="#" class="white-bt meta-event-source" meta-event-handler="userManagement:cancelQuestionnaireEdit" id="cancel">取消</a>
 
   <jsp:include page='../modal/quesitonnaire-update-modal.jsp'/>
 </div>

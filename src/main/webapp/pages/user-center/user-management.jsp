@@ -57,7 +57,9 @@
 
 <jsp:include page='questionnaire-edit.jsp'/>
 
-<div id="profile-edit-view"></div>
+<form class="userForm" role="form" id="profile-edit-form" action="user-center/user-profile" method="post">
+  <div id="profile-edit-view" style="display:none"></div>
+</form>
 <jsp:include page='../template/user-profile-template.jsp'/>
 
 <jsp:include page='../template/user-list-template.jsp'/>

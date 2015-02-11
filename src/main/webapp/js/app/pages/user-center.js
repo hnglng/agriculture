@@ -27,8 +27,8 @@ require(['../main'], function () {
                     }
                 });
                 $("#user-profile-tab").click(function(){
-                    userManagement.View.emptyUserProfileEditView();
-                    userProfile.Controller.showUserProfileView("", "#userProfileView");
+                    $("#profile-edit-view").removeClass("hidden");
+                    //userProfile.View.renderUserProfileView(userProfile.Model.userProfileInitData);
                 });
             }
 

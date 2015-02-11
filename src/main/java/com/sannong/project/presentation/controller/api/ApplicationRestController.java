@@ -30,21 +30,21 @@ public class ApplicationRestController {
     @Autowired
     private ApplicationRestService applicationRestService;
 
-
     @RequestMapping(method = RequestMethod.GET)
-    public  Resources<ApplicationResource>   readApplications(@RequestParam Long userId){
-        Link link = linkTo(ApplicationRestController.class).withSelfRel();
-        List<Application> applications;
+    @ResponseBody
+    public  ResponseEntity<?> readApplications(@RequestParam Long userId){
         if (userId != null){
-            applications = applicationRestService.findByUserId(userId);
+            Application application = applicationRestService.findByUserId(userId);
+            return new ResponseEntity<Application>(application, HttpStatus.OK);
         }
         else{
-            applications = applicationRestService.findAll();
+            Link link = linkTo(ApplicationRestController.class).withSelfRel();
+            List<Application> applications = applicationRestService.findAll();
+            List<ApplicationResource> applicationResources =
+                    new ApplicationResourceAssembler().toResources(applications);
+            Resources<ApplicationResource> resources = new Resources<ApplicationResource>(applicationResources, link);
+            return new ResponseEntity<Resources<ApplicationResource>>(resources, HttpStatus.OK);
         }
-        List<ApplicationResource> applicationResources =
-                new ApplicationResourceAssembler().toResources(applications);
-        Resources<ApplicationResource> resources = new Resources<ApplicationResource>(applicationResources, link);
-        return resources;
     }
 
     @RequestMapping(value="/{applicationId}", method = RequestMethod.GET)

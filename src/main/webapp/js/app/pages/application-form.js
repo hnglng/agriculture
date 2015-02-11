@@ -49,16 +49,6 @@ require(['../main'], function () {
                 },
                 disableSubmitButton: function () {
                     applicationForm.View.applicationFormFormSubmit.addClass("disabled");
-                },
-                showQuestions: function () {
-                    $.ajax({
-                        type: "GET",
-                        dataType: "json",
-                        url: '/api/questions/questionnaireNumbers/1',
-                        success: function (data) {
-                            questionnaire.View.renderQuestions(data._embedded.questionList);
-                        }
-                    });
                 }
             };
 
@@ -144,7 +134,6 @@ require(['../main'], function () {
 
             $(function () {
                 selector.initSelect('select');
-                applicationForm.View.showQuestions();
                 registerEventListener();
             });
 

@@ -22,4 +22,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     User findByMobilePhoneAndRealName(String mobilePhone, String realName);
 
+    User findByUserName(String userName);
+
 }

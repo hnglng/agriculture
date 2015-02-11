@@ -18,7 +18,7 @@ define(['jquery', 'sannong'], function($, sannong) {
         }).success(function (data, status, xhr) {
             options.success(data, status, xhr);
         }).error(function (xhr, status, error) {
-            options.error(xhr, status, error);
+            options.error(error);
         }).always(function (xhr, status, error) {
             //options.always(xhr, status, error);
         });

@@ -1,10 +1,8 @@
 package com.sannong.project.domain.region;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by Bright Huang on 10/24/14.
@@ -25,6 +23,9 @@ public class City implements Serializable {
     @Column(name="province_id")
     private Long provinceId;
 
+    @OneToMany
+    @JoinColumn(name="city_id", referencedColumnName = "city_id")
+    private List<District> districts;
 
     public Long getCityId() {
         return cityId;
@@ -56,5 +57,13 @@ public class City implements Serializable {
 
     public void setProvinceId(Long provinceId) {
         this.provinceId = provinceId;
+    }
+
+    public List<District> getDistricts() {
+        return districts;
+    }
+
+    public void setDistricts(List<District> districts) {
+        this.districts = districts;
     }
 }

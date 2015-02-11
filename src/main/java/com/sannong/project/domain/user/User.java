@@ -1,5 +1,8 @@
 package com.sannong.project.domain.user;
 
+import com.sannong.project.domain.region.City;
+import com.sannong.project.domain.region.District;
+import com.sannong.project.domain.region.Province;
 import com.sannong.project.infrastructure.util.CustomDateSerializer;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
@@ -29,12 +32,17 @@ public class User {
     private String mailbox;
     @Column(name="company_name")
     private String companyName;
-    @Column(name="company_province")
-    private Long companyProvince;
-    @Column(name="company_city")
-    private Long companyCity;
-    @Column(name="company_district")
-    private Long companyDistrict;
+
+    @OneToOne(cascade={CascadeType.ALL})
+    @JoinColumn(name="province_id")
+    private Province province;
+    @OneToOne
+    @JoinColumn(name="city_id")
+    private City city;
+    @OneToOne
+    @JoinColumn(name="district_id")
+    private District district;
+
     @Column(name="company_address")
     private String companyAddress;
     @Column(name="mobile_phone")
@@ -98,28 +106,8 @@ public class User {
         this.companyName = companyName;
     }
 
-    public Long getCompanyProvince() {
-        return companyProvince;
-    }
-
-    public void setCompanyProvince(Long companyProvince) {
-        this.companyProvince = companyProvince;
-    }
-
-    public Long getCompanyCity() {
-        return companyCity;
-    }
-
-    public void setCompanyCity(Long companyCity) {
-        this.companyCity = companyCity;
-    }
-
-    public Long getCompanyDistrict() {
-        return companyDistrict;
-    }
-
-    public void setCompanyDistrict(Long companyDistrict) {
-        this.companyDistrict = companyDistrict;
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
     }
 
     public String getCompanyAddress() {
@@ -178,5 +166,29 @@ public class User {
 
     public void setLastUpdated(Timestamp lastUpdated) {
         this.lastUpdated = lastUpdated;
+    }
+
+    public Province getProvince() {
+        return province;
+    }
+
+    public void setProvince(Province province) {
+        this.province = province;
+    }
+
+    public City getCity() {
+        return city;
+    }
+
+    public void setCity(City city) {
+        this.city = city;
+    }
+
+    public District getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(District district) {
+        this.district = district;
     }
 }

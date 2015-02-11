@@ -29,6 +29,8 @@ public class RegionService {
         return provinceRepository.findAll();
     }
 
+    public Province getProvinceById(Long id){return provinceRepository.findOne(id); }
+
     public List<City> getCities(Long provinceId) {
         return cityRepository.findByProvinceId(provinceId);
     }

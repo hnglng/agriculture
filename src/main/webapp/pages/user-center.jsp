@@ -76,8 +76,6 @@
                         <jsp:include page='user-center/user-management.jsp'/>
                       </div>
                       <div id="user-profile-tab-pane" role="tabpane" class="tab-pane">
-                        <div id="userProfileView">
-                        </div>
                         <jsp:include page='user-center/user-profile.jsp'/>
                       </div>
                       <div id="user-password-tab-pane" role="tabpane" class="tab-pane">

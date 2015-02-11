@@ -13,5 +13,6 @@ import java.util.List;
 public interface QuestionnaireRepository extends CrudRepository<Questionnaire, Long> {
     Questionnaire findOne(Long questionnaireId);
 
-    List<Questionnaire> findByApplicationApplicationId(Long applicationId);
+    //List<Questionnaire> findByApplicationApplicationId(Long applicationId);
+    List<Questionnaire> findByApplicationId(Long applicationId);
 }

@@ -23,6 +23,6 @@ public class QuestionnaireRestService {
     }
 
     public List<Questionnaire> findByApplicationId(Long applicationId){
-        return questionnaireRepository.findByApplicationApplicationId(applicationId);
+        return questionnaireRepository.findByApplicationId(applicationId);
     }
 }

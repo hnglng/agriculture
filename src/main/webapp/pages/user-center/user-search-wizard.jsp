@@ -12,7 +12,7 @@
 </head>
 <body>
 
-  <div class="searchRow">
+  <div class="searchRow" id="user-search-wizard">
     <div class="left">
       <label>查询条件</label>
 
@@ -83,7 +83,7 @@
         </select>
       </div>
       <a id="retrieve" href="javascript:void(0);" class="glyphicon glyphicon-search meta-event-source"
-         meta-event-handler="userManagement:retrieve"></a>
+         meta-event-handler="userManagement:search"></a>
     </div>
   </div>
 

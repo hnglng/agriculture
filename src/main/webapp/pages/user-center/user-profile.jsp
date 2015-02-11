@@ -16,6 +16,11 @@
   <title>Benefitting Agriculture - End User Profile</title>
 </head>
 <body>
+<h3>个人信息</h3>
+<form class="userForm" role="form" id="user-profile-form" action="user-center/user-profile" method="post">
+  <div id="user-profile-view"></div>
+</form>
+
 <jsp:include page='../template/user-profile-template.jsp'/>
 </body>
 </html>

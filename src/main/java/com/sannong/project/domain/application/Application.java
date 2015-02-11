@@ -27,7 +27,9 @@ public class Application {
     @JoinColumn(name="user_id")
     private User user;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "application")
+    //@OneToMany(cascade = CascadeType.ALL, mappedBy = "application")
+    @OneToMany
+    @JoinColumn(name="application_id", referencedColumnName="application_id")
     private List<Questionnaire> questionnaires;
 
     @Column

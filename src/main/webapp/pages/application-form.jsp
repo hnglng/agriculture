@@ -42,12 +42,12 @@
       <span class="col-sm-9 rightBorder equalCol">
         <h3 class="borderBottom">申报项目</h3>
         <form class="projectAppForm" id="projectAppForm" role="form" action="project-application" method="POST">
-          <jsp:include page='application-form/application-questionnaire.jsp'/>
-          <jsp:include page='application-form/application-user.jsp'/>
+          <jsp:include page='application-form/questionnaire.jsp'/>
+          <jsp:include page='application-form/user-info.jsp'/>
         </form>
       </span>
       <span class="col-sm-3 sidebar equalCol">
-        <jsp:include page='application-form/application-faq.jsp'/>
+        <jsp:include page='application-form/faq.jsp'/>
       </span>
       <jsp:include page='modal/application-modal.jsp'/>
     </div>

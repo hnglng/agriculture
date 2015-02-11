@@ -2,6 +2,7 @@ package com.sannong.project.domain.region;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by Bright Huang on 10/24/14.
@@ -19,6 +20,10 @@ public class Province implements Serializable {
     private String provinceName;
     @Column(name="province_code")
     private String provinceCode;
+
+    @OneToMany
+    @JoinColumn(name="province_id", referencedColumnName = "province_id")
+    private List<City> cities;
 
     public Long getProvinceId() {
         return provinceId;
@@ -44,4 +49,11 @@ public class Province implements Serializable {
         this.provinceCode = provinceCode;
     }
 
+    public List<City> getCities() {
+        return cities;
+    }
+
+    public void setCities(List<City> cities) {
+        this.cities = cities;
+    }
 }

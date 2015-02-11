@@ -1,11 +1,19 @@
 package com.sannong.project.presentation.controller;
 
+import com.sannong.project.domain.region.AddressRegion;
+import com.sannong.project.domain.user.User;
+import com.sannong.project.domain.user.UserProfile;
+import com.sannong.project.service.region.RegionService;
+import com.sannong.project.service.user.UserService;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,18 +22,41 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+
 @Controller
 @RequestMapping(value = "/user-center")
 public class UserCenterController {
     private static final Logger logger = Logger.getLogger(UserCenterController.class);
     private static final String USER_CENTER_PAGE = "user-center";
 
+    @Autowired
+    private RegionService regionService;
+    @Autowired
+    private UserService userService;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView showUserCenter() {
         Map<String, Object> models = new HashMap<String, Object>();
         models.put("user-center", new Object());
         return new ModelAndView(USER_CENTER_PAGE, models);
+    }
+
+    @RequestMapping(value="/user-profile", method = RequestMethod.GET)
+    @ResponseBody
+    public UserProfile getUserProfile(@RequestParam Long userId){
+        User user = userService.getUser(userId);
+
+        AddressRegion addressRegion = new AddressRegion();
+        addressRegion.setProvince(user.getProvince());
+        addressRegion.setCities(regionService.getCities(user.getProvince().getProvinceId()));
+        addressRegion.setDistricts(regionService.getDistricts(user.getCity().getCityId()));
+
+        UserProfile userProfile = new UserProfile();
+        userProfile.setUser(user);
+        userProfile.setAddressRegion(addressRegion);
+
+        return userProfile;
     }
 
     /*

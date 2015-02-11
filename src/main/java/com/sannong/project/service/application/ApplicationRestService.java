@@ -34,7 +34,7 @@ public class ApplicationRestService {
 
         return applicationRepository.save(application);
     }
-    public List<Application> findByUserId(Long userId){
+    public Application findByUserId(Long userId){
         return applicationRepository.findByUserUserId(userId);
     }
 

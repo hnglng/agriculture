@@ -1,34 +1,25 @@
 package com.sannong.project.presentation.dto;
 
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * create DTO class
  * @author william zhang
  */
 public class DTO {
+    private Map models = new HashMap();
 
-	public DTO(boolean responseResult, String returnValue) {
-		
-		this.responseResult = responseResult;
-		this.returnValue = returnValue;
+	public DTO(Map models) {
+		this.models = models;
 	}
 
-	private boolean responseResult;
-	private String returnValue;
+    public Map getModels() {
+        return models;
+    }
 
-	public String getReturnValue() {
-		return returnValue;
-	}
-
-	public void setReturnValue(String returnValue) {
-		this.returnValue = returnValue;
-	}
-
-	public boolean getResult() {
-		return responseResult;
-	}
-
-	public void setResult(boolean result) {
-		this.responseResult = result;
-	}
+    public void setModels(Map models) {
+        this.models = models;
+    }
 }

@@ -29,6 +29,12 @@ public class RegionRestController {
         return regionService.getProvinces();
     }
 
+    @RequestMapping(value = "/provinces/{provinceId}")
+    public @ResponseBody Province readProvince(@PathVariable Long provinceId) {
+        return regionService.getProvinceById(provinceId);
+    }
+
+
     @RequestMapping(value = "/provinces/{provinceId}/cities")
     public @ResponseBody List<City> getCities(@PathVariable Long provinceId) {
         return regionService.getCities(provinceId);

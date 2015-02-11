@@ -8,86 +8,62 @@ define(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler
                  additionalMethods, pagination, selector, jqueryForm, eventHandler, questionnaire) {
 
             "use strict";
-            var searchParams = "";
             var userManagement = {};
-
             userManagement.Model = {
-                currentEditUser: ""
+                currentEditUser: "",
+                userProfileInitData: {
+                    "uerName": "", "cellphone": "", "realName": "", "jobTitle": "",
+                    "company": "", "companyAddress": "", "deskPhone": "", "mailbox": ""
+                }
             };
 
             userManagement.View = {
                 userManagementView: $("#user-management-view"),
                 questionnaireEditView: $("#questionnaire-edit-view"),
                 profileEditView: $("#profile-edit-view"),
-
-                searchBar: $("#searchBar"),
-                userManagementTitle: $("#user-management-title"),
-                userTextShow: $("#userTextShow"),
-                userManagementTable: $("#userManagementTable"),
-                userProfileCancel: $("#userProfileCancel"),
-                emptyUserProfileEditView: function(){
-                    $("#userProfileView").empty();
-                },
-                showProfileEditView: function(){
+                switchView: function(targetView){
                     userManagement.View.userManagementView.hide();
                     userManagement.View.questionnaireEditView.hide();
-                    userManagement.View.profileEditView.show();
-                },
-                showUserManagementView: function(){
-                    userManagement.View.questionnaireEditView.hide();
                     userManagement.View.profileEditView.hide();
-                    userManagement.View.userManagementView.show();
+                    targetView.show();
                 },
-                showQuestionnaireEditView: function(questionnaireNumber, userId){
-                    userManagement.View.userManagementView.hide();
-                    userManagement.View.profileEditView.hide();
-                    userManagement.View.questionnaireEditView.show();
+                renderUserManagementView: function(data){
+                    handlebars.registerHelper("addOne", function(index){return index + 1;});
+                    var compiler = handlebars.compile($("#table-template").html()),
+                        html = compiler(data.content);
 
-                    ajaxHandler.sendRequest({
-                        type : "GET",
-                        dataType : "json",
-                        url : '/api/applications',
-                        data: {userId : userId},
-                        success : function(data) {
-                            userManagement.View.renderQuestionnaireView(questionnaireNumber, data);
-                        },
-                        error: function(data){
-                            console.log(data);
-                        }
-                    });
+                    $("#user-list").empty();
+                    $("#user-list").append(html);
+                    $("#total-page-number").text(data.totalPages);
+
+
                 },
-                showQuestionnaire: function(questionnaireNo){
-                    $("#questionnaireNo").val(questionnaireNo);
-                    $("#userTextShow").show();
-                    $("#user-management-title").hide();
-                    $("#userManagementTable").hide();
-                    $("#user-questionnaire-view").show();
-                    $("#questionnaireStatus").show();
-                    $("#update-success").remove();
-                    $("#update-error").remove();
+                renderProfileEditView: function(isPageLoad, data){
+                    var user = data.user,
+                        userProfileData = (isPageLoad == true ? userManagement.Model.userProfileInitData : user),
+                        compiler = handlebars.compile($("#user-profile-template").html()),
+                        html = compiler(userProfileData);
 
-                    if ($("#user-questionnaire-view").show()) {
-                        $("#questionList").empty();
+                    userManagement.View.profileEditView.empty();
+                    userManagement.View.profileEditView.append(html);
+
+                    var address = {
+                        provinceId: user.province.provinceId,
+                        cityId: user.city.cityId,
+                        districtId: user.district.districtId,
+                        cities: data.addressRegion.cities,
+                        districts: data.addressRegion.districts
                     }
 
-                    if ($(".steps")){
-                        $(".no").each(function(){
-                            $(this).parent().removeClass("active");
+                    selector.Controller.initAddressSelect("#profile-edit-view", address);
 
-                            if ($(this).text() == questionnaireNo){
-                                $(this).parent().addClass("active");
-                            }
-                        })
-                    }
-
-                    if ($(".error")) {
-                        $(".error").empty();
-                    }
+                    $("#profile-edit-cancel").removeClass("hidden");
                 },
-                renderQuestionnaireView: function(questionnaireNumber, application){
+                renderQuestionnaireEditView: function(application, questionnaireNumber){
                     var latestQuestionnaireNumber = application.questionnaires.length,
-                        questionnaireObj = application.questionnaires[questionnaireNumber - 1],
+                        currentQuestionnaire = application.questionnaires[questionnaireNumber - 1],
                         user = application.user;
+
 
                     if (questionnaireNumber > latestQuestionnaireNumber){
                         $("#update").removeClass("orange-bt-small").addClass("gray-bt-small");
@@ -103,17 +79,35 @@ define(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler
                         $("#userTextShow").show();
                     }
 
-                    if (questionnaireObj === null || questionnaireObj === undefined) {
-                        questionnaire.Controller.showQuestionnaire(questionnaireNumber);
+                    if (currentQuestionnaire === null || currentQuestionnaire === undefined) {
+                        questionnaire.Controller.switchQuestionnaire(questionnaireNumber);
                     }else{
-                        questionnaire.View.renderQuestionnaireView(questionnaireObj);
+                        //questionnaire.View.renderQuestionnaireView(currentQuestionnaire);
                     }
 
-                    if (questionnaireObj !== null && questionnaireObj !== undefined){
-                        questionnaire.View.fillAnswers(questionnaireNumber, questionnaireObj.concatenatedAnswers, false);
+                    if (currentQuestionnaire !== null && currentQuestionnaire !== undefined){
+                        questionnaire.View.fillAnswers(questionnaireNumber, currentQuestionnaire.answers, false);
                     }
 
                     questionnaire.View.renderApplicationComments(application);
+                },
+                switchQuestionnaire: function(number){
+                    $("#questionnaire1").addClass("hidden");
+                    $("#questionnaire2").addClass("hidden");
+                    $("#questionnaire3").addClass("hidden");
+                    $("#questionnaire4").addClass("hidden");
+                    $("#questionnaire5").addClass("hidden");
+                    $("#questionnaire" + number).removeClass("hidden");
+
+                    if ($(".steps")){
+                        $(".no").each(function(){
+                            $(this).parent().removeClass("active");
+
+                            if ($(this).text() == number){
+                                $(this).parent().addClass("active");
+                            }
+                        })
+                    }
                 },
                 activatePagination: function(){
                     $("#previous").addClass("activeBt");
@@ -132,63 +126,127 @@ define(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler
             };
 
             userManagement.Controller = {
-                retrieve: function() {
-                    var searchKey = $("#searchKey").val();
-                    var searchValue = $("#searchValue").val();
-
-                    var parameter;
-                    if (searchKey == "手机号"){
-                        parameter = "cellphone=" + searchValue;
-                    }else if (searchKey == "姓名"){
-                        parameter = "realName=" + searchValue;
-                    }else if (searchKey == "工作单位"){
-                        parameter = "company=" + searchValue;
-                    }else if (searchKey == "职位"){
-                        parameter = "jobTitle=" + searchValue;
-                    }else if (searchKey == "电子邮箱"){
-                        parameter = "mailbox=" + searchValue;
-                    }else if (searchKey == "单位地址"){
-                        parameter = "companyAddress=" + searchValue;
-                    }
-                    var provinceIndex = $("#provinceQuerySelect").val();
-                    var cityIndex = $("#cityQuerySelect").val();
-                    var districtIndex = $("#districtQuerySelect").val();
-
-                    parameter = parameter + "&provinceIndex=" + provinceIndex + "&cityIndex=" + cityIndex + "&districtIndex=" + districtIndex;
-                    //parameter = "realName=william&provinceIndex=&cityIndex=&districtIndex=";
-                    searchParams = parameter;
-
+                showUserByPage: function (pageNumber) {
+                    $("#userTextShow").hide();
                     $.ajax({
-                        type : "get",
-                        dataType : "text",
-                        url : "userTotalCount",
-                        data : parameter,
-                        success : function(totalCount) {
-                            // pagination and data list presentation
-                            showTotalPageNumber(totalCount, parameter);
+                        type : "GET",
+                        dataType : "json",
+                        url : '/api/users',
+                        data:{pageNumber: pageNumber, perPage: 10},
+                        success : function(data) {
+                            userManagement.View.switchView(userManagement.View.userManagementView);
+                            userManagement.View.renderUserManagementView(data);
+                        },
+                        error: function(data){
+                            console.log(data);
                         }
                     });
                 },
-                cancel: function () {
-                    userManagement.View.userTextShow.hide();
-                    $("#user-questionnaire-view").hide();
-                    $("#userManagementTable").show();
-                    $("#searchBar").show();
-                    $("#user-management-title").show();
-                    $("#questionnaireTab li").removeClass("active")
-                    $("#questionnaireTab li:first-child").addClass("active");
+                search: function() {
+                    $.ajax({
+                        type : "GET",
+                        dataType : "json",
+                        url : '/api/users',
+                        data : {
+                            pageNumber: 1,
+                            perPage: 10,
+                            searchKey: $("#searchKey").val(),
+                            searchValue: $("#searchValue").val(),
+                            provinceId: $("#provinceQuerySelect").val(),
+                            cityId: $("#cityQuerySelect").val(),
+                            districtId: $("#districtQuerySelect").val()
+                        },
+                        success : function(data) {
+                            userManagement.View.renderUserManagementView(data);
+                        },
+                        error: function(data){
+                            console.log(data);
+                        }
+                    });
+                },
+                previous: function(){
+                    var currentPageNumber = parseInt($("#current-page-number").text(), 10),
+                        previousPageNumber = parseInt(currentPageNumber) - 1;
+
+                    userManagement.View.activatePagination();
+                    if (currentPageNumber === 1){
+                        userManagement.View.inactivatePaginationPrevious();
+                        return;     // Do nothing as current page is the first one.
+                    }
+                    if (previousPageNumber === 1){
+                        userManagement.View.inactivatePaginationPrevious();
+                    }
+                    userManagement.View.setCurrentPageNumber(previousPageNumber);
+                    userManagement.Controller.showUserByPage(previousPageNumber);
+                },
+                next: function(){
+                    var currentPageNumber = parseInt($("#current-page-number").text(), 10),
+                        totalPageNumber = parseInt($("#total-page-number").text(), 10),
+                        nextPageNumber = currentPageNumber + 1;
+
+                    userManagement.View.activatePagination();
+                    if (currentPageNumber === totalPageNumber) {
+                        userManagement.View.inactivatePaginationNext();
+                        return;     // Do nothing as current page is the latest one.
+                    }
+                    if (nextPageNumber === totalPageNumber){
+                        userManagement.View.inactivatePaginationNext();
+                    }
+                    userManagement.View.setCurrentPageNumber(nextPageNumber);
+                    userManagement.Controller.showUserByPage(nextPageNumber);
+                },
+                editUserProfile: function(userId){
+                    ajaxHandler.sendRequest({
+                        type: "GET",
+                        url: "/user-center/user-profile",
+                        dataType: "json",
+                        data:{userId: userId},
+                        success: function(data){
+                            userManagement.View.switchView(userManagement.View.profileEditView);
+                            userManagement.View.renderProfileEditView(false, data);
+                        },
+                        error: function(data){
+                            console.log(data);
+                        }
+                    });
+                },
+                editQuestionnaire: function (userId) {
+                    var options = {
+                        type: "GET",
+                        dataType: "json",
+                        url: "/api/applications",
+                        data: {userId: userId},
+                        success: function(data) {
+                            userManagement.View.switchView(userManagement.View.questionnaireEditView);
+                            userManagement.View.renderQuestionnaireEditView(data, 1);
+                        },
+                        error: function(data){
+                            console.log(data);
+                        }
+                    }
+                    ajaxHandler.sendRequest(options);
+                },
+                q1: function(){
+                    userManagement.View.switchQuestionnaire(1);
+                },
+                q2: function(){
+                    userManagement.View.switchQuestionnaire(2);
+                },
+                q3: function(){
+                    userManagement.View.switchQuestionnaire(3);
+                },
+                q4: function(){
+                    userManagement.View.switchQuestionnaire(4);
+                },
+                q5: function(){
+                    userManagement.View.switchQuestionnaire(5);
                 },
                 update: function () {
                     if (formValidator.getValidator("#answerForm").form() == true){
-
-                        //var questionnaireNo = $("#questionnaireNo").val();
-                        //var answerStatus = questionnaireNo + "1";
-                        //$("#answerStatus").val(answerStatus);
-
                         $("#myModalTrigger").click();
                     }
                 },
-                submit: function(event){
+                submit: function(){
                     $("#answerForm").ajaxSubmit(function(message) {
                         if (message.result == true){
                             $("#update-success").remove();
@@ -203,136 +261,17 @@ define(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler
                     });
                     return false;
                 },
-                previous: function(){
-                    var currentPageNumber = parseInt($("#current-page-number").text(), 10),
-                        previousPageNumber = parseInt(currentPageNumber) - 1;
-
-                    userManagement.View.activatePagination();
-                    if (currentPageNumber === 1){
-                        userManagement.View.inactivatePaginationPrevious();
-                        return; // Do nothing as current page is the first
-                    }
-                    if (previousPageNumber === 1){
-                        userManagement.View.inactivatePaginationPrevious();
-                    }
-                    userManagement.View.setCurrentPageNumber(previousPageNumber);
-
-                    userManagement.Controller.showUserByPage(previousPageNumber);
-
+                cancelQuestionnaireEdit: function () {
+                    userManagement.View.switchView(userManagement.View.userManagementView);
                 },
-                next: function(){
-                    var currentPageNumber = parseInt($("#current-page-number").text(), 10),
-                        totalPageNumber = parseInt($("#total-page-number").text(), 10),
-                        nextPageNumber = currentPageNumber + 1;
-
-                    userManagement.View.activatePagination();
-                    if (currentPageNumber === totalPageNumber) {
-                        userManagement.View.inactivatePaginationNext();
-                        return; // Do nothing as current page is the latest
-                    }
-                    if (nextPageNumber === totalPageNumber){
-                        userManagement.View.inactivatePaginationNext();
-                    }
-                    userManagement.View.setCurrentPageNumber(nextPageNumber);
-
-                    userManagement.Controller.showUserByPage(nextPageNumber);
-                },
-
-                q1: function(){
-                    userManagement.Controller.showQuestionnaire(1,"");
-                },
-                q2: function(){
-                    userManagement.Controller.showQuestionnaire(2,"");
-                },
-                q3: function(){
-                    userManagement.Controller.showQuestionnaire(3,"");
-                },
-                q4: function(){
-                    userManagement.Controller.showQuestionnaire(4,"");
-                },
-                q5: function(){
-                    userManagement.Controller.showQuestionnaire(5,"");
-                },
-                renderProfileEditView: function(userId, viewName){
-                    ajaxHandler.sendRequest({
-                        type: "GET",
-                        url: "/api/users/" + userId,
-                        success: function(response){
-                            var userProfileViewHandler = handlebars.compile($("#user-profile-template").html()),
-                                html = userProfileViewHandler(response.models.userProfile);
-
-                            $(viewName).empty();
-                            $(viewName).append(html);
-
-                            selector.View.addCityOptions(viewName + " #citySelect", response.models.cities);
-                            selector.View.addDistrictOptions(viewName + " #districtSelect", response.models.districts);
-                            selector.View.selectOption(viewName + " #provinceSelect", response.models.userProfile.companyProvince);
-                            selector.View.selectOption(viewName + " #citySelect", response.models.userProfile.companyCity);
-                            selector.View.selectOption(viewName + " #districtSelect", response.models.userProfile.companyDistrict);
-
-                            selector.initSelect('select', {
-                                provinceOption: {
-                                    value: response.models.userProfile.companyProvince,
-                                    text: $("#provinceSelect option:selected").text()
-                                },
-                                cityOption: {
-                                    value: response.models.userProfile.companyCity,
-                                    text: $("#citySelect option:selected").text()
-                                },
-                                districtOption: {
-                                    value: response.models.userProfile.companyDistrict,
-                                    text: $("#districtSelect option:selected").text()
-                                }
-                            });
-
-                            if (viewName == "#userProfileView"){
-                                $("#userProfileCancel").removeClass("hidden");
-                                $("#userProfileCancel").click(function () {
-                                    userManagement.Model.currentEditUser = "";
-                                    userManagement.View.showUserListView();
-                                });
-                            }
-                        },
-                        error: function(){
-                        }
-                    });
-                },
-                editUserProfile: function(userId){
-                    userManagement.Model.currentEditUser = userId;
-                    userManagement.View.showProfileEditView();
-                    userManagement.Controller.renderProfileEditView(userId, "#profile-edit-view");
-                },
-                editQuestionnaire: function (questionnaireNumber, userId) {
-
-                    userManagement.View.showQuestionnaireEditView(questionnaireNumber, userId);
-                },
-                showUserByPage: function (pageNumber) {
-                    $("#userTextShow").hide();
-
-                    $.ajax({
-                        type : "GET",
-                        dataType : "json",
-                        url : '/api/users',
-                        data:{pageNumber: pageNumber, perPage: 10},
-                        success : function(data) {
-                            handlebars.registerHelper("addOne", function(index){return index + 1;});
-
-                            var compiler = handlebars.compile($("#table-template").html()),
-                                html = compiler(data.content);
-
-                            $("#user-list").empty();
-                            $("#user-list").append(html);
-                            $("#total-page-number").text(data.totalPages);
-                        },
-                        error: function(response){
-                            console.log(response);
-                        }
-                    });
+                cancelProfileEdit: function(){
+                    userManagement.Model.currentEditUser = "";
+                    userManagement.View.switchView(userManagement.View.userManagementView);
                 }
             }
 
             function subscribeEvent(){
-                eventHandler.subscribe("userManagement:cancel", userManagement.Controller.cancel);
+                eventHandler.subscribe("userManagement:cancelQuestionnaireEdit", userManagement.Controller.cancelQuestionnaireEdit);
                 eventHandler.subscribe("userManagement:update", userManagement.Controller.update);
                 eventHandler.subscribe("userManagement:submit", userManagement.Controller.submit);
                 eventHandler.subscribe("userManagement:retrieve", userManagement.Controller.retrieve);
@@ -343,10 +282,12 @@ define(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler
                 eventHandler.subscribe("userManagement:q3", userManagement.Controller.q3);
                 eventHandler.subscribe("userManagement:q4", userManagement.Controller.q4);
                 eventHandler.subscribe("userManagement:q5", userManagement.Controller.q5);
+                eventHandler.subscribe("userManagement:cancelProfileEdit", userManagement.Controller.cancelProfileEdit);
             }
 
             $(function() {
                 subscribeEvent();
+                selector.initSelect("select");
                 userManagement.Controller.showUserByPage(1);
             })
 

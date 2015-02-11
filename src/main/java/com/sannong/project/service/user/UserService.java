@@ -23,4 +23,12 @@ public class UserService {
                 new PageRequest(pageNumber - 1, perPage, Sort.Direction.DESC, "creationTime");
         return userRepository.findAll(pageRequest);
     }
+
+    public User getUser(Long userId){
+        return userRepository.findOne(userId);
+    }
+
+    public User getUserByUserName(String userName){
+        return userRepository.findByUserName(userName);
+    }
 }
