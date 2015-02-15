@@ -59,6 +59,7 @@ public class UserCenterController {
         return userProfile;
     }
 
+
     /*
     @Resource
     private IUserService userService;

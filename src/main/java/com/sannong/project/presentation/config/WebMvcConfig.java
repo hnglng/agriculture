@@ -13,22 +13,18 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
  * Created by Bright Huang on 1/26/15.
  */
 @Configuration
-//@ComponentScan(basePackages = {"com.sannong.project"})
 @EnableWebMvc
 @EnableSpringDataWebSupport
 @EnableHypermediaSupport(type = {EnableHypermediaSupport.HypermediaType.HAL})
 public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
     @Override
-    public void configureContentNegotiation(ContentNegotiationConfigurer c) {
-        c.defaultContentType(MediaTypes.HAL_JSON);
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/login").setViewName("login");
     }
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-//        registry.addResourceHandler("/home").addResourceLocations("/home");
-//        registry.addResourceHandler("/error").addResourceLocations("/error");
-//        registry.addResourceHandler("/head").addResourceLocations("/head");
-
         registry.addResourceHandler("/css/**").addResourceLocations("/css/");
         registry.addResourceHandler("/img/**").addResourceLocations("/img/");
         registry.addResourceHandler("/js/**").addResourceLocations("/js/");
@@ -38,6 +34,11 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
     @Override
     public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
         configurer.enable();
+    }
+
+    @Override
+    public void configureContentNegotiation(ContentNegotiationConfigurer c) {
+        c.defaultContentType(MediaTypes.HAL_JSON);
     }
 
     @Bean

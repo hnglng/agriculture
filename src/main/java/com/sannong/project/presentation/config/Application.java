@@ -35,8 +35,6 @@ import java.util.Arrays;
 //@ConfigurationProperties(locations = "classpath:application.properties")
 public class Application extends SpringBootServletInitializer {
 
-
-
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
         return application.sources(Application.class);

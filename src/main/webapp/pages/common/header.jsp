@@ -27,7 +27,7 @@
             </sec:authorize>
             <sec:authorize access="hasRole('ROLE_USER') and isAuthenticated()">
                 <li><span id="welcome"></span></li>
-                <li><a href="/user-center">我的项目</a></li>
+                <li><a href="/user-questionnaire">我的项目</a></li>
             </sec:authorize>
             <sec:authorize access="hasRole('ROLE_ADMIN') and isAuthenticated()">
                 <li><a href="/user-center">用户管理</a></li>

@@ -22,7 +22,7 @@ require(['../main'], function () {
                 $("#user-list-tab").click(function(){
                     var currentEditUser = userManagement.Model.currentEditUser;
                     if (currentEditUser != ""){
-                        userProfile.View.emptyUserProfileView();
+                        //userProfile.View.emptyUserProfileView();
                         userManagement.Controller.editUserProfile(currentEditUser);
                     }
                 });
@@ -35,9 +35,12 @@ require(['../main'], function () {
             $(function() {
                 eventHandler.registerEventListener();
                 userCenter.init();
+
+                /*
                  if ($("#userAppFormTab").length > 0){
                      userApplication.Controller.showMyApplication(1);
                 }
+                */
             })
 
             sannong.UserCenter = userCenter;

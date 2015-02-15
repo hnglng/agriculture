@@ -27,17 +27,14 @@ define(['jquery', 'bootstrap', 'sannong', 'validate', 'ajaxHandler', 'formValida
                 if (validator.form() == true){
                     ajaxHandler.sendRequest({
                         type: "POST",
-                        url: "j_spring_security_check",
+                        url: "/login",
                         dataType: "json",
-                        data: {
-                            j_password: $("#login-password").val(),
-                            j_username: $("#login-username").val(),
-                            _spring_security_remember_me: $("#login-remember-me").prop("checked")
-                        },
+                        data: $("#login-form").serialize(),
                         success: function (response) {
                                 window.location.href = response.uri;
                         },
                         error: function (response) {
+                            console.log(response);
                             login.View.showLoginError("提交请求失败");
                         }
                     });
@@ -48,11 +45,11 @@ define(['jquery', 'bootstrap', 'sannong', 'validate', 'ajaxHandler', 'formValida
                 if (validator.form() == true){
                     ajaxHandler.sendRequest({
                         type: "POST",
-                        url: "j_spring_security_check",
-                        dataType: "json",
+                        url: "/login",
+                        //dataType: "json",
                         data: {
-                            j_username: $("#forgot-password-cellphone").val(),
-                            j_password: $("#forgot-password-password").val(),
+                            username: $("#forgot-password-cellphone").val(),
+                            password: $("#forgot-password-password").val(),
                             _spring_security_remember_me: $("#forgot-password-remember-me").prop("checked")
                         },
                         success: function (response) {
@@ -74,10 +71,7 @@ define(['jquery', 'bootstrap', 'sannong', 'validate', 'ajaxHandler', 'formValida
                         url: '/sms/password',
                         type: 'POST',
                         dataType: 'json',
-                        data: {
-                            cellphone: $("#forgot-password-cellphone").val(),
-                            realName: $("#forgot-password-real-name").val()
-                        },
+                        data: $("#login-form").serialize(),
                         success: function(response){
                             login.View.showForgotPasswordError(response.statusMessage)
                             additionalMethods.updateTimeLabel("#forgot-password-send-password", "密码");

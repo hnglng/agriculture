@@ -36,7 +36,7 @@ public class LoginController {
 //    @Resource
 //    private IUserService userService;
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(method = {RequestMethod.GET, RequestMethod.HEAD})
     public ModelAndView showLoginPage() {
         return new ModelAndView(LOGIN_PAGE);
     }
@@ -45,6 +45,7 @@ public class LoginController {
     public ModelAndView login() {
         return showLoginPage();
     }
+
 
     @RequestMapping(value = "/success", method = RequestMethod.POST)
     public @ResponseBody
@@ -82,8 +83,6 @@ public class LoginController {
         models.put("access-denied", "access-denied");
         return new ModelAndView(LOGIN_PAGE, models);
     }
-
-
 
     /*
     @RequestMapping(value = "login/realName", method = RequestMethod.POST)

@@ -17,64 +17,88 @@
     <div style="float:left">的调查问卷答案</div>
   </div>
 
-  <ul class="nav nav-tabs" role="tablist" id="questionnaireTab">
-    <li role="presentation" class="active"><a id="q1" href="javascript:void(0)" role="tab" data-toggle="tab"
-                                              class="meta-event-source" meta-event-handler="userManagement:q1">问卷题集一</a>
-    </li>
-    <li role="presentation"><a id="q2" href="javascript:void(0)" role="tab" data-toggle="tab" class="meta-event-source"
-                               meta-event-handler="userManagement:q2">问卷题集二</a></li>
-    <li role="presentation"><a id="q3" href="javascript:void(0)" role="tab" data-toggle="tab" class="meta-event-source"
-                               meta-event-handler="userManagement:q3">问卷题集三</a></li>
-    <li role="presentation"><a id="q4" href="javascript:void(0)" role="tab" data-toggle="tab" class="meta-event-source"
-                               meta-event-handler="userManagement:q4">问卷题集四</a></li>
-    <li role="presentation"><a id="q5" href="javascript:void(0)" role="tab" data-toggle="tab" class="meta-event-source"
-                               meta-event-handler="userManagement:q5">问卷题集五</a></li>
-  </ul>
-  <div class="tab-content">
+  <div>
+    <ul class="nav nav-tabs" role="tablist">
+      <li role="presentation" class="active"><a id="q1" href="#tab-pane1" role="tab" data-toggle="tab"
+                                                class="meta-event-source" meta-event-handler="userManagement:q1">问卷题集一</a>
+      </li>
+      <li role="presentation"><a id="q2" href="#tab-pane2" role="tab" data-toggle="tab" class="meta-event-source"
+                                 meta-event-handler="userManagement:q2">问卷题集二</a></li>
+      <li role="presentation"><a id="q3" href="#tab-pane3" role="tab" data-toggle="tab" class="meta-event-source"
+                                 meta-event-handler="userManagement:q3">问卷题集三</a></li>
+      <li role="presentation"><a id="q4" href="#tab-pane4" role="tab" data-toggle="tab" class="meta-event-source"
+                                 meta-event-handler="userManagement:q4">问卷题集四</a></li>
+      <li role="presentation"><a id="q5" href="#tab-pane5" role="tab" data-toggle="tab" class="meta-event-source"
+                                 meta-event-handler="userManagement:q5">问卷题集五</a></li>
+    </ul>
     <ul class="steps">
-      <li class="active"><span class="no">1</span> <span class="stepHeading">问卷题集一</span>
-      </li>
-      <li><span class="no">2</span> <span class="stepHeading">问卷题集二</span>
-      </li>
-      <li><span class="no">3</span> <span class="stepHeading">问卷题集三</span>
-      </li>
-      <li><span class="no">4</span> <span class="stepHeading">问卷题集四</span>
-      </li>
-      <li><span class="no">5</span> <span class="stepHeading">问卷题集五</span>
-      </li>
+      <li class="active"><span class="no">1</span></li>
+      <li><span class="no">2</span></li>
+      <li><span class="no">3</span></li>
+      <li><span class="no">4</span></li>
+      <li><span class="no">5</span></li>
     </ul>
-    <ul class="step-1-listing">
-      <div id="submitStatus" class="brown-bg">项目状态：<span id="questionnaireStatus"></span></div>
-      <li id="questionnaire1">
+    <span id="submitStatus" class="brown-bg">项目状态：<span id="questionnaireStatus"></span></span>
+  </div>
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="tab-pane1">
+      <ul class="step-1-listing">
         <jsp:include page='questionnaire1.jsp'/>
-      </li>
-      <li class="hidden" id="questionnaire2">
+      </ul>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="tab-pane2">
+      <ul class="step-1-listing">
         <jsp:include page='questionnaire2.jsp'/>
-      </li>
-      <li class="hidden" id="questionnaire3">
+      </ul>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="tab-pane3">
+      <ul class="step-1-listing">
         <jsp:include page='questionnaire3.jsp'/>
-      </li>
-      <li class="hidden" id="questionnaire4">
+      </ul>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="tab-pane4">
+      <ul class="step-1-listing">
         <jsp:include page='questionnaire4.jsp'/>
-      </li>
-      <li class="hidden" id="questionnaire5">
+      </ul>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="tab-pane5">
+      <ul class="step-1-listing">
         <jsp:include page='questionnaire5.jsp'/>
-      </li>
-      <li>
-        <form id="application-comment" role="form" action="updateApplicationComment" method="POST">
-          <div id="questionnaireComment">更改状态:
-            <textarea class="form-control" name="comment.content" rows="3" id="commentContent" autofocus=""></textarea>
-          </div>
-        </form>
-      </li>
-    </ul>
-
+      </ul>
+    </div>
+    <div>
+      <form id="application-comment" role="form" action="updateApplicationComment" method="POST">
+        <div id="questionnaireComment">更改状态:
+          <textarea class="form-control" name="comment.content" rows="3" id="commentContent" autofocus=""></textarea>
+        </div>
+      </form>
+    </div>
+    <!--
+    <span>如果需要修改问卷调查的答案，请致电免费电话400-XXXX-XXXX联系我们的工作人员。</span>
+    -->
   </div>
 
+  <!--
+<div id="buttonGroup" class="float-right step-1-bts">
+  <button class="white-bt meta-event-source" meta-event-handler="userApplication:save" id="save"
+          disabled="disabled">暂存
+  </button>
+  <button class="orange-bt-small meta-event-source" type="button" id="questionnaireSubmit"
+          meta-event-handler="userApplication:submit">提交
+  </button>
+</div>
+-->
+
+<div>
   <button class="orange-bt-small meta-event-source" meta-event-handler="userManagement:update" id="update">更新</button>
   <a href="#" class="white-bt meta-event-source" meta-event-handler="userManagement:cancelQuestionnaireEdit" id="cancel">取消</a>
-
+</div>
   <jsp:include page='../modal/quesitonnaire-update-modal.jsp'/>
+
+  <%--
+  <jsp:include page='../modal/user-questionnaire-modal.jsp'/>
+  --%>
 </div>
 
 </body>

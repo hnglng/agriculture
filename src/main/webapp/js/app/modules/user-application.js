@@ -107,10 +107,6 @@ define(['jquery', 'bootstrap', 'sannong', 'validate',  'formValidator', 'additio
                 eventHandler.subscribe("userApplication:q5", userApplication.Controller.q5);
             }
 
-
-            /*************************
-             * DOM ready function
-             ************************/
             $(function() {
                 subscribeEvent();
             })
