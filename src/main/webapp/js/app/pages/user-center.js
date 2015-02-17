@@ -19,28 +19,11 @@ require(['../main'], function () {
 
 
             userCenter.init = function(){
-                $("#user-list-tab").click(function(){
-                    var currentEditUser = userManagement.Model.currentEditUser;
-                    if (currentEditUser != ""){
-                        //userProfile.View.emptyUserProfileView();
-                        userManagement.Controller.editUserProfile(currentEditUser);
-                    }
-                });
-                $("#user-profile-tab").click(function(){
-                    $("#profile-edit-view").removeClass("hidden");
-                    //userProfile.View.renderUserProfileView(userProfile.Model.userProfileInitData);
-                });
             }
 
             $(function() {
                 eventHandler.registerEventListener();
                 userCenter.init();
-
-                /*
-                 if ($("#userAppFormTab").length > 0){
-                     userApplication.Controller.showMyApplication(1);
-                }
-                */
             })
 
             sannong.UserCenter = userCenter;

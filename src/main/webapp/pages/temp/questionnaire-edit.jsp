@@ -1,15 +1,6 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: apple
-  Date: 2/5/15
-  Time: 10:04
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<!doctype html>
 <html>
-<head>
-  <title></title>
-</head>
 <body>
 <div id="questionnaire-edit-view" style="display:none">
   <div id="userTextShow" style="display:none; float:right; text-align:right">
@@ -31,6 +22,7 @@
       <li role="presentation"><a id="q5" href="#tab-pane5" role="tab" data-toggle="tab" class="meta-event-source"
                                  meta-event-handler="userManagement:q5">问卷题集五</a></li>
     </ul>
+    <!--
     <ul class="steps">
       <li class="active"><span class="no">1</span></li>
       <li><span class="no">2</span></li>
@@ -38,33 +30,34 @@
       <li><span class="no">4</span></li>
       <li><span class="no">5</span></li>
     </ul>
-    <span id="submitStatus" class="brown-bg">项目状态：<span id="questionnaireStatus"></span></span>
+    -->
+    <span id="submitStatus" class="brown-bg">项目状态：<span id="application-status"></span></span>
   </div>
   <!-- Tab panes -->
   <div class="tab-content">
     <div role="tabpanel" class="tab-pane active" id="tab-pane1">
       <ul class="step-1-listing">
-        <jsp:include page='questionnaire1.jsp'/>
+        <jsp:include page='../questionnaires/questionnaire1.jsp'/>
       </ul>
     </div>
     <div role="tabpanel" class="tab-pane" id="tab-pane2">
       <ul class="step-1-listing">
-        <jsp:include page='questionnaire2.jsp'/>
+        <jsp:include page='../questionnaires/questionnaire2.jsp'/>
       </ul>
     </div>
     <div role="tabpanel" class="tab-pane" id="tab-pane3">
       <ul class="step-1-listing">
-        <jsp:include page='questionnaire3.jsp'/>
+        <jsp:include page='../questionnaires/questionnaire3.jsp'/>
       </ul>
     </div>
     <div role="tabpanel" class="tab-pane" id="tab-pane4">
       <ul class="step-1-listing">
-        <jsp:include page='questionnaire4.jsp'/>
+        <jsp:include page='../questionnaires/questionnaire4.jsp'/>
       </ul>
     </div>
     <div role="tabpanel" class="tab-pane" id="tab-pane5">
       <ul class="step-1-listing">
-        <jsp:include page='questionnaire5.jsp'/>
+        <jsp:include page='../questionnaires/questionnaire5.jsp'/>
       </ul>
     </div>
     <div>
@@ -99,7 +92,6 @@
   <%--
   <jsp:include page='../modal/user-questionnaire-modal.jsp'/>
   --%>
-</div>
-
+  </div>
 </body>
 </html>

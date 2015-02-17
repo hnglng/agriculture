@@ -47,7 +47,7 @@
         </form>
       </span>
       <span class="col-sm-3 sidebar equalCol">
-        <jsp:include page='application-form/faq.jsp'/>
+        <jsp:include page='application-form/faq-sidebar.jsp'/>
       </span>
       <jsp:include page='modal/application-modal.jsp'/>
     </div>

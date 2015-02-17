@@ -12,6 +12,9 @@
 </head>
 <body>
 
+<a href="javascript:void(0);" class="orange-bt-small float-right" data-toggle="modal"
+   data-target="#exportModal">导出问卷调查结果</a>
+
 <div id="exportModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">

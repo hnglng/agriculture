@@ -52,65 +52,26 @@
                     <h3>菜单</h3>
                     <ul class="nav nav-tabs-justified" role="tablist">
                       <li class="active"><a id="user-management-tab" href="#user-management-tab-pane"  role="tab" data-toggle="tab">用户管理<span></span></a></li>
-                      <%--
                       <li><a id="user-questionnaire-tab" href="#user-questionnaire-tab-pane" role="tab" data-toggle="tab">项目申请<span></span></a></li>
-                      --%>
                       <li><a id="user-profile-tab" href="#user-profile-tab-pane" role="tab" data-toggle="tab">个人信息<span></span></a></li>
-                      <li><a id="userPasswordTab" href="#user-password-tab-pane" role="tab" data-toggle="tab">更新密码<span></span></a></li>
-                        <%--
-                        <sec:authorize access="hasRole('ROLE_ADMIN') and isAuthenticated()">
-                            <li class="active"><a id="user-list-tab" href="#user-list-tab-pane"  role="tab" data-toggle="tab">用户管理<span></span></a></li>
-                        </sec:authorize>
-                        <sec:authorize access="hasRole('ROLE_USER') and isAuthenticated()">
-                            <li class="active"><a id="userAppFormTab" href="#userAppFormTabPane" role="tab" data-toggle="tab">项目申请<span></span></a></li>
-                        </sec:authorize>
-                        <sec:authorize access="(hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')) and isAuthenticated()">
-                            <li><a id="user-profile-tab" href="#user-profile-tab-pane" role="tab" data-toggle="tab">个人信息<span></span></a></li>
-                            <li class="hidden"><a id="userProfileEditTab" href="#userProfileTabPane" role="tab" data-toggle="tab">编辑个人信息<span></span></a></li>
-                            <li><a id="userPasswordTab" href="#user-password-tab-pane" role="tab" data-toggle="tab">更新密码<span></span></a></li>
-                        </sec:authorize>
-                        --%>
+                      <li><a id="user-password-tab" href="#user-password-tab-pane" role="tab" data-toggle="tab">更新密码<span></span></a></li>
                     </ul>
                 </span>
 
                 <span class="col-sm-10 leftBorder equalCol umList">
                     <div class="tab-content">
                       <div id="user-management-tab-pane" role="tabpane" class="tab-pane active">
-                        <jsp:include page='user-center/user-management.jsp'/>
+                        <jsp:include page="user-center/user-management.jsp" />
                       </div>
-                      <%--
                       <div id="user-questionnaire-tab-pane" role="tabpane" class="tab-pane">
                         <jsp:include page='user-center/user-questionnaire.jsp'/>
                       </div>
-                      --%>
                       <div id="user-profile-tab-pane" role="tabpane" class="tab-pane">
                         <jsp:include page='user-center/user-profile.jsp'/>
                       </div>
                       <div id="user-password-tab-pane" role="tabpane" class="tab-pane">
                         <jsp:include page='user-center/user-password.jsp'/>
                       </div>
-                      <%--
-                        <sec:authorize access="hasRole('ROLE_ADMIN') and isAuthenticated()">
-                            <div id="user-list-tab-pane" role="tabpane" class="tab-pane active">
-                                <jsp:include page='user-management.jsp'/>
-                            </div>
-                        </sec:authorize>
-                        <sec:authorize access="hasRole('ROLE_USER') and isAuthenticated()">
-                            <div id="userAppFormTabPane" role="tabpane" class="tab-pane active">
-                                <jsp:include page='user-questionnaire.jsp'/>
-                            </div>
-                        </sec:authorize>
-                        <sec:authorize access="(hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')) and isAuthenticated()">
-                            <div id="user-profile-tab-pane" role="tabpane" class="tab-pane">
-                                <div id="userProfileView">
-                                </div>
-                                <jsp:include page='user-profile.jsp'/>
-                            </div>
-                            <div id="user-password-tab-pane" role="tabpane" class="tab-pane">
-                                <jsp:include page='user-password.jsp'/>
-                            </div>
-                        </sec:authorize>
-                        --%>
                     </div>
                 </span>
             </div>
@@ -122,8 +83,5 @@
 <jsp:include page='common/footer.jsp'/>
 
 <script data-main="js/app/pages/user-center" src="js/lib/require-2.1.15.min.js"></script>
-<!--
-<script src="js/app/modules/custom.js"></script>
--->
 </body>
 </html>

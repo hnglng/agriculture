@@ -21,6 +21,9 @@ define(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler
                 userManagementView: $("#user-management-view"),
                 questionnaireEditView: $("#questionnaire-edit-view"),
                 profileEditView: $("#profile-edit-view"),
+                switchTab: function(tabId){
+                    $("#" + tabId).click();
+                },
                 switchView: function(targetView){
                     userManagement.View.userManagementView.hide();
                     userManagement.View.questionnaireEditView.hide();
@@ -196,13 +199,14 @@ define(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler
                     userManagement.Controller.showUserByPage(nextPageNumber);
                 },
                 editUserProfile: function(userId){
+                    userManagement.View.switchTab("user-profile-tab");
                     ajaxHandler.sendRequest({
                         type: "GET",
                         url: "/user-center/user-profile",
                         dataType: "json",
                         data:{userId: userId},
                         success: function(data){
-                            userManagement.View.switchView(userManagement.View.profileEditView);
+                            //userManagement.View.switchView(userManagement.View.profileEditView);
                             userManagement.View.renderProfileEditView(false, data);
                         },
                         error: function(data){
@@ -211,13 +215,14 @@ define(['jquery', 'bootstrap', 'handlebars', 'sannong', 'validate', 'ajaxHandler
                     });
                 },
                 editQuestionnaire: function (userId) {
+                    userManagement.View.switchTab("user-questionnaire-tab");
                     var options = {
                         type: "GET",
                         dataType: "json",
                         url: "/api/applications",
                         data: {userId: userId},
                         success: function(data) {
-                            userManagement.View.switchView(userManagement.View.questionnaireEditView);
+                            //userManagement.View.switchView(userManagement.View.questionnaireEditView);
                             userManagement.View.renderQuestionnaireEditView(data, 1);
                         },
                         error: function(data){

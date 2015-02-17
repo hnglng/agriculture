@@ -11,7 +11,7 @@
   <title></title>
 </head>
 <body>
-  <form id="questionnaire1-form" role="form" action="updateQuestionnaire" method="post">
+  <form class="projectAppForm" id="questionnaire1-form" role="form" action="updateQuestionnaire" method="post">
     <div id="questionnaire">
       <li class="J_group_choice">
         1. 贵村面积多大？

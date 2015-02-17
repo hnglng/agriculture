@@ -13,7 +13,11 @@
 </head>
 <body>
 
-<div id="profile-edit-view" style="display:none"></div>
-<jsp:include page='../template/user-profile-template.jsp'/>
+<form class="userForm" role="form" id="profile-edit-form" action="user-center/user-profile" method="post">
+  <div id="profile-edit-view" style="display:none">
+    <jsp:include page='../template/user-profile-template.jsp'/>
+  </div>
+</form>
+
 </body>
 </html>

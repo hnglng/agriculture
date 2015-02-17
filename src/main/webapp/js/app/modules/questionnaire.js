@@ -20,7 +20,7 @@ define(['jquery', 'sannong', 'handlebars'], function($, sannong, handlebars) {
             if ($("#q" + questionnaireNo).parent().hasClass("disabled")) {
                 $("#questionnaire").empty();
                 $("#buttonGroup").hide();
-                $("#questionnaireStatus").hide();
+                $("#application-status").hide();
                 $("#submitStatus").hide();
                 return false;
             }
@@ -172,16 +172,16 @@ define(['jquery', 'sannong', 'handlebars'], function($, sannong, handlebars) {
             }
 
             if (comments != null && comments != ""){
-                if($("#questionnaireStatus")){
-                    $("#questionnaireStatus").text(comments);
-                    $("#questionnaireStatus").show();
+                if($("#application-status")){
+                    $("#application-status").text(comments);
+                    $("#application-status").show();
                 }
             } else if (lastQuestionnaireNumber == 5 && lastQuestionnaireCommitted === true){
-                $("#questionnaireStatus").text("您的申请正在审核中。请保存手机畅通，我们的工作人员会尽快联系您。");
-                $("#questionnaireStatus").show();
+                $("#application-status").text("您的申请正在审核中。请保存手机畅通，我们的工作人员会尽快联系您。");
+                $("#application-status").show();
             } else{
-                $("#questionnaireStatus").text("请完成所有问卷调查，然后我们的工作人员会第一时间联系您。");
-                $("#questionnaireStatus").show();
+                $("#application-status").text("请完成所有问卷调查，然后我们的工作人员会第一时间联系您。");
+                $("#application-status").show();
             }
         }
     };

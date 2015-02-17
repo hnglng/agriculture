@@ -913,13 +913,13 @@ h3.borderBottom {
 	color:#cd431e;
 }
 
-#userManagementTable .searchRow label {
+#user-table .searchRow label {
 	float:left;
 }
-#userManagementTable .searchRow #searchKey {
+#user-table .searchRow #searchKey {
 	float:left;
 }
-#userManagementTable .searchRow #searchValue {
+#user-table .searchRow #searchValue {
 	width:100%;
 }
 

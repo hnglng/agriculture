@@ -11,7 +11,9 @@
   <title></title>
 </head>
 <body>
+<!--
 <select id="provinceSelect" name="companyProvince">
+-->
   <option value="1">北京市</option>
   <option value="2">天津市</option>
   <option value="3">河北省</option>
@@ -46,6 +48,8 @@
   <option value="32">台湾</option>
   <option value="33">香港特别行政区</option>
   <option value="34">澳门特别行政区</option>
+<!--
 </select>
+-->
 </body>
 </html>

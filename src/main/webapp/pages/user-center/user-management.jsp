@@ -15,18 +15,60 @@
   <title>Benefitting Agriculture - User Management List Page</title>
 </head>
 <body>
+
+<!-- user management view -->
 <div id="user-management-view">
+  <div class="row">
+    <h3 id="user-management-title"><span>用户管理</span>
+    <jsp:include page='../modal/data-export-modal.jsp'/>
+    </h3>
+  </div>
 
-  <h3 id="user-management-title">
-    <span>用户管理</span>
-    <a href="javascript:void(0);"
-       class="orange-bt-small float-right" data-toggle="modal"
-       data-target="#exportModal">导出问卷调查结果</a>
-  </h3>
-  <jsp:include page='../modal/data-export-modal.jsp'/>
+  <!-- search wizard -->
+  <div class="searchRow" id="user-search-wizard">
+    <div class="left">
+      <label>查询条件</label>
+      <div class="width-97">
+        <select id="searchKey" name="searchKey">
+          <option value="姓名">姓名</option>
+          <option value="手机号">手机号</option>
+          <option value="工作单位">工作单位</option>
+          <option value="职位">职位</option>
+          <option value="电子邮箱">电子邮箱</option>
+          <option value="单位地址">单位地址</option>
+        </select>
+      </div>
+      <div class="width-152">
+        <input id="searchValue" name="searchValue" type="text">
+      </div>
+    </div>
+    <div class="right">
+      <label>地址</label>
 
-  <jsp:include page='user-search-wizard.jsp'/>
-  <div id="userManagementTable">
+      <div class="width-152" id="provinceQuerySelectDiv">
+        <select id="provinceQuerySelect" name="provinceQuerySelect">
+          <option value="">省/直辖市</option>
+          <jsp:include page='../template/province-select-template.jsp'/>
+        </select>
+      </div>
+      <div class="width-152" id="cityQuerySelectDiv">
+        <select id="cityQuerySelect" name="cityQuerySelect">
+          <option value="">市</option>
+        </select>
+      </div>
+      <div class="width-152" id="districtQuerySelectDiv">
+        <select id="districtQuerySelect" name="districtQuerySelect">
+          <option value="">县/市辖区</option>
+        </select>
+      </div>
+      <a id="retrieve" href="javascript:void(0);" class="glyphicon glyphicon-search meta-event-source"
+         meta-event-handler="userManagement:search"></a>
+    </div>
+  </div>
+  <!-- /search wizard -->
+
+  <!-- user table -->
+  <div id="user-table">
     <ul class="umListGrid">
       <li class="head">
         <div class="col-small">姓名</div>
@@ -41,29 +83,38 @@
         <div id="user-list"></div>
       </li>
     </ul>
+
     <ul id="pagination" class="customPagination">
-      <li><a id="previous" href="javascript:void(0);" class="bt back meta-event-source"
-             meta-event-handler="userManagement:previous"></a>
-      </li>
-      <li><label id="current-page-number">1</label>/<label id="total-page-number">1</label>
-      </li>
-      <li><a id="next" href="javascript:void(0);" class="bt next activeBt meta-event-source"
-             meta-event-handler="userManagement:next"></a>
-      </li>
+      <li><a id="previous" href="javascript:void(0);" class="bt back meta-event-source" meta-event-handler="userManagement:previous"></a></li>
+      <li><label id="current-page-number">1</label>/<label id="total-page-number">1</label></li>
+      <li><a id="next" href="javascript:void(0);" class="bt next activeBt meta-event-source" meta-event-handler="userManagement:next"></a></li>
     </ul>
-    <input type="hidden" id="cellphone">
   </div>
+  <!-- /user table -->
 </div>
+<!-- /user management view -->
 
-<jsp:include page='questionnaire-edit.jsp'/>
-
-<form class="userForm" role="form" id="profile-edit-form" action="user-center/user-profile" method="post">
-  <div id="profile-edit-view" style="display:none"></div>
-</form>
-<jsp:include page='../template/user-profile-template.jsp'/>
-
-<jsp:include page='../template/user-list-template.jsp'/>
-<jsp:include page='../template/question-template.jsp'/>
-
+<!-- user table js template -->
+<script id="table-template" type="text/x-handlebars-template">
+  {{#each this}}
+  <li>
+    <div class="col-small">{{realName}}</div>
+    <div class="col-small">{{creationTime}}</div>
+    <div class="col-small" id="cell{{addOne @index}}">{{mobilePhone}}</div>
+    <div class="col-large">{{companyName}}</div>
+    <div class="col-small">{{jobTitle}}</div>
+    <div class="col-medium">{{mailbox}}</div>
+    <div class="col-small">
+      <span class="bts">
+        <a href="javascript:void(0);" class="edit"
+           onclick="Sannong.UserManagement.Controller.editUserProfile('{{userId}}')">Edit</a>
+        <a href="javascript:void(0);" class="help"
+           onclick="Sannong.UserManagement.Controller.editQuestionnaire(1,'{{userId}}')">Help</a>
+      </span>
+    </div>
+  </li>
+  {{/each}}
+</script>
+<!-- /user table js template -->
 </body>
 </html>
